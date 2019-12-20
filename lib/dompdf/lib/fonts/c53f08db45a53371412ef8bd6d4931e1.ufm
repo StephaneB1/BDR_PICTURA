@@ -1,0 +1,32 @@
+StartFontMetrics 4.1
+Notice Converted by PHP-font-lib
+Comment https://github.com/PhenX/php-font-lib
+EncodingScheme FontSpecific
+Copyright (C) ETML - GiDDE - 2010
+FontName ETML L
+FontSubfamily Regular
+UniqueID FontForge 2.0 : ETML LIGHT : 26-9-2010
+FullName ETML LIGHT
+Version Version 1.0 
+PostScriptName ETML_Light
+Weight Medium
+ItalicAngle 0
+IsFixedPitch false
+UnderlineThickness 0
+UnderlinePosition 0
+FontHeightOffset 11
+Ascender 989
+Descender 0
+FontBBox 0 0 971 989
+StartCharMetrics 12
+U 32 ; WX 1000 ; N space ; G 3
+U 69 ; WX 957 ; N E ; G 4
+U 73 ; WX 1000 ; N I ; G 5
+U 76 ; WX 811 ; N L ; G 6
+U 77 ; WX 1020 ; N M ; G 7
+U 78 ; WX 1000 ; N N ; G 8
+U 81 ; WX 1017 ; N Q ; G 9
+U 84 ; WX 1019 ; N T ; G 10
+U 86 ; WX 864 ; N V ; G 11
+EndCharMetrics
+EndFontMetrics
