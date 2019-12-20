@@ -1,0 +1,13 @@
+-- -----------------------------------------------------
+-- Mini-projet 		: PICTURA
+-- 
+-- Auteurs 			: Stéphane Bottin, 
+--   		      	  Robin Demarta &
+--                	  Simon Mattei
+-- 
+-- Date du rendu 	: 13.12.2019
+-- 
+-- Details 			: Triggers de la base de données
+-- -----------------------------------------------------   
+
+-- 
