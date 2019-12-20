@@ -8,7 +8,7 @@
 -- Date du rendu 	: 13.12.2019
 -- 
 -- Details 			: Création de la base de données de 
--- 					  PICTURA avec lensemble des tables
+-- 					  PICTURA avec l'ensemble des tables
 -- -----------------------------------------------------   
 
 DROP SCHEMA IF EXISTS PICTURA;
@@ -19,12 +19,12 @@ USE PICTURA;
 -- Table Utilisateur
 -- -----------------------------------------------------
 CREATE TABLE Utilisateur (
-  nomUtilisateur VARCHAR(20),
+  pseudo VARCHAR(20),
   email VARCHAR(50) UNIQUE NOT NULL,
   motDePasse VARCHAR(100) NOT NULL,
   nom VARCHAR(50),
   prenom VARCHAR(50),
-  CONSTRAINT PK_Utilisateur PRIMARY KEY (nomUtilisateur)
+  CONSTRAINT PK_Utilisateur PRIMARY KEY (pseudo)
 )
 ENGINE = InnoDB;
 
@@ -33,10 +33,10 @@ ENGINE = InnoDB;
 -- Table Communaute
 -- -----------------------------------------------------
 CREATE TABLE Communaute (
-  nomCommunaute VARCHAR(20),
-  `description` VARCHAR(500) NOT NULL,
+  nom VARCHAR(20),
+  detail VARCHAR(500) NOT NULL,
   imageDeProfil VARCHAR(100),
-  CONSTRAINT PK_Communaute PRIMARY KEY (nomCommunaute)
+  CONSTRAINT PK_Communaute PRIMARY KEY (nom)
 )
 ENGINE = InnoDB;
 
@@ -45,15 +45,15 @@ ENGINE = InnoDB;
 -- Table Photo
 -- -----------------------------------------------------
 CREATE TABLE Photo (
-  idPhoto INT UNSIGNED AUTO_INCREMENT,
+  id INT UNSIGNED AUTO_INCREMENT,
   titre VARCHAR(50) NOT NULL,
-  `description` VARCHAR(500),
-  dateAjout DATETIME NOT NULL,
+  detail VARCHAR(500),
+  dateHeureAjout DATETIME NOT NULL,
   masquee TINYINT NOT NULL,
-  CONSTRAINT PK_Photo PRIMARY KEY (idPhoto),
+  CONSTRAINT PK_Photo PRIMARY KEY (id),
   
   -- FOREIGN KEYS
-  nomUtilisateur VARCHAR(20) NOT NULL,
+  pseudoUtilisateur VARCHAR(20) NOT NULL,
   nomCommunaute VARCHAR(20) NOT NULL
 )
 ENGINE = InnoDB;
@@ -63,9 +63,9 @@ ENGINE = InnoDB;
 -- Table Utilisateur_Suit_Communaute
 -- -----------------------------------------------------
 CREATE TABLE Utilisateur_Suit_Communaute (
-  nomUtilisateur VARCHAR(20),
+  pseudoUtilisateur VARCHAR(20),
   nomCommunaute VARCHAR(20),
-  CONSTRAINT PK_Utilisateur_Suit_Communaute PRIMARY KEY (nomUtilisateur, nomCommunaute)
+  CONSTRAINT PK_Utilisateur_Suit_Communaute PRIMARY KEY (pseudoUtilisateur, nomCommunaute)
 )
 ENGINE = InnoDB;
 
@@ -74,10 +74,10 @@ ENGINE = InnoDB;
 -- Table Utilisateur_Modere_Communaute
 -- -----------------------------------------------------
 CREATE TABLE Utilisateur_Modere_Communaute (
-  nomUtilisateur VARCHAR(20),
+  pseudoUtilisateur VARCHAR(20),
   nomCommunaute VARCHAR(20),
   niveauPrivilege INT UNSIGNED NOT NULL,
-  CONSTRAINT PK_Utilisateur_Modere_Communaute PRIMARY KEY (nomUtilisateur, nomCommunaute)
+  CONSTRAINT PK_Utilisateur_Modere_Communaute PRIMARY KEY (pseudoUtilisateur, nomCommunaute)
 )
 ENGINE = InnoDB;
 
@@ -86,9 +86,9 @@ ENGINE = InnoDB;
 -- Table Utilisateur_Like_Photo
 -- -----------------------------------------------------
 CREATE TABLE Utilisateur_Like_Photo (
-  nomUtilisateur VARCHAR(20),
+  pseudoUtilisateur VARCHAR(20),
   idPhoto INT UNSIGNED,
-  CONSTRAINT PK_Utilisateur_Like_Photo PRIMARY KEY (nomUtilisateur, idPhoto)
+  CONSTRAINT PK_Utilisateur_Like_Photo PRIMARY KEY (pseudoUtilisateur, idPhoto)
 )
 ENGINE = InnoDB;
 
@@ -108,8 +108,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE Photo_Balise (
   idPhoto INT UNSIGNED,
-  label VARCHAR(50),
-  CONSTRAINT PK_Photo_Balise PRIMARY KEY (idPhoto, label)
+  labelBalise VARCHAR(50),
+  CONSTRAINT PK_Photo_Balise PRIMARY KEY (idPhoto, labelBalise)
 )
 ENGINE = InnoDB;
 
@@ -120,7 +120,7 @@ ENGINE = InnoDB;
 CREATE TABLE Commentaire (
   dateHeureAjout DATETIME,
   idPhoto INT UNSIGNED,
-  nomUtilisateur VARCHAR(20) NOT NULL,
+  pseudoUtilisateur VARCHAR(20) NOT NULL,
   commentaire VARCHAR(500) NOT NULL,
   CONSTRAINT PK_Commentaire PRIMARY KEY (dateHeureAjout, idPhoto)
 ) 
@@ -148,63 +148,63 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- -----------------------------------------------------
 
-ALTER TABLE Photo ADD CONSTRAINT FK_Photo_nomUtilisateur
-	FOREIGN KEY (nomUtilisateur) REFERENCES Utilisateur (nomUtilisateur)
+ALTER TABLE Photo ADD CONSTRAINT FK_Photo_pseudoUtilisateur
+	FOREIGN KEY (pseudoUtilisateur) REFERENCES Utilisateur (pseudo)
 		ON UPDATE CASCADE
         ON DELETE CASCADE;
         
 ALTER TABLE Photo ADD CONSTRAINT FK_Photo_nomCommunaute
-	FOREIGN KEY (nomCommunaute) REFERENCES Communaute (nomCommunaute)
+	FOREIGN KEY (nomCommunaute) REFERENCES Communaute (nom)
 		ON UPDATE RESTRICT -- car une photo ne peut pas changer de communauté
         ON DELETE CASCADE;
         
-ALTER TABLE Utilisateur_Suit_Communaute ADD CONSTRAINT FK_Utilisateur_Suit_Communaute_nomUtilisateur
-    FOREIGN KEY (nomUtilisateur) REFERENCES Utilisateur (nomUtilisateur)
+ALTER TABLE Utilisateur_Suit_Communaute ADD CONSTRAINT FK_Utilisateur_Suit_Communaute_pseudoUtilisateur
+    FOREIGN KEY (pseudoUtilisateur) REFERENCES Utilisateur (pseudo)
     ON DELETE CASCADE
     ON UPDATE CASCADE;
     
 ALTER TABLE Utilisateur_Suit_Communaute ADD CONSTRAINT FK_Utilisateur_Suit_Communaute_nomCommunaute
-    FOREIGN KEY (nomCommunaute) REFERENCES Communaute (nomCommunaute)
+    FOREIGN KEY (nomCommunaute) REFERENCES Communaute (nom)
     ON DELETE CASCADE
     ON UPDATE CASCADE;
     
-ALTER TABLE Utilisateur_Modere_Communaute ADD CONSTRAINT FK_Utilisateur_Modere_Communaute_nomUtilisateur
-    FOREIGN KEY (nomUtilisateur) REFERENCES Utilisateur (nomUtilisateur)
+ALTER TABLE Utilisateur_Modere_Communaute ADD CONSTRAINT FK_Utilisateur_Modere_Communaute_pseudoUtilisateur
+    FOREIGN KEY (pseudoUtilisateur) REFERENCES Utilisateur (pseudo)
     ON DELETE CASCADE
     ON UPDATE CASCADE;
     
 ALTER TABLE Utilisateur_Modere_Communaute ADD CONSTRAINT FK_Utilisateur_Modere_Communaute_nomCommunaute
-    FOREIGN KEY (nomCommunaute) REFERENCES Communaute (nomCommunaute)
+    FOREIGN KEY (nomCommunaute) REFERENCES Communaute (nom)
     ON DELETE CASCADE
     ON UPDATE CASCADE;
     
-ALTER TABLE Utilisateur_Like_Photo ADD CONSTRAINT FK_Utilisateur_Like_Photo_nomUtilisateur
-    FOREIGN KEY (nomUtilisateur) REFERENCES Utilisateur (nomUtilisateur)
+ALTER TABLE Utilisateur_Like_Photo ADD CONSTRAINT FK_Utilisateur_Like_Photo_pseudoUtilisateur
+    FOREIGN KEY (pseudoUtilisateur) REFERENCES Utilisateur (pseudo)
     ON DELETE CASCADE
     ON UPDATE CASCADE;
 
 ALTER TABLE Utilisateur_Like_Photo ADD CONSTRAINT FK_Utilisateur_Like_Photo_idPhoto
-    FOREIGN KEY (idPhoto) REFERENCES Photo (idPhoto)
+    FOREIGN KEY (idPhoto) REFERENCES Photo (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE;
     
 ALTER TABLE Photo_Balise ADD CONSTRAINT FK_Photo_Balise_idPhoto
-    FOREIGN KEY (idPhoto) REFERENCES Photo (idPhoto)
+    FOREIGN KEY (idPhoto) REFERENCES Photo (id)
     ON DELETE CASCADE
     ON UPDATE CASCADE;
     
 ALTER TABLE Photo_Balise ADD CONSTRAINT FK_Photo_Balise_label
-    FOREIGN KEY (label) REFERENCES Balise (label)
+    FOREIGN KEY (labelBalise) REFERENCES Balise (label)
     ON DELETE CASCADE
     ON UPDATE CASCADE;
     
-ALTER TABLE Commentaire ADD CONSTRAINT FK_Commentaire_nomUtilisateur
-    FOREIGN KEY (nomUtilisateur) REFERENCES Utilisateur (nomUtilisateur)
+ALTER TABLE Commentaire ADD CONSTRAINT FK_Commentaire_pseudoUtilisateur
+    FOREIGN KEY (pseudoUtilisateur) REFERENCES Utilisateur (pseudo)
     ON UPDATE CASCADE
     ON DELETE CASCADE;
     
  ALTER TABLE Commentaire ADD CONSTRAINT FK_Commentaire_idPhoto
-    FOREIGN KEY (idPhoto) REFERENCES Photo (idPhoto)
+    FOREIGN KEY (idPhoto) REFERENCES Photo (id)
     ON UPDATE CASCADE
     ON DELETE CASCADE;
     
