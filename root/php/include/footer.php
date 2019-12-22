@@ -1,7 +1,8 @@
 <?php
+	$year = date("Y");
     echo "
 	<div id='footer'>
-		<span>Robin Demarta - ETML 2017</span>
+		<span>HEIG-VD - " . $year . "</span>
 	</div>
     ";
 ?>

@@ -1,16 +1,16 @@
 <?php
 
 /**
- * ETML
- * Author: Robin Demarta
- * Date: 28.04.2017
+ * HEIG-VD
+ * Authors: Stéphane Bottin, Robin Demarta, Simon Mattei
+ * Date: 20.12.2019
  * Summary: User authentification page
  */
 
 include_once("php/include/header.php");
 
 ?>
-<title>TPI - connexion</title>
+<title>PICTURA - connexion</title>
 
 </head>
 <body>
@@ -27,12 +27,12 @@ include_once("php/include/menu-h.php");
         <!-- Login form -->		
         <form id='loginUserForm' name='loginUserForm' action="php/form/loginUserForm.php" method="post">
             <p>Bienvenue, veuillez entrer vos identifiants:</p>
-        	<!-- Login -->
+        	<!-- pseudo -->
             <p>
-				<label for="login">
+				<label for="pseudo">
 					<i class="material-icons">account_circle</i>
 				</label>
-				<input type="text" id="login" name="login" placeholder="Nom d'utilisateur" required autofocus/>
+				<input type="text" id="pseudo" name="pseudo" placeholder="Nom d'utilisateur" required autofocus/>
 			</p>
         	<!-- Password -->
             <p>
@@ -52,24 +52,31 @@ include_once("php/include/menu-h.php");
             <p>Création d'un nouveau compte:</p>
         	<!-- Login -->
             <p>
-				<label for="regLogin">
+				<label for="regPseudo">
 					<i class="material-icons">account_circle</i>
 				</label>
-				<input type="text" id="regLogin" name="regLogin" pattern="[a-zA-Z0-9]{1,20}" placeholder="Nom d'utilisateur*" title="Seulement lettres et chiffres / Long. max.: 20" required/>
+				<input type="text" id="regPseudo" name="regPseudo" pattern="[a-zA-Z0-9]{1,20}" placeholder="Nom d'utilisateur*" title="Seulement lettres et chiffres / Long. max.: 20" required/>
+			</p>
+        	<!-- Email address -->
+            <p>
+				<label for="regEmail">
+					<i class="material-icons">mail</i>
+				</label>
+				<input type="email" id="regEmail" name="regEmail" pattern="[a-zA-Z0-9\._-]{1,}[@]{1}[a-zA-Z0-9\._-]{1,}[.]{1}[a-zA-Z0-9\._-]{1,}" placeholder="Adresse email*" required/>
 			</p>
         	<!-- First name -->
             <p>
 				<label for="regFirstName">
 					<i class="material-icons">face</i>
 				</label>
-				<input type="text" id="regFirstName" name="regFirstName" pattern="[a-zA-ZàáâäèéêëìíîïòóôöùúûüÀÁÂÄÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜ]{1,20}" placeholder="Prénom*" title="Max. 20 caractères" required/>
+				<input type="text" id="regFirstName" name="regFirstName" pattern="[a-zA-ZàáâäèéêëìíîïòóôöùúûüÀÁÂÄÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜ]{1,50}" placeholder="Prénom" title="Max. 50 caractères"/>
 			</p>
         	<!-- Last name -->
             <p>
 				<label for="regLastName">
 					<i class="material-icons" style="opacity: 0;">face</i>				
 				</label>
-				<input type="text" id="regLastName" name="regLastName" pattern="[a-zA-Z- ]{1,30}" placeholder="Nom*" title="Max. 30 caractères" required/>
+				<input type="text" id="regLastName" name="regLastName" pattern="[a-zA-Z- ]{1,50}" placeholder="Nom" title="Max. 50 caractères"/>
 			</p>
         	<!-- Password -->
             <p>
@@ -84,13 +91,6 @@ include_once("php/include/menu-h.php");
 					<i class="material-icons blank">lock</i>
 				</label>
 				<input type="password" id="regPasswordConfirm" name="regPasswordConfirm" minlength="8" placeholder="Confirmer mot de passe*" title="Min. 8 caractères" required/>
-			</p>
-        	<!-- Email address -->
-            <p>
-				<label for="regEmail">
-					<i class="material-icons">mail</i>
-				</label>
-				<input type="email" id="regEmail" name="regEmail" pattern="[a-zA-Z0-9\._-]{1,}[@]{1}[a-zA-Z0-9\._-]{1,}[.]{1}[a-zA-Z0-9\._-]{1,}" placeholder="Adresse email*" required/>
 			</p>
             <p class="note">*Obligatoires</p>
 

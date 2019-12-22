@@ -1,19 +1,21 @@
 <?php
 
 /**
- * ETML
- * Author : Robin Demarta
- * Date : 01.05.2017
+ * HEIG-VD
+ * Authors: Stéphane Bottin, Robin Demarta, Simon Mattei
+ * Date: 20.12.2019
  * Summary : Login user
  */
+
+include_once("../include/func.php");
 
 session_start();
 
 $formCorrect = true; //If false, stop
 
 //Login
-if(!empty($_POST["login"])) {
-    $login = $_POST["login"];
+if(!empty($_POST["pseudo"])) {
+    $login = $_POST["pseudo"];
 } else {
     $formCorrect = false;
 }
@@ -30,39 +32,29 @@ if($formCorrect == true) {
     include_once("../include/dbConnect.php");
     $db = new db;
 
-    $user = $db->getUserByLogin($login); //Get user
+    $user = $db->getUserByPseudo($login); //Get user
 
     //Check if user exists
     if(!empty($user)) {
         //Verify password
-        if(password_verify($password, $user[0]["usePassword"])) {
+        if(password_verify($password, $user[0]["motDePasse"])) {
             //Save user ID and user name in the session variable
-            $_SESSION["userId"] = $user[0]["idUser"];
-            $_SESSION["userName"] = $user[0]["useLogin"];
-			//If user has a picture, store its name
-            if(!empty($user[0]["usePicture"])) {
-                $_SESSION["userPicture"] = $user[0]["usePicture"];
-            }
-            if($user[0]["useIsAdmin"] == true) {
-                $_SESSION["isAdmin"] = true;
-            } else {
-                $_SESSION["isAdmin"] = false;
-            }
+            $_SESSION["pseudo"] = $user[0]["pseudo"];
 
-            header("Location: ../../myEvents.php"); //Redirect to myEvent page
+            redirect(null);
         } else { //Error: Incorrect password
-			$_SESSION["e"] = 1; //Store error code
-            header("Location: ../../connexion.php");
+			//$_SESSION["e"] = 1; //Store error code
+            redirect("connexion.php");
         }
 
     } else { //Error: User doesn't exists
-		$_SESSION["e"] = 1; //Store error code
-        header("Location: ../../connexion.php");
+		//$_SESSION["e"] = 1; //Store error code
+        redirect("connexion.php");
     }
 
 } else { //Error: Some form fields are empty
-	$_SESSION["e"] = 1; //Store error code
-    header("Location: ../../connexion.php");
+    //$_SESSION["e"] = 1; //Store error code
+    redirect("connexion.php");
 }
 
 ?>

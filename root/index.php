@@ -1,28 +1,19 @@
 <?php
 
 /**
- * ETML
- * Author: Robin Demarta
- * Date: 28.04.2017
+ * HEIG-VD
+ * Authors: Stéphane Bottin, Robin Demarta, Simon Mattei
+ * Date: 20.12.2019
  * Summary: Home page of the application
  */
 
 include_once("php/include/header.php");
 include_once("php/include/dbConnect.php");
+
 $db = new db;
 
-$isConnected = checkIfLoggedIn();
-
 ?>
-	<title>TPI</title>
-
-	<!-- Datepicker properties -->
-	<script src='js/datepickerFromTo.js' type='text/javascript'></script>
-    <link rel='stylesheet' type='text/css' href='css/datepicker.css'/>
-
-    <!-- Highcharts -->
-    <script src="https://code.highcharts.com/highcharts.src.js"></script>
-    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+	<title>PICTURA</title>
 	
 </head>
 <body>
@@ -33,30 +24,19 @@ $isConnected = checkIfLoggedIn();
     ?>
 
 	<div id="wrapper-content">
-		<!-- First -->
         <div class="col-1-2 unique">
 			<h1>Bienvenue,</h1>
-
+			<h2>Liste des utilisateurs:</h2>
             <?php
 			
-            if($isConnected) {
-                echo "
-                <p>
-                    Pour débuter, vous pouvez accéder à <a href='myEvents.php'>vos événements</a> ou <a href='events.php'>parcourir les événements publics</a>.
-                </p>";
-            } else {
-                echo "
-                <p>
-                    Pour débuter, vous pouvez vous <a href='connexion.php'>authentifier / inscrire</a> ou <a href='events.php'>parcourir les événements publics</a>.
-                </p>";
-            }
+            $users = $db->getAllUserPseudos();
+			
+			for ($i = 0; $i < count($users); $i++) {
+				echo "<p>" . htmlentities($users[$i]["pseudo"]) . "</p>";
+			}
 
             ?>
-
-            <!-- Chart -->
-            <h2>Les 10 événements publics les plus populaires: </h2>
-            <button id="dataSwitchButton">Classer par date de début</button>
-            <div id="eventsChart"></div>
+			
         </div>
 	</div> <!-- End wrapper-content -->
 	<?php
@@ -65,12 +45,4 @@ $isConnected = checkIfLoggedIn();
 
 	?>
 </body>
-
-<!-- Include chart -->
-<?php
-
-include_once("php/include/eventsChart.php");
-
-?>
-
 </html>

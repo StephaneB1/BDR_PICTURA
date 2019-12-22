@@ -1,16 +1,16 @@
 <?php
 
 /**
- * ETML
- * Author: Robin Demarta
- * Date: 01.05.2017
+ * HEIG-VD
+ * Authors: Stéphane Bottin, Robin Demarta, Simon Mattei
+ * Date: 20.12.2019
  * Summary: Profile of the current user
  */
 
 include_once("php/include/header.php");
 
 ?>
-    <title>TPI</title>
+    <title>PITCURA - Profil</title>
 </head>
 <body>
 <?php
@@ -24,21 +24,20 @@ $db = new db;
 if(checkIfLoggedIn()) {
 	$isCurrentUser = false;
 	
-	if(empty($_GET["id"]) || $_GET["id"] == $_SESSION["userId"]) {
+	if(empty($_GET["id"]) || $_GET["id"] == $_SESSION["pseudo"]) { // If no user id param => display own profile
 		//Display current user's profile
 		$isCurrentUser = true;
-		$user = $db->getUserById($_SESSION["userId"]);
+		$user = $db->getUserByPseudo($_SESSION["pseudo"]);
 	} else {
 		//Display other user's profile	
-		$user = $db->getUserById($_GET["id"]);
-		if(!empty($user)) {
-			
-		} else { //Error: invalid user ID
-			stopAndMove();
+		$user = $db->getUserByPseudo($_GET["id"]);
+		if(empty($user)) {
+			//Error: invalid user ID
+			redirect(null);
 		}
 	}
 } else { //Error: user not logged in
-	stopAndMove("connexion.php");
+	redirect("connexion.php");
 }
 
 ?>
@@ -47,36 +46,36 @@ if(checkIfLoggedIn()) {
     <!-- First -->
 	<div class="col-1-2 unique">
         <?php
+
+        // Title
+
 		if($isCurrentUser) {
 			echo "<h1>Mon profil</h1>";
 		} else {
-			echo "<h1>Profil de ".htmlentities($user[0]['useLogin'])."</h1>";
+			echo "<h1>Profil de ".htmlentities($user[0]['pseudo'])."</h1>";
 		}
 
-        //If user has a profile picture, display it
-        if($user[0]["usePicture"]) {
-            echo "<p>
-            <div class='userpicture viewer-item' style='background-image: url(files/".$user[0]['usePicture'].");'></div>
-        </p>";
+		// Infos
+
+        if(!empty($user[0]["nom"])) {
+            echo "
+            <p>
+                <span class='bold'>Nom: </span>".htmlentities($user[0]["nom"])."
+            </p>";
         }
 
-        ?>
-		<p>
-			<span class="bold">Nom d'utilisateur: </span><?php echo htmlentities($user[0]["useLogin"]); ?>
-		</p>
-        <p>
-			<span class="bold">Prénom: </span><?php echo htmlentities($user[0]["useFirstname"]); ?>
-		</p>
-		<p>
-			<span class="bold">Nom: </span><?php echo htmlentities($user[0]["useLastname"]); ?>
-		</p>
-		<?php
+        if(!empty($user[0]["prenom"])) {
+            echo "
+            <p>
+                <span class='bold'>Prénom: </span>".htmlentities($user[0]["prenom"])."
+            </p>";
+        }
 		
 		//Display email address only if it's the current user's profile
 		if($isCurrentUser) {
 			echo "
 			<p>
-				<span class='bold'>Email: </span>".htmlentities($user[0]["useEmail"])."
+				<span class='bold'>Email: </span>".htmlentities($user[0]["email"])."
 			</p>
 			<p>
 				<a href='editUser.php'>
@@ -84,7 +83,7 @@ if(checkIfLoggedIn()) {
 				</a>
 			</p>
 			<p>
-				<a href='php/form/deleteUserForm.php?id=".$_SESSION["userId"]."' class='red' onclick='return confirm(\"Supprimer définitivement votre compte?\")'>
+				<a href='php/form/deleteUserForm.php' class='red' onclick='return confirm(\"Supprimer définitivement votre compte?\")'>
 					<i class='material-icons'>delete_forever</i>Supprimer mon profil
 				</a>
 			</p>
@@ -101,10 +100,6 @@ if(checkIfLoggedIn()) {
     include_once("php/include/footer.php");
 
     ?>
-    <div id="gallery-viewer"></div>
 </body>
-
-<!-- Image viewer script -->
-<script src="js/galleryViewer.js" type="text/javascript"></script>
 
 </html>

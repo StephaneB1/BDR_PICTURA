@@ -1,9 +1,9 @@
 <?php
 
 /**
- * ETML
- * Author: Robin Demarta
- * Date: 28.04.2017
+ * HEIG-VD
+ * Authors: Stéphane Bottin, Robin Demarta, Simon Mattei
+ * Date: 20.12.2019
  * Summary: Header of all pages
  */
 
@@ -15,13 +15,13 @@ include_once("php/include/func.php");
 <html>
 	<head>
 		<!--
-		ETML
-		Author: Robin Demarta
-		Date: 28.04.2017
+		HEIG-VD
+		Authors: Stéphane Bottin, Robin Demarta, Simon Mattei
+		Date: 20.12.2019
 		-->
 		
 		<meta charset="utf-8"/>
-		<meta name="author" content="Robin Demarta"/>
+		<meta name="author" content="HEIG-VD"/>
 		<link rel="icon" href="assets/favicon.png"/>
 
 		<!-- Material Icon Font -->
@@ -31,11 +31,3 @@ include_once("php/include/func.php");
 		<!-- Hosted libraries (Google) -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-		<!-- JS -->
-		<script src="js/func.js" type="text/javascript"></script>
-		
-<?php
-
-include_once("php/include/receiveError.php"); //Check for errors on display message if necessary
-	
-?>
