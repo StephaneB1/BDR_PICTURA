@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="../css/interface_community.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../css/picture.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" />
+
+    <title>Pictura : NomCommunauté</title>
+</head>
+
+<body id="body" onLoad="initHomeFeed();">
+
+    <div class="container">
+        <!-- COMMUNITY PANEL -->
+        <div class="leftpanel">
+            <img src="../imgs/pictura_logo.png" style="width:80%; margin-top:10px; margin-bottom: 10px;" />
+
+            <div class="community_cell_container_header">
+                <div class="community_cell_icon_header"></div> Nature
+                <a href="../index.html" class="community_exit_button_header"></a>
+            </div>
+
+            <div class="community_description">Lorem Ipsum community description whatever... Leaves and stuff...</div>
+
+            <div class="community_cell_container">
+                <div class="community_cell_icon"></div> 99.9k followers
+            </div>
+            <div class="community_cell_container">
+                <div class="community_cell_icon"></div> 99.9k pictures
+            </div>
+            <div class="community_cell_container">
+                <div class="community_cell_icon"></div> @admin1 <br> @admin2 <br> @moderator1 <br> @moderator2
+            </div>
+
+        </div>
+
+        <!-- PICTURE FEED -->
+        <div class="rightpanel">
+            <div class="homeFeed" id="homeFeed"></div>
+        </div>
+    </div>
+</body>
+
+<script src="../js/home.js"></script>
+
+</html>

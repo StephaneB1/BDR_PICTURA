@@ -1,0 +1,145 @@
+/* INSERT BDR HEADER HERE */
+body, html {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+* {
+    margin: 0;
+    font-family: Arial;
+}
+
+
+/* ========= SCROLLBAR ========= */
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    width: 5px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+
+/* =====  MAIN PANELS CONTAINER ===== */
+
+.container {
+    width: 100%;
+    height: 100%;
+}
+
+.leftpanel {
+    width: 250px;
+    height: 100%;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    background-color: rgba(50, 50, 50, 1);
+    border-collapse: collapse;
+}
+
+.leftpanel.nightmode {
+    background-color: rgba(50, 50, 50, 1);
+}
+
+.rightpanel {
+    width: auto;
+    height: 100%;
+    margin-left: 250px;
+    background-color: rgba(30, 30, 30, 1);
+    padding: 20px;
+    overflow-y: scroll;
+}
+
+.rightpanel.nightmode {
+    background-color: rgba(30, 30, 30, 1);
+}
+
+/* =====  COMMUNITY CELLS ===== */
+
+.community_cell_container_header {
+    display: flex;
+    height: 60px;
+    font-size: 20px;
+    color: white;
+    text-decoration: none;
+    align-items: center;
+    padding-left: 10px;
+}
+
+.community_cell_icon_header {
+    width: 30px;
+    height: 30px;
+    background-color: rgb(76, 255, 0);
+    border-radius: 30px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.community_exit_button_header {
+    width: 30px;
+    height: 30px;
+    background-color:red;
+    display: inline-block;
+    margin-right: 10px;
+    position: absolute;
+    right : 0px;
+}
+
+
+.community_cell_container {
+    display: flex;
+    height: 50px;
+    font-size: 15px;
+    color: white;
+    text-decoration: none;
+    align-items: top;
+    padding-left: 10px;
+    margin-top: 5px;
+    margin-bottom:5px;
+}
+
+.community_cell_icon {
+    width: 30px;
+    height: 30px;
+    background-color: rgb(76, 255, 0);
+    border-radius: 30px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.community_description {
+    width: 100%;
+    height: auto;
+    color: white;
+    font-size: 13px;
+    font-style: italic;
+    padding: 5px;
+    margin-bottom: 50px;
+}
+
+/* ===== FEEDS ===== */
+.homeFeed {
+	justify-items: center;
+	
+	display: 			   grid;
+	grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    grid-gap: 			   10px;
+
+    margin-bottom: 205px;	
+}
