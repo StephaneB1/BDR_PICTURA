@@ -4,277 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-	
-    <link rel="stylesheet" href="../css/interface.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="../css/profile.css"   type="text/css" media="screen" />
-    
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
 
-    <title>Profile | WebApp_Skeleton3</title>
+    <link rel="stylesheet" href="../css/interface_community.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../css/picture.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" />
+
+    <title>Pictura : NomProfile</title>
 </head>
 
-<style>
-    
-</style>
+<body id="body" onLoad="initHomeFeed();">
 
-<body>
-    <!-- NavBar (top) -->
-    <nav id="topNavBar" class="topNavBar">
-		<lhs>
-			<button class="navBarButton" onclick="toggleMenuBar(1)"><i class="fas fa-bars openSidebarButton"></i></button>
-			<a href="../index.html" id="logoContainer">
-				<i id="opLogoIcon" class="fas fa-circle"></i>Optime
-            </a>
-		</lhs>
-				
-		<button id="search" class="searchButton">S</button>
-  		<input type="text" placeholder="Search">
-		<button id="bookmark" class="searchButton">B</button>
+    <div class="container">
+        <!-- COMMUNITY PANEL -->
+        <div class="leftpanel">
+            <img src="../imgs/pictura_logo.png" style="width:80%; margin-top:10px; margin-bottom: 10px;" />
 
-		<rhs>
-			<button class="navBarButton"><i class="fas fa-circle"></i></button>
-			<button class="navBarButton"><i class="fas fa-circle"></i></button>
-			<button class="navBarButton" onclick="toggleUserBar(1)"><i class="fas fa-user-circle"></i></button>
-		</rhs>
-    </nav>
-	
-    <!-- Menu Bar (left) -->
-    <div id="menuBar" class="sideNavBar">
-		<header>
-			<button class="navBarButton" onclick="toggleMenuBar(0)"><i class="fas fa-bars openSidebarButton"></i></button>
-			<a href="../index.html" id="logoContainer">
-				<i id="opLogoIcon" class="fas fa-circle"></i>Optime <!-- BUG : Text squished on animation -->
-            </a>
-		</header>
-        <hr class="sidebarSeperator">
+            <div class="community_cell_container_header">
+                <div class="community_cell_icon_header"></div> Nature
+                <a href="../index.html" class="community_exit_button_header"></a>
+            </div>
 
-        <a href="../index.html" class="sidebarCell">
-            <i class="dockButtonIcon fas fa-circle"></i><div class="sectionText">Home</div>
-        </a>
-        <a href="trending.html" class="sidebarCell">
-            <i class="dockButtonIcon fas fa-circle"></i><div class="sectionText">Trending</div>
-        </a>
-        <hr class="sidebarSeperator">
+            <div class="community_description">Lorem Ipsum community description whatever... Leaves and stuff...</div>
 
-        <a href="editorspick.html" class="sidebarCell">
-            <i class="dockButtonIcon fas fa-circle"></i><div class="sectionText">Editor'sPick</div> <!-- BUG : Text squished on animation with space -->
-        </a>
-        <a href="news.html" class="sidebarCell">
-            <i class="dockButtonIcon fas fa-circle"></i><div class="sectionText">News</div>
-        </a>
-        <a href="courses_index.html" class="sidebarCell">
-            <i class="dockButtonIcon fas fa-circle"></i><div class="sectionText">Index</div>
-        </a>
-        <hr class="sidebarSeperator">
+            <div class="community_cell_container">
+                <div class="community_cell_icon"></div> 99.9k followers
+            </div>
+            <div class="community_cell_container">
+                <div class="community_cell_icon"></div> 99.9k pictures
+            </div>
+            <div class="community_cell_container">
+                <div class="community_cell_icon"></div> @admin1 <br> @admin2 <br> @moderator1 <br> @moderator2
+            </div>
 
-        <div class="sideBarSectionTitle">LIBRARY</div>
-        <a href="community.html" class="sidebarCell">
-            <i class="dockButtonIcon fas fa-circle"></i><div class="sectionText">Community</div>
-        </a>
-        <a href="sponsors.html" class="sidebarCell">
-            <i class="dockButtonIcon fas fa-circle"></i><div class="sectionText">Sponsors</div>
-        </a>
-        <hr class="sidebarSeperator">
+        </div>
 
-        <div class="sideBarSectionTitle">CUSTOM</div>
-        <a href="playlists.html" class="sidebarCell">
-            <i class="dockButtonIcon fas fa-circle"></i><div class="sectionText">Playlists</div>
-        </a>
+        <!-- PICTURE FEED -->
+        <div class="rightpanel">
+            <div class="homeFeed" id="homeFeed"></div>
+        </div>
     </div>
-	<div id="menuBarFogScreen" class="fogScreen" onclick="toggleMenuBar(0)"></div>
-	
-	<!-- User Bar (right) -->
-    <div id="userBar" class="sideNavBar">
-		<userSection>
-			<button class="navBarButton" style="grid-area: profilePicture;" onclick="toggleUserBar(1)"><i class="fas fa-user-circle"></i></button>
-			<div class="userBarUsername">Username</div>
-			<div class="userBarMail">mail@mail.com</div>
-			<button class="userBarExit" onclick="toggleUserBar(0)">></button>
-		</userSection>
-        <hr class="sidebarSeperator">
-
-        <a href="profile.html" class="sidebarCell">
-            <i class="dockButtonIcon fas fa-circle"></i><div class="sectionText">My Account</div>
-        </a>
-        <a href="trending.html" class="sidebarCell">
-            <i class="dockButtonIcon fas fa-circle"></i><div class="sectionText">My Data</div>
-        </a>
-        <a href="#" class="sidebarCell">
-            <i class="dockButtonIcon fas fa-circle"></i><div class="sectionText">Account Settings</div>
-        </a>
-        <a href="#" class="sidebarCell">
-            <i class="dockButtonIcon fas fa-circle"></i><div class="sectionText">Log Out</div>
-        </a>
-
-        <div class="sideBarSectionTitle">Optime Settings</div>
-        <a href="#" class="sidebarCell">
-            <i class="dockButtonIcon fas fa-circle"></i><div class="sectionText">Night Mode</div>
-        </a>
-	    <a href="#" class="sidebarCell">
-            <i class="dockButtonIcon fas fa-circle"></i><div class="sectionText">Languages</div>
-        </a>
-	    <a href="#" class="sidebarCell">
-            <i class="dockButtonIcon fas fa-circle"></i><div class="sectionText">Privacy Policy</div>
-        </a>
-	    <a href="#" class="sidebarCell">
-            <i class="dockButtonIcon fas fa-circle"></i><div class="sectionText">Advanced Settings</div>
-        </a>
-	    <a href="#" class="sidebarCell">
-            <i class="dockButtonIcon fas fa-circle"></i><div class="sectionText">Need Help ?</div>
-        </a>
-		<div class="sideBarSectionTitle">Social</div>
-        	<a href="#" class="sidebarCell">
-            <i class="dockButtonIcon fas fa-circle"></i><div class="sectionText">Sponsors</div>
-        </a>
-	    <a href="#" class="sidebarCell">
-            <i class="dockButtonIcon fas fa-circle"></i><div class="sectionText">Credits</div>
-        </a>
-    </div>
-	<div id="userBarFogScreen" class="fogScreen" onclick="toggleUserBar(0)"></div>
-
-    <!-- Profile Main Content -->
-    <main>
-
-        <div class="profileHeader">
-			<div class="profileHeaderInfo">
-				<div class="profilePicture"></div>
-				
-				<div class="usernameLabel">
-					<div class="profileGradeIcon"></div>
-					<div class="username">Username</div>	
-				</div>
-						
-				<div class="trophiesLabel">
-					<div class="trophiesNumber">9999</div>
-					<div class="trophiesIcon"></div>
-				</div>
-				
-				<div class="progressBackground">
-					<div class="progress"></div>
-					<div class="progressNumbers">150 / 1250</div><div class="progressGrade">LT. GRADE 1</div> 
-				</div>			
-			</div>
-			
-			<div class="profileTabs">
-				<button class="profileTabButton" onclick="openProfileTab('overview')">	   Overview	    </button>
-				<button class="profileTabButton" onclick="openProfileTab('skills')">	       Skills		</button>
-				<button class="profileTabButton" onclick="openProfileTab('achievements')"> Achievements </button>
-				<button class="profileTabButton">...</button>
-				<button class="profileTabButton">...</button>
-			</div>
-			
-		</div>
-		
-		<div id="overview" class="profileTab">
-			<div class="tabSubtitle">Bio</div>
-			<h1>Hello there, Harvard.</h1>
-			<hr class="separator"></hr>	
-			
-			<div style="display: flex;">
-				<div style="width: 50%;">
-					<div class="tabSubtitle">Followers</div>
-					<h1>2</h1>			
-				</div>
-				
-				<div style="width: 50%;">
-					<div class="tabSubtitle">Reputation</div>
-					<h1>113</h1>			
-				</div>
-			</div>
-			<hr class="separator"></hr>	
-			
-			<div style="display: flex;">
-				<div style="width: 50%;">
-					<div class="tabSubtitle">Your Day</div>
-					<h1>August 28, 2018</h1>			
-				</div>
-				
-				<div style="width: 50%;">
-					<div class="tabSubtitle">Team</div>
-					<h1>Blue	</h1>		
-				</div>
-			</div>
-			<hr class="separator"></hr>	
-			
-			<div style="display: flex;">
-				<div style="width: 50%;">
-					<div class="tabSubtitle">Achievements</div>
-					<h1>55</h1>			
-				</div>
-				
-				<div style="width: 50%;">
-					<div class="tabSubtitle">Highest Trophies</div>
-					<h1>1626	</h1>		
-				</div>
-			</div>
-			<hr class="separator"></hr>		
-			
-			<div class="tabSubtitle">Links</div>		
-			...
-			
-		</div>
-		
-		<div id="skills" class="profileTab" style="display: none">
-			This is the skills.	
-		</div>
-		
-		<div id="achievements" class="profileTab" style="display: none">
-			This is the achievements.	
-		</div>
-			
-    </main>
-
-    <!-- MARK: Setup Dock -->
-    <div class="dock">
-        <div class="dockButtonContainer">
-            <button class="dockButton">
-                <a href="../index.html">
-                    <i class="dockButtonIcon fas fa-circle"></i>
-                    <div class="dockButtonText">Home</div>
-                </a>
-            </button>
-        </div>
-
-        <div class="dockButtonContainer">
-            <button class="dockButton">
-                <a href="../html/trending.html">
-                    <i class="dockButtonIcon fas fa-circle"></i>
-                    <div class="dockButtonText">Trending</div>
-                </a>
-            </button>
-        </div>
-
-        <div class="dockButtonContainer">
-            <button class="dockButton">
-                <a href="../html/add.html">
-                    <i class="dockButtonIcon fas fa-circle"></i>
-                    <div class="dockButtonText">Add</div>
-                </a>
-            </button>
-        </div>
-
-        <div class="dockButtonContainer">
-            <button class="dockButton">
-                <a href="../html/playlists.html">
-                    <i class="dockButtonIcon fas fa-circle"></i>
-                    <div class="dockButtonText">Playlists</div>
-                </a>
-            </button>
-        </div>
-
-        <div class="dockButtonContainer">
-            <button class="dockButton">
-                <a class="current" href="">
-                    <i class="current fas fa-user-circle"></i>
-                    <div class="current dockButtonText">Profile</div>
-                </a>
-            </button>
-        </div>
-        
-    </div>
-
-    <script src="../js/profile.js"></script>
-    <script src="../js/interface.js"></script>
-	
 </body>
+
+<script src="../js/home.js"></script>
+
 </html>
