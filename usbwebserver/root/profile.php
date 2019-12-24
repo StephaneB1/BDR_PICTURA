@@ -21,23 +21,21 @@ include_once("php/include/dbConnect.php");
 $db = new db;
 
 $isCurrentUser = false;
+$isLoggedIn = checkIfLoggedIn();
 
-if (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"]) { // If no user id param => display own profile
-    //Display current user's profile
-
-    if(checkIfLoggedIn()) {
+if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
+        //Display current user's profile
         $isCurrentUser = true;
         $user = $db->getUserByPseudo($_SESSION["pseudo"])[0];
-    } else {
-        redirect(null);
-    }
-} else {
+} else if(!empty($_GET["n"])) {
     //Display other user's profile
     $user = $db->getUserByPseudo($_GET["n"])[0];
     if (empty($user)) {
         //Error: invalid user ID
         redirect(null);
     }
+} else {
+    redirect(null);
 }
 
 ?>
