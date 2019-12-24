@@ -15,19 +15,19 @@
 /* Track */
 ::-webkit-scrollbar-track {
     width: 5px;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(50, 50, 50, 0.5);
     border-radius: 10px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(200, 200, 200, 0.5);
     border-radius: 10px;
 }
 
 /* Handle on hover */
     ::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.5);
+        background: rgba(200, 200, 200, 0.5);
     }
 
 
@@ -37,6 +37,11 @@
     width: 100%;
     height: 100%;
     position: fixed;
+    color: black;
+}
+
+.container.nightmode {
+    color: white;
 }
 
 .leftpanel {
@@ -45,7 +50,7 @@
     position: fixed;
     left: 0px;
     top: 0px;
-    background-color: rgba(50, 50, 50, 1);
+    background-color: rgba(250, 250, 250, 1);
     border-collapse: collapse;
 }
 
@@ -58,7 +63,7 @@
     height: 100%;
     margin-left: 250px;
     margin-right: 250px;
-    background-color: rgba(30, 30, 30, 1);
+    background-color: rgba(200, 200, 200, 1);
     padding: 20px;
     overflow-y: scroll;
 }
@@ -74,7 +79,7 @@
     float: right;
     right: 0px;
     top: 0px;
-    background-color: rgba(50, 50, 50, 1);
+    background-color: rgba(250, 250, 250, 1);
     border-collapse: collapse;
 }
 
@@ -85,7 +90,6 @@
 /* =====  PANELS INTERFACE ===== */
 
 .title_container {
-    color: white;
     font-size: 20px;
     text-align: right;
     margin-right: 20px;
@@ -94,6 +98,10 @@
 .title_line {
     height: 1px;
     width: 100%;
+    background-color: black;
+}
+
+.title_line.nightmode {
     background-color: white;
 }
 
@@ -103,7 +111,7 @@
     display: flex;
     height: 50px;
     font-size: 15px;
-    color: white;
+    /*color: white;*/
     text-decoration: none;
     align-items: center;
     padding-left: 10px;
@@ -113,6 +121,10 @@
 }
 
 .community_cell_container:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.community_cell_container:hover.nightmode {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
@@ -123,6 +135,31 @@
     border-radius: 30px;
     display: inline-block;
     margin-right: 10px;
+}
+
+/* =====  OPTIONS  ===== */
+
+.option_buttons_container {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.option_button {
+    width: 40px;
+    height: 40px;
+    background-color: rgb(76, 255, 0);
+    border-radius: 40px;
+}
+
+#nightmodeButton {
+    width: 150px;
+    height: 150px;
+    background:url("/imgs/nightmode_icon.png");
+    background-repeat: no-repeat;
+    border: none;
 }
 
 /* ===== FEEDS ===== */

@@ -14,13 +14,13 @@
 
 <body id="body" onLoad="initHomeFeed();">
 
-    <div class="container">
+    <div class="container" id="main_container">
         <!-- COMMUNITY PANEL -->
-        <div class="leftpanel">
+        <div class="leftpanel" id="community_panel">
             <img src="imgs/pictura_logo.png" style="width:80%; margin-top:10px; margin-bottom: 20px;" />
             <div class="title_container">
                 Communities
-                <div class="title_line"></div>
+                <div class="title_line" id="community_title_line"></div>
             </div>
 
             <a href="html/community.html" class="community_cell_container">
@@ -37,26 +37,23 @@
 
         </div>
         <!-- PICTURE FEED -->
-        <div class="middlepanel">
+        <div class="middlepanel" id="feed_panel">
             <div class="homeFeed" id="homeFeed"></div>
         </div>
         
         <!-- PROFILE PANEL -->
-        <div class="rightpanel"></div>
+        <div class="rightpanel" id="user_panel">
+            <div class="option_buttons_container">
+                <button type="image" class="option_button" id="nightmodeButton" onClick="switchNightMode()">N</button>
+                <button class="option_button" onClick=""></button>
+                <button class="option_button" onClick=""></button>
+                <button class="option_button" onClick=""></button>                
+            </div>
+        </div>
     </div>
-
-    <!-- FIREBASE SETUP -->
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="/__/firebase/7.6.1/firebase-app.js"></script>
-
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-        https://firebase.google.com/docs/web/setup#available-libraries -->
-
-    <!-- Initialize Firebase -->
-    <script src="/__/firebase/init.js"></script>
-
 </body>
 
 <script src="js/home.js"></script>
+<script src="js/interface.js"></script>
 
 </html>
