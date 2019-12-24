@@ -6,7 +6,7 @@ return [
 	"port" => 3307,
 	"database" => "PICTURA",
 	"user" => "Eve",
-	"password" => "4dm1n.3v3_M4n"
+	"password" => "Adam"
 ];
 
 ?>

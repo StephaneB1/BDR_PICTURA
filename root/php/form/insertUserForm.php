@@ -54,7 +54,7 @@ if($formCorrect == true) {
         previousPage(); // Go back to form page (keep form values)
 
     $_SESSION["pseudo"] = $pseudo; // Create session variables
-	header("Location: ../../index.php");
+	redirect(null);
 } else { // Error: some form fields are empty
 	//$_SESSION["e"] = 1; // Store error code
     previousPage(); // Go back to form page (keep form values)

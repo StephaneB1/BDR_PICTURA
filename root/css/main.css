@@ -1,9 +1,9 @@
-/*
-* ETML
-* Author: Robin Demarta
-* Date:
-* Description: CSS stylesheet that contains the main visuel properties
-*/
+/**
+ * HEIG-VD
+ * Authors: Stéphane Bottin, Robin Demarta, Simon Mattei
+ * Date: 20.12.2019
+ * Description: CSS stylesheet that contains the main visual properties
+ */
 
 
 /*************************/
@@ -29,10 +29,6 @@
 	/*user-select: none;
 	-moz-user-select: none;
 	-webkit-user-select: none;*/
-}
-
-.etml {
-    font-family: "ETML";
 }
 
 /*****************************/
@@ -517,6 +513,7 @@ input[type="text"],
 input[type="email"],
 input[type="password"],
 input[type="number"],
+input[type="file"],
 textarea,
 select,
 .datepicker {
@@ -534,6 +531,7 @@ input[type="text"],
 input[type="email"],
 input[type="password"],
 input[type="number"],
+input[type="file"],
 textarea {
 	width: 350px;
 }

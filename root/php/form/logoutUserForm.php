@@ -1,9 +1,9 @@
 <?php
 
 /**
- * ETML
- * Author : Robin Demarta
- * Date : 01.05.2017
+ * HEIG-VD
+ * Authors: Stéphane Bottin, Robin Demarta, Simon Mattei
+ * Date: 20.12.2019
  * Summary : End session and delete sessions variables
  */
 

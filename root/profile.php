@@ -10,7 +10,7 @@
 include_once("php/include/header.php");
 
 ?>
-    <title>PITCURA - Profil</title>
+<title>PITCURA - Profil</title>
 </head>
 <body>
 <?php
@@ -20,62 +20,62 @@ include_once("php/include/dbConnect.php");
 
 $db = new db;
 
-//User must be logged in to acces this page
-if(checkIfLoggedIn()) {
-	$isCurrentUser = false;
-	
-	if(empty($_GET["id"]) || $_GET["id"] == $_SESSION["pseudo"]) { // If no user id param => display own profile
-		//Display current user's profile
-		$isCurrentUser = true;
-		$user = $db->getUserByPseudo($_SESSION["pseudo"]);
-	} else {
-		//Display other user's profile	
-		$user = $db->getUserByPseudo($_GET["id"]);
-		if(empty($user)) {
-			//Error: invalid user ID
-			redirect(null);
-		}
-	}
-} else { //Error: user not logged in
-	redirect("connexion.php");
+$isCurrentUser = false;
+
+if (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"]) { // If no user id param => display own profile
+    //Display current user's profile
+
+    if(checkIfLoggedIn()) {
+        $isCurrentUser = true;
+        $user = $db->getUserByPseudo($_SESSION["pseudo"])[0];
+    } else {
+        redirect(null);
+    }
+} else {
+    //Display other user's profile
+    $user = $db->getUserByPseudo($_GET["n"])[0];
+    if (empty($user)) {
+        //Error: invalid user ID
+        redirect(null);
+    }
 }
 
 ?>
 
 <div id="wrapper-content">
     <!-- First -->
-	<div class="col-1-2 unique">
+    <div class="col-1-2 unique">
         <?php
 
         // Title
 
-		if($isCurrentUser) {
-			echo "<h1>Mon profil</h1>";
-		} else {
-			echo "<h1>Profil de ".htmlentities($user[0]['pseudo'])."</h1>";
-		}
+        if ($isCurrentUser) {
+            echo "<h1>Mon profil</h1>";
+        } else {
+            echo "<h1>Profil de " . htmlentities($user['pseudo']) . "</h1>";
+        }
 
-		// Infos
+        // Infos
 
-        if(!empty($user[0]["nom"])) {
+        if (!empty($user["nom"])) {
             echo "
             <p>
-                <span class='bold'>Nom: </span>".htmlentities($user[0]["nom"])."
+                <span class='bold'>Nom: </span>" . htmlentities($user["nom"]) . "
             </p>";
         }
 
-        if(!empty($user[0]["prenom"])) {
+        if (!empty($user["prenom"])) {
             echo "
             <p>
-                <span class='bold'>Prénom: </span>".htmlentities($user[0]["prenom"])."
+                <span class='bold'>Prénom: </span>" . htmlentities($user["prenom"]) . "
             </p>";
         }
-		
-		//Display email address only if it's the current user's profile
-		if($isCurrentUser) {
-			echo "
+
+        //Display email address only if it's the current user's profile
+        if ($isCurrentUser) {
+            echo "
 			<p>
-				<span class='bold'>Email: </span>".htmlentities($user[0]["email"])."
+				<span class='bold'>Email: </span>" . htmlentities($user["email"]) . "
 			</p>
 			<p>
 				<a href='editUser.php'>
@@ -88,18 +88,18 @@ if(checkIfLoggedIn()) {
 				</a>
 			</p>
 			";
-		}
-		
-		?>
-		
-		
-	</div>
+        }
+
+        ?>
+
+
+    </div>
 </div> <!-- End wrapper-content -->
-    <?php
+<?php
 
-    include_once("php/include/footer.php");
+include_once("php/include/footer.php");
 
-    ?>
+?>
 </body>
 
 </html>
