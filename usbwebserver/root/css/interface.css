@@ -1,0 +1,176 @@
+/* INSERT BDR HEADER HERE */
+
+* {
+    margin: 0;
+    font-family: Arial;
+}
+
+
+/* ========= SCROLLBAR ========= */
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    width: 5px;
+    background: rgba(50, 50, 50, 0.5);
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(200, 200, 200, 0.5);
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(200, 200, 200, 0.5);
+    }
+
+
+/* =====  MAIN PANELS CONTAINER ===== */
+
+.container {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    color: black;
+}
+
+.container.nightmode {
+    color: white;
+}
+
+.leftpanel {
+    width: 250px;
+    height: 100%;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    background-color: rgba(250, 250, 250, 1);
+    border-collapse: collapse;
+}
+
+.leftpanel.nightmode {
+    background-color: rgba(50, 50, 50, 1);
+}
+
+.middlepanel {
+    width: auto;
+    height: 100%;
+    margin-left: 250px;
+    margin-right: 250px;
+    background-color: rgba(200, 200, 200, 1);
+    padding: 20px;
+    overflow-y: scroll;
+}
+
+.middlepanel.nightmode {
+    background-color: rgba(30, 30, 30, 1);
+}
+
+.rightpanel {
+    width: 250px;
+    height: 100%;
+    position: fixed;
+    float: right;
+    right: 0px;
+    top: 0px;
+    background-color: rgba(250, 250, 250, 1);
+    border-collapse: collapse;
+}
+
+.rightpanel.nightmode {
+    background-color: rgba(50, 50, 50, 1);
+}
+
+/* =====  PANELS INTERFACE ===== */
+
+.title_container {
+    font-size: 20px;
+    text-align: right;
+    margin-right: 20px;
+}
+
+.title_line {
+    height: 1px;
+    width: 100%;
+    background-color: black;
+}
+
+.title_line.nightmode {
+    background-color: white;
+}
+
+/* =====  COMMUNITY CELLS ===== */
+
+.community_cell_container {
+    display: flex;
+    height: 50px;
+    font-size: 15px;
+    /*color: white;*/
+    text-decoration: none;
+    align-items: center;
+    padding-left: 10px;
+    margin-top: 5px;
+    margin-bottom:5px;
+    cursor: pointer;
+}
+
+.community_cell_container:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.community_cell_container:hover.nightmode {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.community_cell_icon {
+    width: 30px;
+    height: 30px;
+    background-color: rgb(76, 255, 0);
+    border-radius: 30px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+/* =====  OPTIONS  ===== */
+
+.option_buttons_container {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.option_button {
+    width: 40px;
+    height: 40px;
+    background-color: rgb(76, 255, 0);
+    border-radius: 40px;
+}
+
+#nightmodeButton {
+    width: 40px;
+    height: 40px;
+    background:url("/imgs/nightmode_icon.png");
+    background-repeat: no-repeat;
+    border: none;
+	display: block;
+	background-size: cover;
+}
+
+/* ===== FEEDS ===== */
+.homeFeed {
+	justify-items: center;
+	
+	display: 			   grid;
+	grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    grid-gap: 			   10px;
+
+    margin-bottom: 205px;	
+}

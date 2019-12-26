@@ -1,0 +1,113 @@
+/* INSERT BDR HEADER HERE */
+body, html {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  background-color: rgba(40,40,40,1);
+}
+
+* {
+    margin: 0;
+    font-family: Arial;
+}
+
+
+/* =====  MAIN PANELS CONTAINER ===== */
+
+.pictureHeader {
+    width: 100%;
+    height: 200px;
+    display: inline-block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.pictureHeaderRight {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 10px;
+    margin-right: 50px;
+	display: inline-grid;  
+	grid-template-areas:
+    'title    options'
+    'subtitle options';
+}
+
+.pictureFullHeaderTitle {
+	grid-area: title; 
+	color: 		 rgba(255, 255, 255, 1);
+	font-size:   28px;
+	text-align:  left;
+}
+
+.pictureFullHeaderSubtitle { 
+	grid-area: subtitle;
+	color: 		 rgba(255, 255, 255, 0.7);
+	font-family: Arial;
+	font-size:   14px;
+	font-style: italic;
+}
+
+
+.pictureFullShadowTop {
+	width: 100%;
+	height: 150px;
+	background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%);
+	position: absolute;
+	left: 0px;
+	top: 0px;
+}
+
+.pictureFullShadowBottom {
+	width: 100%;
+	height: 100px;
+	background: linear-gradient(0deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%);
+	position: absolute;
+	left: 0px;
+	bottom: 0px;
+}
+
+/* =====  COMMUNITY CELLS ===== */
+
+.community_cell_container {
+    display: flex;
+    height: 65px;
+    width: auto;
+    font-size: 20px;
+    color: white;
+    text-decoration: none;
+    align-items: center;
+    padding-left: 10px;
+    margin-top: 5px;
+    margin-bottom:5px;
+}
+
+.community_cell_icon {
+    width: 40px;
+    height: 40px;
+    background-color: rgb(76, 255, 0);
+    border-radius: 30px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.picturePreviewOptionsButton {
+    grid-area: options;
+
+    background-color: rgba(255, 255, 255, 0.5);
+	height: 		  35px;
+    width: 			  15px;
+    border-radius: 	  10px;		
+    border: 		  none;
+	
+	position: relative;
+	top: 	  10px;	
+	right: 	  -20px;	
+	cursor: pointer;
+}
+
+.picturePreviewOptionsButton:hover {
+	background-color: rgba(255, 255, 255, 1);
+}
