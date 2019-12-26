@@ -10,7 +10,7 @@ var fadingTime = 100;
 //Display viewer on item click
 $(".viewer-item").click(function(data) {
 	//The bellow "if" statement prevents click event from happening when clicking the child elements
-	if (data.target == this) {
+	if (data.target === this) {
 		if ($(this).is(".video")) { //If it's a video -> get video source
 			//Remove eventual background image
 			$("#gallery-viewer").css("background-image", "")
@@ -25,7 +25,7 @@ $(".viewer-item").click(function(data) {
 
 //Prevent viewer from disapearing when clicking on video
 $("#gallery-viewer" ).click(function(data) {
-	if (data.target == this) {
+	if (data.target === this) {
 		$(this).html("").fadeOut(fadingTime);
 	}
 });
