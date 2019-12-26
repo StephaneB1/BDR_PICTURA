@@ -27,7 +27,7 @@ include_once("php/include/func.php");
 		<!-- Material Icon Font -->
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<!-- CSS -->
-		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<!--<link rel="stylesheet" type="text/css" href="css/main.css"/>-->
 		<!-- Hosted libraries (Google) -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>

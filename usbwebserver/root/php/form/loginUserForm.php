@@ -44,17 +44,17 @@ if($formCorrect == true) {
             redirect(null);
         } else { //Error: Incorrect password
 			//$_SESSION["e"] = 1; //Store error code
-            redirect("connexion.php");
+            redirect("index.php");
         }
 
     } else { //Error: User doesn't exists
 		//$_SESSION["e"] = 1; //Store error code
-        redirect("connexion.php");
+        redirect("index.php");
     }
 
 } else { //Error: Some form fields are empty
     //$_SESSION["e"] = 1; //Store error code
-    redirect("connexion.php");
+    redirect("index.php");
 }
 
 ?>

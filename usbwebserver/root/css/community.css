@@ -104,6 +104,8 @@ body, html {
 .community_cell_container {
     display: flex;
     height: 50px;
+	line-height: 50px;
+	background-color: rgba(0, 0, 255, 0.5);
     font-size: 15px;
     color: white;
     text-decoration: none;
@@ -116,7 +118,7 @@ body, html {
 .community_cell_icon {
     width: 30px;
     height: 30px;
-    background-color: rgb(76, 255, 0);
+    background-color: rgb(76, 0, 200);
     border-radius: 30px;
     display: inline-block;
     margin-right: 10px;

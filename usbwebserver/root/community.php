@@ -101,9 +101,9 @@ include_once("php/include/menu-h.php");
 
 <?php
 
-include_once("php/include/footer.php");
+//include_once("php/include/footer.php");
 
-createPopup("insertPhotoPopup", "
+/*createPopup("insertPhotoPopup", "
     <h1>Ajouter une photo</h1>
         <form id='insertPhotoForm' name='loginUserForm' action='php/form/insertPhotoForm.php' method='post' enctype='multipart/form-data'>
             <!-- Picture -->
@@ -141,10 +141,11 @@ createPopup("insertPhotoPopup", "
             <p class='note'>*Obligatoires</p>
             <p><input type='submit' value='Ajouter'/></p>
         </form>");
-
+*/
 ?>
 
-<div id="gallery-viewer"></div>
+
+<!--<div id="gallery-viewer"></div>
 
 </body>-->
 

@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 /**
  * HEIG-VD
@@ -13,6 +13,21 @@ include_once("php/include/dbConnect.php");
 $db = new db;
 
 $isLoggedIn = checkIfLoggedIn();
+
+if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
+        //Display current user's profile
+        $isCurrentUser = true;
+        $user = $db->getUserByPseudo($_SESSION["pseudo"])[0];
+} else if(!empty($_GET["n"])) {
+    //Display other user's profile
+    $user = $db->getUserByPseudo($_GET["n"])[0];
+    if (empty($user)) {
+        //Error: invalid user ID
+        //redirect(null);
+    }
+} else {
+    //redirect(null);
+}
 
 ?>
 <title>PICTURA</title>
@@ -29,8 +44,8 @@ $isLoggedIn = checkIfLoggedIn();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link rel="stylesheet" href="css/interface.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="css/picture.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/css/interface.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/css/picture.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" />
 
     <title>Pictura</title>
@@ -39,10 +54,11 @@ $isLoggedIn = checkIfLoggedIn();
 <body id="body" onLoad="initHomeFeed();">
 
     <div class="container" id="main_container">
+	
         <!-- COMMUNITY PANEL -->
         <div class="leftpanel" id="community_panel">
             <img src="imgs/pictura_logo.png" style="width:80%; margin-top:10px; margin-bottom: 20px;" />
-            <div class="title_container">
+            <div class="title_container" id="community_title_container">
                 Communities
                 <div class="title_line" id="community_title_line"></div>
             </div>
@@ -59,6 +75,7 @@ $isLoggedIn = checkIfLoggedIn();
 			?>
 
         </div>
+		
         <!-- PICTURE FEED -->
         <div class="middlepanel" id="feed_panel">
             <div class="homeFeed" id="homeFeed"></div>
@@ -72,6 +89,53 @@ $isLoggedIn = checkIfLoggedIn();
                 <button class="option_button" onClick=""></button>
                 <button class="option_button" onClick=""></button>                
             </div>
+			
+			<div class="title_container" id="profile_title_container">
+                My Profile
+                <div class="title_line" id="profile_title_line"></div>
+            </div>
+			
+			<?php
+
+	        if ($isLoggedIn) {
+	            echo '
+					<div class="login_welcome">Welcome back <font color="#00a6ff">' . htmlentities($user["pseudo"]) . '</font>!</div>
+					<button>Edit my profile</button>
+					<button>Add community</button>
+					
+					<div class="title_container" id="profile_title_container">
+                		My Communities
+                	<div class="title_line" id="profile_title_line"></div>
+					//todo
+            </div>
+					';
+	        } else {
+				echo '
+				<!-- Login form -->		
+        		<form id="loginUserForm" name="loginUserForm" action="php/form/loginUserForm.php" method="post">
+	        	<!-- pseudo -->
+	            <p>
+					<label for="pseudo">
+						<i class="material-icons">account_circle</i>
+					</label>
+					<input type="text" id="pseudo" name="pseudo" placeholder="Nom dutilisateur" required autofocus/>
+				</p>
+	        	<!-- Password -->
+	            <p>
+					<label for="password">
+						<i class="material-icons">lock</i>
+					</label>
+					<input type="password" id="password" name="password" placeholder="Mot de passe" required/>
+				</p>
+	
+	            <input type="submit" value="Se connecter"/>
+				
+	        	</form>
+				<a href="connexion.php">register</a>	';
+			}
+
+       		?>
+			
         </div>
     </div>
 </body>
@@ -161,3 +225,17 @@ include_once("php/include/footer.php");
 ?>
 </body>
 </html>
+
+
+
+
+		
+					<!--<div class='input_container'>
+						<input type='text' placeholder='Username'></input>
+						<input type='password' placeholder='Password'></input>
+					</div>
+
+					<div class='login_container'>
+						<button>login</button>
+						<button>register</button>
+					</div>-->

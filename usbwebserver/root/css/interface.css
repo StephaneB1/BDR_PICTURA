@@ -91,8 +91,16 @@
 
 .title_container {
     font-size: 20px;
-    text-align: right;
+}
+
+#community_title_container {
+	text-align: right;
     margin-right: 20px;
+}
+
+#profile_title_container {
+	text-align: left;
+	margin-left: 20px;
 }
 
 .title_line {
@@ -162,6 +170,30 @@
     border: none;
 	display: block;
 	background-size: cover;
+}
+
+/* ===== PROFILE  ===== */
+
+.login_welcome {
+	width: 100%;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	text-align: center;
+	font-style: italic;
+	color: rgba(170, 170, 170, 1);
+}
+
+.input_container {
+	width:100%;
+	display: block;
+	margin: 20px;
+}
+
+.login_container {
+	width: 100%;
+	display: flex;
+	justify-content: space-evenly;
+	margin-top: 10px;
 }
 
 /* ===== FEEDS ===== */
