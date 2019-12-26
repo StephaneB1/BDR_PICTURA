@@ -92,7 +92,20 @@ function redirect($page)
     die();
 }
 
-/**
+/*
+ * Displays a popup with given HTML content in it
+ */
+function createPopup($id, $code)
+{
+    echo "
+<div id='" . $id . "' class='popup-bg'>
+    <div class='popup center-x'>
+    <p style='padding: 5px;'><i class='material-icons clickable' style='float: right;' onclick=\"displayId(null, '" . $id . "')\">close</i></p>
+            " . $code . "</div>
+</div>";
+}
+
+/*
  * Go back to previous page within script tag (useful get back form values after sending)
  */
 function previousPage()
@@ -126,7 +139,7 @@ function uploadFile($acceptedExtensions, $fileUploadName, $fileUploadTempName, $
             $cleanedTempName = strtolower(cleanifyString(pathinfo($fileUploadName, PATHINFO_FILENAME)));
             //New name: original filename with 10 chars max + "_" + unique string
             $newName = substr($cleanedTempName, 0, 10) . "_" . uniqid() . "." . $extension;
-            $targetPath = $_SERVER['DOCUMENT_ROOT']. "/" . FILES_FOLDER . "/" . $newName; //Location where the file will be uploaded
+            $targetPath = $_SERVER['DOCUMENT_ROOT'] . "/" . FILES_FOLDER . "/" . $newName; //Location where the file will be uploaded
 
             //Move file to folder
             if (move_uploaded_file($fileUploadTempName, $targetPath)) {

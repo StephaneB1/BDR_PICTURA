@@ -12,6 +12,8 @@ include_once("php/include/dbConnect.php");
 
 $db = new db;
 
+$isLoggedIn = checkIfLoggedIn();
+
 ?>
 <title>PICTURA</title>
 
@@ -80,9 +82,16 @@ $db = new db;
 <!--<div id="wrapper-content">
     <div class="col-1-4">
         <h2>Communautés</h2>
-        <p>
-            <a href="insertCommunity.php">+ Créer</a>
-        </p>
+        <?php
+
+        if ($isLoggedIn) {
+            echo "<p>
+            <a onclick=\"displayId('insertCommunityPopup', null)\">+ Créer</a>
+        </p>";
+        }
+
+        ?>
+
         <?php
         $communities = $db->getAllCommunities();
 
@@ -114,7 +123,40 @@ $db = new db;
 </div>--> <!-- End wrapper-content -->
 <?php
 
-//include_once("php/include/footer.php");
+if ($isLoggedIn) {
+    createPopup("insertCommunityPopup", "
+    <h1>Créer nouvelle communauté</h1>
+        <form id='insertCommunityForm' name='insertCommunityForm' action='php/form/insertCommunityForm.php' method='post' enctype='multipart/form-data'>
+            <p>Merci de saisir les informations concernants votre nouvelle communauté:</p>
+            <!-- Name -->
+            <p>
+                <label for='name'>
+                    <i class='material-icons'>label</i>
+                </label>
+                <input type='text' id='name' name='name' placeholder='Nom de la communauté*' pattern='[a-zA-Z0-9]{1,20}' required autofocus/>
+            </p>
+
+            <!-- Detail -->
+            <p>
+                <label for='detail'>
+                    <i class='material-icons'>notes</i>
+                </label>
+                <textarea id='name' name='detail' placeholder='Description*' required></textarea>
+            </p>
+            
+            <!-- Profile picture -->
+            <p>
+                <label>
+                    <i class='material-icons'>photo</i>
+                </label>
+                <input name='files' type='file' placeholder='Photo de profil' accept='" . join(',', prefixStringArray(IMAGE_FORMATS, ".")) . "'/>
+            </p>
+
+            <p class='note'>*Obligatoires</p>
+            <p><input type='submit' value='Créer'/></p>
+        </form>");
+}
+include_once("php/include/footer.php");
 
 ?>
 </body>
