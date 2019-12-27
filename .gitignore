@@ -63,3 +63,17 @@ node_modules/
 
 # dotenv environment variables file
 .env
+
+usbwebserver/apache2/
+
+usbwebserver/lang/
+
+usbwebserver/mysql/
+
+usbwebserver/php/
+
+usbwebserver/settings/
+
+usbwebserver/phpmyadmin/
+
+usbwebserver/usbwebserver.exe
