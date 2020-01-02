@@ -164,6 +164,81 @@ class db
         return $query->execute();
     }
 
+    public function getUserCommunities($username) {
+        $query = $this->connexion->prepare("
+            SELECT * FROM Communaute
+                INNER JOIN utilisateur_suit_communaute
+                    ON Communaute.nom = utilisateur_suit_communaute.nomCommunaute
+            WHERE pseudoUtilisateur = '$username'
+        ");
+
+        if($query->execute())
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        return false; // Query error
+    }
+
+    public function followCommunity($username, $community) {
+        $query = $this->connexion->prepare("
+            INSERT INTO utilisateur_suit_communaute (pseudoUtilisateur, nomCommunaute)
+            VALUES ('$username', '$community');
+        ");
+
+        return $query->execute();
+    }
+
+    public function getUserFeedPictures($username) {
+        $query = $this->connexion->prepare("
+            SELECT * FROM photo
+            WHERE nomCommunaute = ANY(SELECT nomCommunaute FROM utilisateur_suit_communaute WHERE pseudoUtilisateur = '$username');
+        ");
+
+        if($query->execute())
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        return false; // Query error
+    }
+
+    public function getCommunityFeedPictures($community_name) {
+        $query = $this->connexion->prepare("
+            SELECT * FROM photo
+            WHERE nomCommunaute = '$community_name';
+        ");
+
+        if($query->execute())
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        return false; // Query error
+    }
+
+    public function getCommunityTotalMembers($community_name) {
+        $query = $this->connexion->prepare("
+            SELECT COUNT(*) AS total FROM utilisateur_suit_communaute
+            WHERE nomCommunaute = '$community_name';
+        ");
+
+        if($query->execute()) {
+            $total_members = $query->fetch(PDO::FETCH_ASSOC);
+            return $total_members["total"];
+        }
+        return false; // Query error
+    }
+
+    public function getCommunityTotalPictures($community_name) {
+        $query = $this->connexion->prepare("
+            SELECT COUNT(*) AS total FROM photo
+            WHERE nomCommunaute = '$community_name';
+        ");
+
+        if($query->execute()) {
+            $total_pictures = $query->fetch(PDO::FETCH_ASSOC);
+            return $total_pictures["total"];
+        }
+        return false; // Query error
+    }
+    
+    // TODO
+    /*public function addNewPicture() {
+        INSERT INTO photo (titre, detail, dateHeureAjout, masquee, pseudoUtilisateur, nomCommunaute, urlPhoto) 
+        VALUES (...);
+    }*/
 
 } //db class
 

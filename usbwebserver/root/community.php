@@ -23,7 +23,7 @@ if (empty($community)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <<link rel="stylesheet" href="/css/community.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/css/community.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="/css/picture.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" />
 
@@ -37,18 +37,29 @@ if (empty($community)) {
         <div class="leftpanel">
             <img src="../imgs/pictura_logo.png" style="width:80%; margin-top:10px; margin-bottom: 10px;" />
 
-            <div class="community_cell_container_header">
-                <div class="community_cell_icon_header" style='background-image: url(files/" . $community['imageDeProfil'] . ");'></div>  <?php echo $community["nom"]; ?>
-                <a href="../index.php" class="community_exit_button_header"></a>
-            </div>
+            <?php
+               echo "<div class='community_cell_container_header'>
+                    <div class='community_cell_icon_header' style='background-image: url(files/". htmlentities($community["imageDeProfil"]) ."),  url(\"files/community_default.PNG\")'></div>" 
+                    . htmlentities($community["nom"]) . "
+                    <a href='../index.php' class='community_exit_button_header'></a>
+                </div>
 
-            <div class="community_description"><?php echo $community["detail"]; ?></div>
+                <div class='community_description'>" . htmlentities($community["detail"]) . "</div>";
+            ?>
+            <!-- TODO : Call followCommunity() from dbConnect on click -->
+            <button class="panel_button" onclick="">Join this community</button>
 
             <div class="community_cell_container">
-                <div class="community_cell_icon"></div> 99.9k followers
+                <div class="community_cell_icon"></div> 
+                <?php 
+                    echo $db->getCommunityTotalMembers($community["nom"]);
+                ?> follower(s)
             </div>
             <div class="community_cell_container">
-                <div class="community_cell_icon"></div> 99.9k pictures
+                <div class="community_cell_icon"></div>
+                <?php 
+                    echo $db->getCommunityTotalPictures($community["nom"]);
+                ?> picture(s)
             </div>
             <div class="community_cell_container">
                 <div class="community_cell_icon"></div> @admin1 <br> @admin2 <br> @moderator1 <br> @moderator2
@@ -58,8 +69,32 @@ if (empty($community)) {
 
         <!-- PICTURE FEED -->
         <div class="rightpanel">
-            <div class="homeFeed" id="homeFeed"></div>
+            <div class="communityFeed">
+                <?php
+                $community_feed_posts = $db->getCommunityFeedPictures($community["nom"]);
+                
+                for ($i = 0; $i < count($community_feed_posts); ++$i) {
+                    echo 
+                    '<a href="html/picture_fullview.html" class="picturePreview" id='. htmlentities($community_feed_posts[$i]["id"]) . ' style="background-image: url(files/'. htmlentities($community_feed_posts[$i]["urlPhoto"]) .')" >
+                        <div class="picturePreviewShadowTop"></div>
+                        <div class="picturePreviewShadowBottom"></div>	
+                        
+                        <div class="picturePreviewHeader">
+                            <div class="picturePreviewHeaderTitle">'. htmlentities($community_feed_posts[$i]["titre"]) . '</div>
+                            <div class="picturePreviewHeaderSubtitle">'. htmlentities($community_feed_posts[$i]["pseudoUtilisateur"]) . ' • ' . htmlentities($community_feed_posts[$i]["dateHeureAjout"]) . '</div>
+                            <button class="picturePreviewOptionsButton"></button>
+                        </div>
+                                    
+                        <div class="picturePreviewFooter">
+                            <button class="picturePreviewFooterButton"></button>	
+                            <button class="picturePreviewFooterButton"></button>
+                        </div>
+                    </a>';
+                }
+                ?>
+            </div>
         </div>
+
     </div>
 </body>
 <!--<body>
@@ -74,7 +109,7 @@ include_once("php/include/menu-h.php");
     <!--<div class='col-1-2 unique'>
         <?php
 
-        if ($community["imageDeProfil"]) {
+        /*if ($community["imageDeProfil"]) {
             echo "
         <div class='col-1-4'><p>
                 <div class='userpicture viewer-item' style='background-image: url(files/" . $community['imageDeProfil'] . ");'></div>
@@ -87,9 +122,9 @@ include_once("php/include/menu-h.php");
 
         echo "<h1>" . $community["nom"] . "</h1>";
         echo "<p>" . htmlentities($community["detail"]) . "</p>
-        </div>";
+        </div>";*/
         ?>
-    </div>
+    </div>-->
 
     <!-- Content -->
     <!--<div class='col-1-2 unique center-x'>
@@ -97,7 +132,8 @@ include_once("php/include/menu-h.php");
             <a onclick="displayId('insertPhotoPopup', null)">+ Ajouter photo</a>
         </p>
     </div>
-</div> <!-- End wrapper-content -->
+</div>-->
+ <!-- End wrapper-content -->
 
 <?php
 

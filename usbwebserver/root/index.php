@@ -51,7 +51,7 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
     <title>Pictura</title>
 </head>
 
-<body id="body" onLoad="initHomeFeed();">
+<body id="body">
 
     <div class="container" id="main_container">
 	
@@ -69,16 +69,42 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
 				for ($i = 0; $i < count($communities); ++$i) {
 				    echo "          
 				    <a class='community_cell_container' href='community.php?n=" . htmlentities($communities[$i]["nom"]) . "' title='" . htmlentities($communities[$i]["detail"]) . "'>
-				    	<div class='community_cell_icon'></div> " . htmlentities($communities[$i]["nom"]) . "
+				    	<div class='community_cell_icon' style='background-image: url(files/". htmlentities($communities[$i]["imageDeProfil"]) ."),  url(\"files/community_default.PNG\")'></div> " . htmlentities($communities[$i]["nom"]) . "
 				    </a>";
 				}
 			?>
-
         </div>
 		
         <!-- PICTURE FEED -->
         <div class="middlepanel" id="feed_panel">
-            <div class="homeFeed" id="homeFeed"></div>
+            <div class="homeFeed" id="homeFeed">
+                <?php
+                
+                if ($isLoggedIn) {
+                    $user_feed_posts = $db->getUserFeedPictures($user["pseudo"]);
+                    
+                    for ($i = 0; $i < count($user_feed_posts); ++$i) {
+                        echo 
+                        '<a href="html/picture_fullview.html" class="picturePreview" id='. htmlentities($user_feed_posts[$i]["id"]) . ' style="background-image: url(files/'. htmlentities($user_feed_posts[$i]["urlPhoto"]) .')" >
+                            <div class="picturePreviewShadowTop"></div>
+                            <div class="picturePreviewShadowBottom"></div>	
+                            
+                            <div class="picturePreviewHeader">
+                                <div class="picturePreviewHeaderTitle">'. htmlentities($user_feed_posts[$i]["titre"]) . '</div>
+                                <div class="picturePreviewHeaderSubtitle">'. htmlentities($user_feed_posts[$i]["pseudoUtilisateur"]) . ' • ' . htmlentities($user_feed_posts[$i]["dateHeureAjout"]) . '</div>
+                                <button class="picturePreviewOptionsButton"></button>
+                            </div>
+                                        
+                            <div class="picturePreviewFooter">
+                                <button class="picturePreviewFooterButton"></button>	
+                                <button class="picturePreviewFooterButton"></button>
+                            </div>
+                        </a>';
+                    }
+                }
+                ?>
+
+            </div>
         </div>
         
         <!-- PROFILE PANEL -->
@@ -95,19 +121,26 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
                 <div class="title_line" id="profile_title_line"></div>
             </div>
 			
+            <!-- BASIC PROFILE INFO -->
 			<?php
-
 	        if ($isLoggedIn) {
-	            echo '
-					<div class="login_welcome">Welcome back <font color="#00a6ff">' . htmlentities($user["pseudo"]) . '</font>!</div>
-					<button>Edit my profile</button>
-					<button>Add community</button>
-					
-					<div class="title_container" id="profile_title_container">
-                		My Communities
-                	<div class="title_line" id="profile_title_line"></div>
-					//todo
-            </div>
+                echo '
+                    <div class="myprofile_container">
+                        <div class="login_welcome">
+                            Welcome back 
+                            <div class="username_highlight" id="username_highlight">' . htmlentities($user["pseudo"]) . '</div>!
+                        </div>
+
+                        <button class="panel_button">Post a new picture</button>
+                        <button class="panel_button">Edit my profile</button>
+                        <button class="panel_button">Admin page</button>
+                        <button class="panel_button">Logout</button>
+                    </div>
+
+                    <div class="title_container" id="profile_title_container"> 
+                        My Communities
+                        <div class="title_line" id="profile_title_line"></div>
+                    </div>
 					';
 	        } else {
 				echo '
@@ -132,10 +165,35 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
 				
 	        	</form>
 				<a href="connexion.php">register</a>	';
-			}
-
+            }
        		?>
-			
+
+            <!-- USER COMMUNITIES -->
+            <?php
+            if ($isLoggedIn) {
+
+                $userCommunities = $db->getUserCommunities($user["pseudo"]);
+
+                if(count($userCommunities) == 0) {
+                    echo "You are not following any communities";
+                } else {
+                    echo "<div class=communities_bubble_container>";
+                }
+
+                for ($i = 0; $i < count($userCommunities); ++$i) {
+                    echo "          
+                    <a class='community_cell_container' href='community.php?n=" . htmlentities($userCommunities[$i]["nom"]) . "' title='" . htmlentities($userCommunities[$i]["nom"]) . "'>
+                        <div class='community_cell_icon' style='background-image: url(files/". htmlentities($userCommunities[$i]["imageDeProfil"]) ."),  url(\"files/community_default.PNG\")'></div>
+                    </a>";
+                }
+
+                echo "
+                <button class='panel_button' id='add_community_button' onclick=\"displayId('insertCommunityPopup', null)\">+</button>
+                </div>";
+            }
+            ?>
+            
+
         </div>
     </div>
 </body>
@@ -143,50 +201,8 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
 <script src="js/home.js"></script>
 <script src="js/interface.js"></script>
 
-<!--<div id="wrapper-content">
-    <div class="col-1-4">
-        <h2>Communautés</h2>
-        <?php
-
-        if ($isLoggedIn) {
-            echo "<p>
-            <a onclick=\"displayId('insertCommunityPopup', null)\">+ Créer</a>
-        </p>";
-        }
-
-        ?>
-
-        <?php
-        $communities = $db->getAllCommunities();
-
-        for ($i = 0; $i < count($communities); ++$i) {
-            echo "
-        <p>            
-            <a href='community.php?n=" . htmlentities($communities[$i]["nom"]) . "' title='" . htmlentities($communities[$i]["detail"]) . "'>
-            " . htmlentities($communities[$i]["nom"]) . "
-            </a>
-        </p>";
-        }
-        ?>
-    </div>
-    <div class="col-3-4">
-        <h1>Bienvenue,</h1>
-        <p>Accueil chaleureux, bla bla bla.</p>
-        <h2>Liste des utilisateurs (debug):</h2>
-        <?php
-
-        $users = $db->getAllUserPseudos();
-
-        for ($i = 0; $i < count($users); ++$i) {
-            echo "<p><a href='profile.php?n=" . htmlentities($users[$i]["pseudo"]) . "'>" . htmlentities($users[$i]["pseudo"]) . "</a></p>";
-        }
-
-        ?>
-
-    </div>
-</div>--> <!-- End wrapper-content -->
 <?php
-
+/*
 if ($isLoggedIn) {
     createPopup("insertCommunityPopup", "
     <h1>Créer nouvelle communauté</h1>
@@ -221,7 +237,7 @@ if ($isLoggedIn) {
         </form>");
 }
 include_once("php/include/footer.php");
-
+*/
 ?>
 </body>
 </html>

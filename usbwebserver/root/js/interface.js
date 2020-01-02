@@ -8,10 +8,18 @@ function switchNightMode() {
     document.getElementById("feed_panel").classList.toggle("nightmode");
     document.getElementById("user_panel").classList.toggle("nightmode");
     document.getElementById("community_title_line").classList.toggle("nightmode");
+    document.getElementById("username_highlight").classList.toggle("nightmode");
+    
     var communities = document.getElementsByClassName("community_cell_container");
     for(var i = 0; i < communities.length; i++)
     {
         communities.item(i).classList.toggle("nightmode");
+    }
+
+    var buttons = document.getElementsByClassName("panel_button");
+    for(var i = 0; i < buttons.length; i++)
+    {
+        buttons.item(i).classList.toggle("nightmode");
     }
 }
 

@@ -27,6 +27,7 @@ function displayTab(tabName, selector) {
 * Summary: Displays and hide the elements from their id
 */
 function displayId(idToShow, idToHide) {
+    
 	var divToShow = document.getElementById(idToShow);
 	var divToHide = document.getElementById(idToHide);
 
