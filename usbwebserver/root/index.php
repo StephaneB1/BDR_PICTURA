@@ -65,10 +65,15 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
 
 			<?php
 				$communities = $db->getAllCommunities();
-				
 				for ($i = 0; $i < count($communities); ++$i) {
+                    if($isLoggedIn) {
+                        $follow = $db->isUserFollowing($user["pseudo"], $communities[$i]["nom"]);
+                    } else {
+                        $follow = 0;
+                    }
+
 				    echo "          
-				    <a class='community_cell_container' href='community.php?n=" . htmlentities($communities[$i]["nom"]) . "' title='" . htmlentities($communities[$i]["detail"]) . "'>
+				    <a class='community_cell_container' href='community.php?n=" . htmlentities($communities[$i]["nom"]) . "&follow=" . htmlentities($follow) . "&user=" . htmlentities($user["pseudo"]) . "' title='" . htmlentities($communities[$i]["detail"]) . "'>
 				    	<div class='community_cell_icon' style='background-image: url(files/". htmlentities($communities[$i]["imageDeProfil"]) ."),  url(\"files/community_default.PNG\")'></div> " . htmlentities($communities[$i]["nom"]) . "
 				    </a>";
 				}
@@ -76,8 +81,8 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
         </div>
 		
         <!-- PICTURE FEED -->
-        <div class="middlepanel" id="feed_panel">
-            <div class="homeFeed" id="homeFeed">
+        <div class="middlepanel">
+            <div class="mainFeed">
                 <?php
                 
                 if ($isLoggedIn) {
@@ -85,7 +90,7 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
                     
                     for ($i = 0; $i < count($user_feed_posts); ++$i) {
                         echo 
-                        '<a href="html/picture_fullview.html" class="picturePreview" id='. htmlentities($user_feed_posts[$i]["id"]) . ' style="background-image: url(files/'. htmlentities($user_feed_posts[$i]["urlPhoto"]) .')" >
+                        '<a href="picture_fullview.php?id=' . htmlentities($user_feed_posts[$i]["id"]) . '" class="picturePreview" id='. htmlentities($user_feed_posts[$i]["id"]) . ' style="background-image: url(files/'. htmlentities($user_feed_posts[$i]["urlPhoto"]) .')" >
                             <div class="picturePreviewShadowTop"></div>
                             <div class="picturePreviewShadowBottom"></div>	
                             
@@ -188,8 +193,9 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
                 }
 
                 echo "
-                <button class='panel_button' id='add_community_button' onclick=\"displayId('insertCommunityPopup', null)\">+</button>
+                <button class='panel_button' id='add_community_button' onclick=\"location.href='insertCommunity.php';\">+</button>
                 </div>";
+
             }
             ?>
             

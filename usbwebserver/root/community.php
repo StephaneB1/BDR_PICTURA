@@ -12,6 +12,15 @@ include_once("php/include/dbConnect.php");
 
 $db = new db;
 $community = $db->getCommunityByName($_GET["n"])[0];
+$follow = $_GET["follow"];
+$username = $_GET["user"];
+
+if($follow) {
+    $db->followCommunity($username, $community["nom"]);
+} else {
+    //$db->quitCommunity($user["pseudo"], $community["nom"]);
+}
+
 
 if (empty($community)) {
     //Error: invalid community ID
@@ -23,6 +32,7 @@ if (empty($community)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+    <link rel="stylesheet" href="/css/interface.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="/css/community.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="/css/picture.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" />
@@ -45,31 +55,54 @@ if (empty($community)) {
                 </div>
 
                 <div class='community_description'>" . htmlentities($community["detail"]) . "</div>";
-            ?>
-            <!-- TODO : Call followCommunity() from dbConnect on click -->
-            <button class="panel_button" onclick="">Join this community</button>
 
-            <div class="community_cell_container">
-                <div class="community_cell_icon"></div> 
+                if($follow) {
+                    echo '
+                    <div class="myprofile_container">
+                        <button class="panel_button" onclick="location.href="community.php?n=' . htmlentities($community["nom"]) . '&follow=0&user=' . htmlentities($username) . '">Leave this community</button>
+                    </div>';
+                } else {
+                    echo '
+                    <div class="myprofile_container">
+                        <button class="panel_button" onclick="location.href="community.php?n=' . htmlentities($community["nom"]) . '&follow=1&user=' . htmlentities($username) . '">Join this community</button>
+                    </div>';
+                }
+            ?>
+
+            <div class="community_info_cell">
+                <div class="community_cell_icon" id="total_members"></div> 
                 <?php 
                     echo $db->getCommunityTotalMembers($community["nom"]);
                 ?> follower(s)
             </div>
-            <div class="community_cell_container">
-                <div class="community_cell_icon"></div>
+            <div class="community_info_cell">
+                <div class="community_cell_icon" id="total_pictures"></div>
                 <?php 
                     echo $db->getCommunityTotalPictures($community["nom"]);
                 ?> picture(s)
             </div>
-            <div class="community_cell_container">
-                <div class="community_cell_icon"></div> @admin1 <br> @admin2 <br> @moderator1 <br> @moderator2
+
+            <div class="title_container" id="profile_title_container">
+                Management
+                <div class="title_line" id="profile_title_line"></div>
             </div>
+
+            <?php
+                $admins = $db->getAllCommunityAdmins($community["nom"]);
+
+                for ($i = 0; $i < count($admins); ++$i) {
+                    echo "          
+                    <div class='community_info_cell'>
+                        " . htmlentities($admins[$i]["pseudoUtilisateur"]) . "
+                    </div>";
+                }
+            ?>
 
         </div>
 
         <!-- PICTURE FEED -->
-        <div class="rightpanel">
-            <div class="communityFeed">
+        <div class="middlepanel" id="community_feed_panel">
+            <div class="mainFeed">
                 <?php
                 $community_feed_posts = $db->getCommunityFeedPictures($community["nom"]);
                 

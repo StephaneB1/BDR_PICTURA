@@ -52,6 +52,7 @@
     top: 0px;
     background-color: rgba(250, 250, 250, 1);
     border-collapse: collapse;
+    overflow-y: scroll;
 }
 
 .leftpanel.nightmode {
@@ -112,6 +113,8 @@
 .title_line.nightmode {
     background-color: white;
 }
+
+
 
 .panel_button {
     width: 80%;
@@ -262,7 +265,7 @@
 }
 
 /* ===== FEEDS ===== */
-.homeFeed {
+.mainFeed {
 	justify-items: center;
 	
 	display: 			   grid;

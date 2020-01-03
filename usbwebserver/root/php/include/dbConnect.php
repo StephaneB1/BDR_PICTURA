@@ -186,6 +186,12 @@ class db
         return $query->execute();
     }
 
+    public function quitCommunity($username, $community) {
+        //$query = $this->connexion->prepare("TODO");
+
+        //return $query->execute();
+    }
+
     public function getUserFeedPictures($username) {
         $query = $this->connexion->prepare("
             SELECT * FROM photo
@@ -234,11 +240,49 @@ class db
         return false; // Query error
     }
     
+    public function getAllCommunityAdmins($community_name) {
+        $query = $this->connexion->prepare("
+            SELECT * FROM utilisateur_modere_communaute
+            WHERE nomCommunaute = '$community_name';
+        ");
+
+        if($query->execute())
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        return false; // Query error
+    }
+
+    public function isUserFollowing($username, $community_name) {
+        $query = $this->connexion->prepare("
+            SELECT COUNT(1) AS userIsFollowing
+            FROM utilisateur_suit_communaute
+            WHERE pseudoUtilisateur = '$username' AND nomCommunaute = '$community_name';
+        ");
+
+        if($query->execute()) {
+            $result = $query->fetch(PDO::FETCH_ASSOC);
+            if($result["userIsFollowing"] == 1)
+                return true;
+        }
+            
+        return false; // Query error
+    }
+
     // TODO
     /*public function addNewPicture() {
         INSERT INTO photo (titre, detail, dateHeureAjout, masquee, pseudoUtilisateur, nomCommunaute, urlPhoto) 
         VALUES (...);
     }*/
+
+    public function getPictureById($picture_id) {
+        $query = $this->connexion->prepare("
+            SELECT * FROM photo
+            WHERE id = '$picture_id';
+        ");
+
+        if($query->execute())
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        return false; // Query error
+    }
 
 } //db class
 
