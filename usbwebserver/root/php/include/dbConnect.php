@@ -36,7 +36,15 @@ class db
     }
 
     /**
+     * Get the ID of the last inserted entry
+     */
+    public function getLastId() {
+        return $this->connexion->lastInsertId();
+    }
+
+    /**
      * If the given string is empty (""), it will be corrected to "NULL"
+     * Attention: this function automatically adds two ' if not null
      */
     public function correctNullString(&$var) {
         $var = !empty($var) ? "'$var'" : "NULL";
@@ -85,7 +93,7 @@ class db
           INSERT INTO Utilisateur (pseudo, email, motDePasse, prenom, nom)
 		  VALUES ('$pseudo', '$email', '$password', $firstName, $lastName)
 		");
-		
+
         return $query->execute();
     }
 
@@ -239,7 +247,7 @@ class db
         }
         return false; // Query error
     }
-    
+
     public function getAllCommunityAdmins($community_name) {
         $query = $this->connexion->prepare("
             SELECT * FROM utilisateur_modere_communaute
@@ -263,7 +271,7 @@ class db
             if($result["userIsFollowing"] == 1)
                 return true;
         }
-            
+
         return false; // Query error
     }
 
@@ -272,6 +280,33 @@ class db
         INSERT INTO photo (titre, detail, dateHeureAjout, masquee, pseudoUtilisateur, nomCommunaute, urlPhoto) 
         VALUES (...);
     }*/
+
+   public function insertPhoto($title, $detail, $user, $community, $fileName, $tags)
+   {
+       $this->correctNullString($detail);
+       $result = true;
+
+       // Insert photo
+       $query = $this->connexion->prepare("
+                INSERT INTO Photo (titre, detail, dateHeureAjout, masquee, urlPhoto, pseudoUtilisateur, nomCommunaute)
+                    VALUES ('$title', $detail, NOW(), 0, '$fileName', '$user', '$community');
+		");
+       $result = $query->execute();
+
+       // Tags (only if photo was successfully inserted)
+       if ($result && !empty($tags)) {
+           $photoId = $this->getLastId();
+
+           for ($i = 0; $i < count($tags); ++$i) {
+               if($this->insertTagSafe($tags[$i])) { // Insert tag
+                   // Link tag
+                   $this->linkPhotoTag($photoId, $tags[$i]);
+               }
+           }
+       }
+
+       return $result;
+    }
 
     public function getPictureById($picture_id) {
         $query = $this->connexion->prepare("
@@ -282,6 +317,47 @@ class db
         if($query->execute())
             return $query->fetchAll(PDO::FETCH_ASSOC);
         return false; // Query error
+    }
+
+    /* ------ Tags ------ */
+
+    /**
+     * Inserts a new tag
+     * @param $label
+     * @return bool true if the tag exists or if it's been successfully created (false only on error)
+     */
+    public function insertTagSafe($label) {
+        $tag = $this->getTagByLabel($label);
+
+        if(!empty($tag)) // Tag already exists, do not insert (no error)
+            return true;
+
+        $query = $this->connexion->prepare("
+          INSERT INTO Balise (label)
+		  VALUES ('$label')
+		");
+
+        return $query->execute();
+    }
+
+    public function getTagByLabel($label) {
+        $query = $this->connexion->prepare("
+            SELECT * FROM Balise
+            WHERE label = '$label';
+        ");
+
+        if($query->execute())
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        return false; // Query error
+    }
+
+    public function linkPhotoTag($photoId, $label) {
+        $query = $this->connexion->prepare("
+          INSERT INTO Photo_Balise (idPhoto, labelBalise)
+		  VALUES ($photoId, '$label')
+		");
+
+        return $query->execute();
     }
 
 } //db class

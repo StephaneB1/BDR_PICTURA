@@ -41,7 +41,7 @@ function checkIfLoggedIn()
 }
 
 /*
-* Removes spaces and special chars (only lower/uppercases letters and numbers)
+* Removes spaces and special chars (only lower/uppercase letters and numbers)
 */
 function cleanifyString($string)
 {
@@ -103,6 +103,13 @@ function createPopup($id, $code)
     <p style='padding: 5px;'><i class='material-icons clickable' style='float: right;' onclick=\"displayId(null, '" . $id . "')\">close</i></p>
             " . $code . "</div>
 </div>";
+}
+
+/*
+ * Escapes apostrohpes by adding a backslash prefix
+ */
+function escApastrophes($text) {
+    return str_replace("'", "\\'", $text);
 }
 
 /*
