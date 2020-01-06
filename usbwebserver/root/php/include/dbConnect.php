@@ -284,13 +284,13 @@ class db
    public function insertPhoto($title, $detail, $user, $community, $fileName, $tags)
    {
        $this->correctNullString($detail);
-       $result = true;
 
        // Insert photo
        $query = $this->connexion->prepare("
                 INSERT INTO Photo (titre, detail, dateHeureAjout, masquee, urlPhoto, pseudoUtilisateur, nomCommunaute)
                     VALUES ('$title', $detail, NOW(), 0, '$fileName', '$user', '$community');
 		");
+
        $result = $query->execute();
 
        // Tags (only if photo was successfully inserted)
@@ -319,6 +319,32 @@ class db
         return false; // Query error
     }
 
+    /* ------ Comments ------ */
+
+    public function insertComment($photoId, $user, $comment, $parent) {
+        // Define exact same datetime for both INSERT (for table Commentaire and Reponse_Commentaire)
+        $dateTime = date("Y-m-d H-i-s");
+
+        $query = $this->connexion->prepare("
+          INSERT INTO Commentaire (dateHeureAjout, idPhoto, pseudoUtilisateur, commentaire)
+		  VALUES ('$dateTime', $photoId, '$user', '$comment');
+		");
+
+        $result = $query->execute();
+
+        if($result && !empty($parent)){
+            // Comment is a response
+            $query = $this->connexion->prepare("
+              INSERT INTO Reponse_Commentaire (dateHeureAjout_Reponse, idPhoto_Reponse, dateHeureAjout_Parent, idPhoto_Parent)
+              VALUES ('$dateTime', $photoId, '$parent', $photoId)
+            ");
+
+            $result = $result && $query->execute();
+        }
+
+        return $result;
+    }
+
     /* ------ Tags ------ */
 
     /**
@@ -334,7 +360,7 @@ class db
 
         $query = $this->connexion->prepare("
           INSERT INTO Balise (label)
-		  VALUES ('$label')
+		  VALUES ('$label');
 		");
 
         return $query->execute();
@@ -354,7 +380,7 @@ class db
     public function linkPhotoTag($photoId, $label) {
         $query = $this->connexion->prepare("
           INSERT INTO Photo_Balise (idPhoto, labelBalise)
-		  VALUES ($photoId, '$label')
+		  VALUES ($photoId, '$label');
 		");
 
         return $query->execute();
