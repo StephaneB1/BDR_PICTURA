@@ -46,9 +46,14 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
 
     <link rel="stylesheet" href="/css/interface.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="/css/picture.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/css/popup.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" />
 
     <title>Pictura</title>
+
+    <!--[if IE]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 </head>
 
 <body id="body">
@@ -136,7 +141,6 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
                             <div class="username_highlight" id="username_highlight">' . htmlentities($user["pseudo"]) . '</div>!
                         </div>
 
-                        <button class="panel_button">Post a new picture</button>
                         <button class="panel_button">Edit my profile</button>
                         <button class="panel_button">Admin page</button>
                         <button class="panel_button">Logout</button>
@@ -192,16 +196,53 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
                     </a>";
                 }
 
-                echo "
-                <button class='panel_button' id='add_community_button' onclick=\"location.href='insertCommunity.php';\">+</button>
-                </div>";
+                /*echo "
+                    <button class='panel_button' id='add_community_button' onclick=\"location.href='insertCommunity.php';\">+</button>
+                </div>";*/
 
+                echo "
+                    <a class='panel_button' href='#createCommunityPopup'>+</a>
+                </div>";
             }
             ?>
             
 
         </div>
     </div>
+
+    <!-- Create a new community form -->
+    <div class="popup_panel" id="createCommunityPopup">
+        <div class="popup_container">
+
+            <!-- flemme de faire autrement pour l'instant :( -->
+            <button id="exitpopup" onclick="location.href='index.php';">X</button>
+
+            <form id='insertCommunityForm' name='insertCommunityForm' action='php/form/insertCommunityForm.php' method='post' enctype='multipart/form-data'>
+                
+                <!-- Profile picture icon -->
+                <img id="profile_picture_popup" class="header_picture_popup"></img>
+
+                <!-- Name input-->
+                <label for="name">Name*</label>
+                <input type="text" id="name" name="name" placeholder="Enter your community's public name..." required>
+                
+                <!-- Description input-->
+                <label for="detail">Description*</label>
+                <textarea id="name" name='detail' placeholder='Describe your community here...' required></textarea>
+
+                <!-- Profile Picture input-->
+                <label for="profilepic">Profile Picture  :  </label>
+                <?php
+                    echo "<input id='ppinput' name='profilepic' onchange='loadFile(event, \"profile_picture_popup\");' type='file' placeholder='Profile picture' accept=" . join(',', prefixStringArray(IMAGE_FORMATS, ".")) . "'/>";
+                ?>
+
+                <input type="submit" value="Create a new community">
+
+                <div class='note'>*must be provided</div>
+            </form>
+        </div>
+    </div>
+    
 </body>
 
 <script src="js/home.js"></script>
@@ -245,7 +286,6 @@ if ($isLoggedIn) {
 include_once("php/include/footer.php");
 */
 ?>
-</body>
 </html>
 
 

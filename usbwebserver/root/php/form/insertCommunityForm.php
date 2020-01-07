@@ -17,18 +17,18 @@ if (!checkIfLoggedIn())
 
 $formCorrect = true; // If false, data won't be sent
 
-// Pseudo
+// Name
 if (!empty($_POST["name"])) {
     $name = cleanifyString($_POST["name"]);
-} else { // Error: pseudo not sent
+} else { // Error: name not sent
     $formCorrect = false;
 }
 
 // Detail
 if (!empty($_POST["detail"])) {
-    $detail = str_replace("'", "\\'", $_POST["detail"]); //Escape apostrophes
+    $detail = escApastrophes($_POST["detail"]); //Escape apostrophes
     //$detail = $_POST["detail"];
-} else { // Error: pseudo not sent
+} else { // Error: detail not sent
     $formCorrect = false;
 }
 
