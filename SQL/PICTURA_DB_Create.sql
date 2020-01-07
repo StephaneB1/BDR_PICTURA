@@ -50,6 +50,7 @@ CREATE TABLE Photo (
   detail VARCHAR(500),
   dateHeureAjout DATETIME NOT NULL,
   masquee TINYINT NOT NULL,
+  urlPhoto VARCHAR(100) NOT NULL,
   CONSTRAINT PK_Photo PRIMARY KEY (id),
   
   -- FOREIGN KEYS

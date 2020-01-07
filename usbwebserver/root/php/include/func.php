@@ -116,6 +116,13 @@ function escApastrophes($text) {
 }
 
 /*
+ * Escapes apostrohpes by adding a backslash prefix
+ */
+function escApastrophes($text) {
+    return str_replace("'", "\\'", $text);
+}
+
+/*
  * Go back to previous page within script tag (useful get back form values after sending)
  */
 function previousPage()
