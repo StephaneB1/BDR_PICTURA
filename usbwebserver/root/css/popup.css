@@ -9,8 +9,7 @@
 	position: fixed;
 	left:0;
 	top:0;
-	visibility: hidden;
-	opacity: 0;
+	display: none;
 }
 
 .popup_panel:target {

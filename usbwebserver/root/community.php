@@ -11,115 +11,109 @@ include_once("php/include/header.php");
 include_once("php/include/dbConnect.php");
 
 $db = new db;
-$community = $db->getCommunityByName($_GET["n"])[0];
-$follow = $_GET["follow"];
-$username = $_GET["user"];
 
-if($follow) {
-    $db->followCommunity($username, $community["nom"]);
-} else {
-    //$db->quitCommunity($user["pseudo"], $community["nom"]);
-}
-
-
-if (empty($community)) {
-    //Error: invalid community ID
+if (!isset($_GET["n"])) {
+    // Error: no community specified
     redirect(null);
 }
 
+$community = $db->getCommunityByName($_GET["n"])[0];
+$isLoggedIn = checkIfLoggedIn();
+$pseudo = $_SESSION["pseudo"];
+
+$following = $isLoggedIn && !empty($db->isUserFollowing($pseudo, $community["nom"]));
+
 ?>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link rel="stylesheet" href="/css/interface.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="/css/community.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="/css/picture.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="/css/popup.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" />
+<link rel="stylesheet" href="/css/interface.css" type="text/css" media="screen"/>
+<link rel="stylesheet" href="/css/community.css" type="text/css" media="screen"/>
+<link rel="stylesheet" href="/css/picture.css" type="text/css" media="screen"/>
+<link rel="stylesheet" href="/css/popup.css" type="text/css" media="screen"/>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"/>
 
-    <title>PICTURA -  <?php echo $community["nom"]; ?></title>
+<title>PICTURA - <?php echo htmlentities($community["nom"]); ?></title>
 </head>
 
 <body id="body">
 
-    <div class="container">
-        <!-- COMMUNITY PANEL -->
-        <div class="leftpanel">
-            <img src="../imgs/pictura_logo.png" style="width:80%; margin-top:10px; margin-bottom: 10px;" />
+<div class="container">
+    <!-- COMMUNITY PANEL -->
+    <div class="leftpanel">
+        <img src="../imgs/pictura_logo.png" style="width:80%; margin-top:10px; margin-bottom: 10px;"/>
 
-            <?php
-               echo "<div class='community_cell_container_header'>
-                    <div class='community_cell_icon_header' style='background-image: url(files/". htmlentities($community["imageDeProfil"]) ."),  url(\"files/community_default.PNG\")'></div>" 
-                    . htmlentities($community["nom"]) . "
+        <?php
+        echo "<div class='community_cell_container_header'>
+                    <div class='community_cell_icon_header' style='background-image: url(files/" . htmlentities($community["imageDeProfil"]) . "),  url(\"files/community_default.PNG\")'></div>"
+            . htmlentities($community["nom"]) . "
                     <a href='../index.php' class='community_exit_button_header'></a>
                 </div>
 
                 <div class='community_description'>" . htmlentities($community["detail"]) . "</div>";
 
-                if($follow) {
-                    echo '
-                    <div class="myprofile_container">
-                        <button class="panel_button" onclick="location.href="community.php?n=' . htmlentities($community["nom"]) . '&follow=0&user=' . htmlentities($username) . '">Leave this community</button>
-                    </div>';
-                } else {
-                    echo '
-                    <div class="myprofile_container">
-                        <button class="panel_button" onclick="location.href="community.php?n=' . htmlentities($community["nom"]) . '&follow=1&user=' . htmlentities($username) . '">Join this community</button>
-                    </div>';
-                }
-            ?>
+        echo "
+        <div class='myprofile_container'>
+            <form id='followCommunityForm' name='followCommunityForm' action='php/form/followCommunityForm.php' method='post'>
+                <input type='hidden' name='community' value='". htmlentities($community['nom']) . "'/>
+                <input type='hidden' name='follow' value='" . ($following ? 0 : 1) . "'/>
+                <button  onclick=\"document.getElementById('followCommunityForm').submit()\" class='panel_button'>" . ($following ? "Leave this community" : "Follow this community") . "</button>
+            </form>
+        </div>
+        ";
+        ?>
 
-            <div class="myprofile_container">
-                <a class="panel_button" href="#postPicturePopup">Post a new picture</a>
-            </div>
+        <div class="myprofile_container">
+            <a class="panel_button" onclick="displayId('postPicturePopup', null)">Post a new picture</a>
+        </div>
 
-            <div class="community_info_cell">
-                <div class="community_cell_icon" id="total_members"></div> 
-                <?php 
-                    echo $db->getCommunityTotalMembers($community["nom"]);
-                ?> follower(s)
-            </div>
-            <div class="community_info_cell">
-                <div class="community_cell_icon" id="total_pictures"></div>
-                <?php 
-                    echo $db->getCommunityTotalPictures($community["nom"]);
-                ?> picture(s)
-            </div>
-
-            <div class="title_container" id="profile_title_container">
-                Management
-                <div class="title_line" id="profile_title_line"></div>
-            </div>
-
+        <div class="community_info_cell">
+            <div class="community_cell_icon" id="total_members"></div>
             <?php
-                $admins = $db->getAllCommunityAdmins($community["nom"]);
+            echo $db->getCommunityTotalMembers($community["nom"]);
+            ?> follower(s)
+        </div>
+        <div class="community_info_cell">
+            <div class="community_cell_icon" id="total_pictures"></div>
+            <?php
+            echo $db->getCommunityTotalPictures($community["nom"]);
+            ?> picture(s)
+        </div>
 
-                for ($i = 0; $i < count($admins); ++$i) {
-                    echo "          
+        <div class="title_container" id="profile_title_container">
+            Management
+            <div class="title_line" id="profile_title_line"></div>
+        </div>
+
+        <?php
+        $admins = $db->getAllCommunityAdmins($community["nom"]);
+
+        for ($i = 0; $i < count($admins); ++$i) {
+            echo "          
                     <div class='community_info_cell'>
                         " . htmlentities($admins[$i]["pseudoUtilisateur"]) . "
                     </div>";
-                }
-            ?>
+        }
+        ?>
 
-        </div>
+    </div>
 
-        <!-- PICTURE FEED -->
-        <div class="middlepanel" id="community_feed_panel">
-            <div class="mainFeed">
-                <?php
-                $community_feed_posts = $db->getCommunityFeedPictures($community["nom"]);
-                
-                for ($i = 0; $i < count($community_feed_posts); ++$i) {
-                    echo 
-                    '<a href="html/picture_fullview.html" class="picturePreview" id='. htmlentities($community_feed_posts[$i]["id"]) . ' style="background-image: url(files/'. htmlentities($community_feed_posts[$i]["urlPhoto"]) .')" >
+    <!-- PICTURE FEED -->
+    <div class="middlepanel" id="community_feed_panel">
+        <div class="mainFeed">
+            <?php
+            $community_feed_posts = $db->getCommunityFeedPictures($community["nom"]);
+
+            for ($i = 0; $i < count($community_feed_posts); ++$i) {
+                echo
+                    '<a href="html/picture_fullview.html" class="picturePreview" id=' . htmlentities($community_feed_posts[$i]["id"]) . ' style="background-image: url(files/' . htmlentities($community_feed_posts[$i]["urlPhoto"]) . ')" >
                         <div class="picturePreviewShadowTop"></div>
                         <div class="picturePreviewShadowBottom"></div>	
                         
                         <div class="picturePreviewHeader">
-                            <div class="picturePreviewHeaderTitle">'. htmlentities($community_feed_posts[$i]["titre"]) . '</div>
-                            <div class="picturePreviewHeaderSubtitle">'. htmlentities($community_feed_posts[$i]["pseudoUtilisateur"]) . ' • ' . htmlentities($community_feed_posts[$i]["dateHeureAjout"]) . '</div>
+                            <div class="picturePreviewHeaderTitle">' . htmlentities($community_feed_posts[$i]["titre"]) . '</div>
+                            <div class="picturePreviewHeaderSubtitle">' . htmlentities($community_feed_posts[$i]["pseudoUtilisateur"]) . ' • ' . htmlentities($community_feed_posts[$i]["dateHeureAjout"]) . '</div>
                             <button class="picturePreviewOptionsButton"></button>
                         </div>
                                     
@@ -128,62 +122,58 @@ if (empty($community)) {
                             <button class="picturePreviewFooterButton"></button>
                         </div>
                     </a>';
-                }
-                ?>
-            </div>
-        </div>
-
-
-        
-    </div>
-
-    
-    <!-- Post a new picture form -->
-    <div class="popup_panel" id="postPicturePopup">
-        <div class="popup_container" id="pictureContainer">
-
-            <!-- flemme de faire autrement pour l'instant :( Marche meme pas : TODO... -->
-            <?php 
-                $link = 'community.php?n=' . htmlentities($community["nom"]) . '&follow=' . htmlentities($follow) . '&user=' . htmlentities($username) . '\'';
-                echo '<button id="exitpopup" onclick="location.href=' . htmlentities($link) . ';">X</button>';
+            }
             ?>
-            
-
-            <form id='postPictureForm' name='postPictureForm' action='php/form/insertPhotoForm.php' method='post' enctype='multipart/form-data'>
-                
-                <div class="pictureFormContainer">
-                    <div class="picturePreviewContainer">        
-                        <!-- Profile picture icon -->
-                        <img id="picture_popup" class="header_picture_popup"></img>
-                    </div>
-
-                    <div class="pictureInfos">
-                        <!-- Name input-->
-                        <label for="title">Title*</label>
-                        <input type="text" id="title" name="firstname" placeholder="Enter your picture's public title..." required>
-                        
-                        <!-- Description input-->
-                        <label for="detail">Description*</label>
-                        <textarea id="name" name='detail' placeholder='Describe your picture here...' required></textarea>
-
-                        <!-- Tags -->
-                        <label for='tags'>Balise(s)</label>
-                        <input type='text' id='tags' name='tags' placeholder='Tags (seperated with a space)' pattern='[a-zA-Z0-9]{1,20}( [a-zA-Z0-9]{1,20})*' autofocus/>
-                        
-                        <!-- Profile Picture input-->
-                        <label for="files">Picture  :  </label>
-                        <?php
-                            echo "<input id='ppinput' name='files' onchange='loadFile(event, \"picture_popup\");' type='file' placeholder='Picture' accept=" . join(',', prefixStringArray(IMAGE_FORMATS, ".")) . "'/>";
-                        ?>
-
-                        <input type="submit" value="Post a new picture">
-
-                        <div class='note'>*must be provided</div>
-                    </div>
-                </div>
-            </form>
         </div>
     </div>
+
+</div>
+
+<!-- Post a new picture form -->
+<div class="popup_panel" id="postPicturePopup">
+    <div class="popup_container" id="pictureContainer">
+        <button id='exitpopup' onclick="displayId(null, 'postPicturePopup')">X</button>
+
+        <form id='postPictureForm' name='postPictureForm' action='php/form/insertPhotoForm.php' method='post'
+              enctype='multipart/form-data'>
+
+            <div class="pictureFormContainer">
+                <div class="picturePreviewContainer">
+                    <!-- Profile picture icon -->
+                    <img id="picture_popup" class="header_picture_popup"/>
+                </div>
+
+                <div class="pictureInfos">
+                    <!-- Title input-->
+                    <label for="title">Title*</label>
+                    <input type="text" id="title" name="title" placeholder="Enter your picture's public title..."
+                           required autofocus>
+
+                    <!-- Description input-->
+                    <label for="detail">Description</label>
+                    <textarea id="name" name='detail' placeholder='Describe your picture here...'></textarea>
+
+                    <!-- Tags -->
+                    <label for='tags'>Balise(s)</label>
+                    <input type='text' id='tags' name='tags' placeholder='Tags (seperated with a space)'
+                           pattern='[a-zA-Z0-9]{1,20}( [a-zA-Z0-9]{1,20})*'/>
+
+                    <!-- Picture input-->
+                    <label for="files">Picture* : </label>
+                    <input id='ppinput' name='files' onchange="loadFile(event, 'picture_popup')" type='file'
+                           placeholder='Picture' accept='<?php echo getFileFormats(); ?>'/>
+
+                    <!-- Community (hidden) -->
+                    <input type="hidden" name="community" value="<?php echo $_GET["n"] ?>"/>
+
+                    <input type="submit" value="Post a new picture">
+
+                    <div class='note'>*must be provided</div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 
 </body>
@@ -195,35 +185,35 @@ include_once("php/include/menu-h.php");
 ?>
 
 <div id="wrapper-content">-->
-    <!-- Header -->
-    <!--<div class='col-1-2 unique'>
+<!-- Header -->
+<!--<div class='col-1-2 unique'>
         <?php
 
-        /*if ($community["imageDeProfil"]) {
-            echo "
-        <div class='col-1-4'><p>
-                <div class='userpicture viewer-item' style='background-image: url(files/" . $community['imageDeProfil'] . ");'></div>
-            </p>
-        </div>
-        <div class='col-3-4'>";
-        } else {
-            echo "<div class='col-1-2 unique'>";
-        }
+/*if ($community["imageDeProfil"]) {
+    echo "
+<div class='col-1-4'><p>
+        <div class='userpicture viewer-item' style='background-image: url(files/" . $community['imageDeProfil'] . ");'></div>
+    </p>
+</div>
+<div class='col-3-4'>";
+} else {
+    echo "<div class='col-1-2 unique'>";
+}
 
-        echo "<h1>" . $community["nom"] . "</h1>";
-        echo "<p>" . htmlentities($community["detail"]) . "</p>
-        </div>";*/
-        ?>
+echo "<h1>" . $community["nom"] . "</h1>";
+echo "<p>" . htmlentities($community["detail"]) . "</p>
+</div>";*/
+?>
     </div>-->
 
-    <!-- Content -->
-    <!--<div class='col-1-2 unique center-x'>
-        <p>
-            <a onclick="displayId('insertPhotoPopup', null)">+ Ajouter photo</a>
-        </p>
-    </div>
+<!-- Content -->
+<!--<div class='col-1-2 unique center-x'>
+    <p>
+        <a onclick="displayId('insertPhotoPopup', null)">+ Ajouter photo</a>
+    </p>
+</div>
 </div>-->
- <!-- End wrapper-content -->
+<!-- End wrapper-content -->
 
 <?php
 

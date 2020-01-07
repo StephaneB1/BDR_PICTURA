@@ -32,24 +32,21 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
 ?>
 <title>PICTURA</title>
 
-</head>
-<body>
 <?php
 
 //include_once("php/include/menu-h.php");
 
 ?>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link rel="stylesheet" href="/css/interface.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="/css/picture.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="/css/popup.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" />
+        <link rel="stylesheet" href="/css/interface.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="/css/picture.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="/css/popup.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" />
 
-    <title>Pictura</title>
+        <title>Pictura</title>
 
     <!--[if IE]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -71,14 +68,8 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
 			<?php
 				$communities = $db->getAllCommunities();
 				for ($i = 0; $i < count($communities); ++$i) {
-                    if($isLoggedIn) {
-                        $follow = $db->isUserFollowing($user["pseudo"], $communities[$i]["nom"]);
-                    } else {
-                        $follow = 0;
-                    }
-
 				    echo "          
-				    <a class='community_cell_container' href='community.php?n=" . htmlentities($communities[$i]["nom"]) . "&follow=" . htmlentities($follow) . "&user=" . htmlentities($user["pseudo"]) . "' title='" . htmlentities($communities[$i]["detail"]) . "'>
+				    <a class='community_cell_container' href='community.php?n=" . htmlentities($communities[$i]["nom"]) . "' title='" . htmlentities($communities[$i]["detail"]) . "'>
 				    	<div class='community_cell_icon' style='background-image: url(files/". htmlentities($communities[$i]["imageDeProfil"]) ."),  url(\"files/community_default.PNG\")'></div> " . htmlentities($communities[$i]["nom"]) . "
 				    </a>";
 				}

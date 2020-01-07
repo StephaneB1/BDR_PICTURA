@@ -195,9 +195,13 @@ class db
     }
 
     public function quitCommunity($username, $community) {
-        //$query = $this->connexion->prepare("TODO");
+        $query = $this->connexion->prepare("
+            DELETE FROM utilisateur_suit_communaute
+                WHERE pseudoUtilisateur = '$username'
+                    AND nomCommunaute = '$community';
+        ");
 
-        //return $query->execute();
+        return $query->execute();
     }
 
     public function getUserFeedPictures($username) {

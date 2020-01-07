@@ -115,11 +115,8 @@ function escApastrophes($text) {
     return str_replace("'", "\\'", $text);
 }
 
-/*
- * Escapes apostrohpes by adding a backslash prefix
- */
-function escApastrophes($text) {
-    return str_replace("'", "\\'", $text);
+function getFileFormats() {
+    return join(',', prefixStringArray(IMAGE_FORMATS, "."));
 }
 
 /*
