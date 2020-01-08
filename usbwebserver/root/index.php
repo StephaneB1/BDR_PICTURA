@@ -225,8 +225,8 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
                 <textarea id='name' name='detail' placeholder='Describe your community here...' required></textarea>
 
                 <!-- Profile Picture input-->
-                <label for='profilepic'>Profile Picture  :  </label>                
-                <input id='ppinput' name='profilepic' onchange=\"loadFile(event, 'profile_picture_popup');\" type='file' placeholder='Profile picture' accept=\"" . getFileFormats() ."\"/>
+                <label for='files'>Profile Picture  :  </label>                
+                <input id='ppinput' name='files' onchange=\"loadFile(event, 'profile_picture_popup');\" type='file' placeholder='Profile picture' accept=\"" . getFileFormats() ."\"/>
                 
                 <input type='submit' value='Create a new community'>
 
