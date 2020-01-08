@@ -19,9 +19,13 @@ if (!isset($_GET["n"])) {
 
 $community = $db->getCommunityByName($_GET["n"])[0];
 $isLoggedIn = checkIfLoggedIn();
-$pseudo = $_SESSION["pseudo"];
 
-$following = $isLoggedIn && !empty($db->isUserFollowing($pseudo, $community["nom"]));
+if($isLoggedIn) {
+    $pseudo = $_SESSION["pseudo"];
+    $following = !empty($db->isUserFollowing($pseudo, $community["nom"]));
+} else {
+    $following = false;
+}
 
 ?>
 
@@ -53,6 +57,7 @@ $following = $isLoggedIn && !empty($db->isUserFollowing($pseudo, $community["nom
 
                 <div class='community_description'>" . htmlentities($community["detail"]) . "</div>";
 
+        if($isLoggedIn)
         echo "
         <div class='myprofile_container'>
             <form id='followCommunityForm' name='followCommunityForm' action='php/form/followCommunityForm.php' method='post'>
@@ -61,12 +66,12 @@ $following = $isLoggedIn && !empty($db->isUserFollowing($pseudo, $community["nom
                 <button  onclick=\"document.getElementById('followCommunityForm').submit()\" class='panel_button'>" . ($following ? "Leave this community" : "Follow this community") . "</button>
             </form>
         </div>
+
+        <div class='myprofile_container'>
+        <button  onclick=\"displayId('postPicturePopup', null)\" class='panel_button'>Post a new picture</button>
+        </div>
         ";
         ?>
-
-        <div class="myprofile_container">
-            <a class="panel_button" onclick="displayId('postPicturePopup', null)">Post a new picture</a>
-        </div>
 
         <div class="community_info_cell">
             <div class="community_cell_icon" id="total_members"></div>
