@@ -134,7 +134,7 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
 
                         <button class="panel_button">Edit my profile</button>
                         <button class="panel_button">Admin page</button>
-                        <button class="panel_button">Logout</button>
+                        <button class="panel_button" onclick="location.href=\''. getHostUrl() . '/php/form/logoutUserForm.php\';">Logout</button>
                     </div>
 
                     <div class="title_container" id="profile_title_container"> 
@@ -148,17 +148,11 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
         		<form id="loginUserForm" name="loginUserForm" action="php/form/loginUserForm.php" method="post">
 	        	<!-- pseudo -->
 	            <p>
-					<label for="pseudo">
-						<i class="material-icons">account_circle</i>
-					</label>
-					<input type="text" id="pseudo" name="pseudo" placeholder="Nom dutilisateur" required autofocus/>
+					<input type="text" id="pseudo" name="pseudo" placeholder="User name" required autofocus/>
 				</p>
 	        	<!-- Password -->
 	            <p>
-					<label for="password">
-						<i class="material-icons">lock</i>
-					</label>
-					<input type="password" id="password" name="password" placeholder="Mot de passe" required/>
+					<input type="password" id="password" name="password" placeholder="Password" required/>
 				</p>
 	
 	            <input type="submit" value="Se connecter"/>
@@ -181,10 +175,14 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
                 }
 
                 for ($i = 0; $i < count($userCommunities); ++$i) {
-                    echo "          
-                    <a class='community_cell_container' href='community.php?n=" . htmlentities($userCommunities[$i]["nom"]) . "' title='" . htmlentities($userCommunities[$i]["nom"]) . "'>
+                    $name = $userCommunities[$i]["nom"];
+                    echo "
+                    <p>
+                    <a class='community_cell_container' href='community.php?n=" . htmlentities($name) . "' title='" . htmlentities($name) . "'>
                         <div class='community_cell_icon' style='background-image: url(files/". htmlentities($userCommunities[$i]["imageDeProfil"]) ."),  url(\"files/community_default.PNG\")'></div>
-                    </a>";
+                        " . htmlentities($name) . "
+                    </a>
+                    </p>";
                 }
 
                 /*echo "
@@ -192,7 +190,7 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
                 </div>";*/
 
                 echo "
-                    <a class='panel_button' href='#createCommunityPopup'>+</a>
+                    <a class='panel_button' onclick=\"displayId('createCommunityPopup', null)\">+</a>
                 </div>";
             }
             ?>
@@ -202,37 +200,34 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
     </div>
 
     <!-- Create a new community form -->
-    <div class="popup_panel" id="createCommunityPopup">
-        <div class="popup_container">
+    <?php
 
-            <!-- flemme de faire autrement pour l'instant :( -->
-            <button id="exitpopup" onclick="location.href='index.php';">X</button>
-
+    createPopup("createCommunityPopup", "
             <form id='insertCommunityForm' name='insertCommunityForm' action='php/form/insertCommunityForm.php' method='post' enctype='multipart/form-data'>
                 
                 <!-- Profile picture icon -->
-                <img id="profile_picture_popup" class="header_picture_popup"></img>
+                <img id='profile_picture_popup' class='header_picture_popup'></img>
 
                 <!-- Name input-->
-                <label for="name">Name*</label>
-                <input type="text" id="name" name="name" placeholder="Enter your community's public name..." required>
+                <label for='name'>Name*</label>
+                <input type='text' id='name' name='name' placeholder=\"Enter your community's public name...\" required>
                 
                 <!-- Description input-->
-                <label for="detail">Description*</label>
-                <textarea id="name" name='detail' placeholder='Describe your community here...' required></textarea>
+                <label for='detail'>Description*</label>
+                <textarea id='name' name='detail' placeholder='Describe your community here...' required></textarea>
 
                 <!-- Profile Picture input-->
-                <label for="profilepic">Profile Picture  :  </label>
-                <?php
-                    echo "<input id='ppinput' name='profilepic' onchange='loadFile(event, \"profile_picture_popup\");' type='file' placeholder='Profile picture' accept=" . join(',', prefixStringArray(IMAGE_FORMATS, ".")) . "'/>";
-                ?>
-
-                <input type="submit" value="Create a new community">
+                <label for='profilepic'>Profile Picture  :  </label>                
+                <input id='ppinput' name='profilepic' onchange=\"loadFile(event, 'profile_picture_popup');\" type='file' placeholder='Profile picture' accept=\"" . getFileFormats() ."\"/>
+                
+                <input type='submit' value='Create a new community'>
 
                 <div class='note'>*must be provided</div>
             </form>
-        </div>
-    </div>
+    
+    ");
+
+    ?>
     
 </body>
 

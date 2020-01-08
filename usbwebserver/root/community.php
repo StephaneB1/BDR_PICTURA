@@ -135,61 +135,49 @@ if($isLoggedIn) {
 </div>
 
 <!-- Post a new picture form -->
-<div class="popup_panel" id="postPicturePopup">
-    <div class="popup_container" id="pictureContainer">
-        <button id='exitpopup' onclick="displayId(null, 'postPicturePopup')">X</button>
+<?php
 
-        <form id='postPictureForm' name='postPictureForm' action='php/form/insertPhotoForm.php' method='post'
-              enctype='multipart/form-data'>
+createPopup("postPicturePopup", "
+        <form id='postPictureForm' name='postPictureForm' action='php/form/insertPhotoForm.php' method='post' enctype='multipart/form-data'>
 
-            <div class="pictureFormContainer">
-                <div class="picturePreviewContainer">
+            <div class='pictureFormContainer'>
+                <div class='picturePreviewContainer'>
                     <!-- Profile picture icon -->
-                    <img id="picture_popup" class="header_picture_popup"/>
+                    <img id='picture_popup' class='header_picture_popup'/>
                 </div>
 
-                <div class="pictureInfos">
+                <div class='pictureInfos'>
                     <!-- Title input-->
-                    <label for="title">Title*</label>
-                    <input type="text" id="title" name="title" placeholder="Enter your picture's public title..."
-                           required autofocus>
+                    <label for='title'>Title*</label>
+                    <input type='text' id='title' name='title' placeholder='Enter a title...' required autofocus/>
 
                     <!-- Description input-->
-                    <label for="detail">Description</label>
-                    <textarea id="name" name='detail' placeholder='Describe your picture here...'></textarea>
+                    <label for='detail'>Description</label>
+                    <textarea id='name' name='detail' placeholder='Describe your picture here...'></textarea>
 
                     <!-- Tags -->
                     <label for='tags'>Balise(s)</label>
-                    <input type='text' id='tags' name='tags' placeholder='Tags (seperated with a space)'
-                           pattern='[a-zA-Z0-9]{1,20}( [a-zA-Z0-9]{1,20})*'/>
+                    <input type='text' id='tags' name='tags' placeholder='Tags (seperated with a space)' pattern='[a-zA-Z0-9]{1,20}( [a-zA-Z0-9]{1,20})*'/>
 
                     <!-- Picture input-->
-                    <label for="files">Picture* : </label>
-                    <input id='ppinput' name='files' onchange="loadFile(event, 'picture_popup')" type='file'
-                           placeholder='Picture' accept='<?php echo getFileFormats(); ?>'/>
+                    <label for='files'>Picture* : </label>
+                    <input id='ppinput' name='files' onchange=\"loadFile(event, 'picture_popup')\" type='file' placeholder='Picture' accept='" . getFileFormats() . "'/>
 
                     <!-- Community (hidden) -->
-                    <input type="hidden" name="community" value="<?php echo $_GET["n"] ?>"/>
+                    <input type='hidden' name='community' value='" . $_GET["n"] . "'/>
 
-                    <input type="submit" value="Post a new picture">
+                    <input type='submit' value='Post a new picture'>
 
                     <div class='note'>*must be provided</div>
                 </div>
             </div>
         </form>
-    </div>
-</div>
-
-
-</body>
-<!--<body>
-<?php
-
-include_once("php/include/menu-h.php");
+");
 
 ?>
 
-<div id="wrapper-content">-->
+</body>
+
 <!-- Header -->
 <!--<div class='col-1-2 unique'>
         <?php
@@ -269,8 +257,5 @@ echo "<p>" . htmlentities($community["detail"]) . "</p>
 <!--<div id="gallery-viewer"></div>
 
 </body>-->
-
-<!-- Image viewer script -->
-<script src="js/galleryViewer.js" type="text/javascript"></script>
 
 </html>

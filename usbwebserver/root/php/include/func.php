@@ -93,19 +93,17 @@ function redirect($page)
 }
 
 /*
- * Displays a popup with given HTML content in it
+ * Creates a popup object with given HTML content in it
  */
 function createPopup($id, $code)
 {
     echo "
-<div id='" . $id . "' class='popup-bg'>
-    <div class='popup center-x'>
-    <p style='padding: 5px;'><i class='material-icons clickable' style='float: right;' onclick=\"displayId(null, '" . $id . "')\">close</i></p>
-            " . $code . "</div>
-</div>";
-
-    echo "<script type='text/javascript'>alert(popup created);</script>";
-
+        <div id='" . $id . "' class='popup_panel'>
+            <div class=\"popup_container\" id=\"pictureContainer\">
+                <button id='exitpopup' onclick=\"displayId(null, '" . $id . "')\">X</button>
+                " . $code . "
+            </div>
+        </div>";
 }
 
 /*
