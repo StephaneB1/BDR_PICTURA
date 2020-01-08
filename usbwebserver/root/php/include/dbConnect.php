@@ -364,6 +364,66 @@ class db
         return $query->execute();
     }
 
+    public function checkIfUserLikedAPicture($username, $photoId) {
+        $query = $this->connexion->prepare("
+            SELECT COUNT(1) AS userLikedThatPicture
+            FROM utilisateur_like_photo
+            WHERE pseudoUtilisateur = '$username' AND idPhoto = '$photoId';
+        ");
+
+        if($query->execute()) {
+            $result = $query->fetch(PDO::FETCH_ASSOC);
+            if($result["userLikedThatPicture"] == 1)
+                return true;
+        }
+
+        return false; // Query error
+    }
+
+    public function likeThisPicture($username, $photoId) {
+        $query = $this->connexion->prepare("
+          INSERT INTO utilisateur_like_photo (pseudoUtilisateur, idPhoto)
+		  VALUES ('$username', '$photoId');
+		");
+
+        return $query->execute();
+    }
+
+    public function unlikeThisPicture($username, $photoId) {
+        $query = $this->connexion->prepare("
+          DELETE FROM utilisateur_like_photo
+		  WHERE pseudoUtilisateur = '$username' AND idPhoto = '$photoId');
+		");
+
+        return $query->execute();
+    }
+
+    public function getTotalLikes($photoId) {
+        $query = $this->connexion->prepare("
+            SELECT COUNT(*) AS total FROM utilisateur_like_photo
+            WHERE idPhoto = '$photoId';
+        ");
+
+        if($query->execute()) {
+            $total_pictures = $query->fetch(PDO::FETCH_ASSOC);
+            return $total_pictures["total"];
+        }
+
+        return false; // Query error
+    }
+
+    public function getPictureComments($photoId) {
+        $query = $this->connexion->prepare("
+            SELECT * FROM commentaire
+            WHERE idPhoto = '$photoId';
+        ");
+
+        if($query->execute())
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        return false; // Query error
+    }
+
+
 } //db class
 
 ?>

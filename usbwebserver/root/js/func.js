@@ -85,3 +85,24 @@ var loadFile = function(event, id) {
 	var image = document.getElementById(id);
 	image.src = URL.createObjectURL(event.target.files[0]);
 };
+
+function likePicture(username, photoId) {
+    alert(username + " " + photoId);
+    /*$.ajax({
+      url:"test.php", //the page containing php script
+      type: "POST", //request type
+      success:function(result){
+       alert(result);
+     }
+   });*/
+}
+
+var on = false;
+function toggleComments() {
+    var commentIcon = document.getElementById("commentsButton");
+    var commentContainer = document.getElementById("commentsContainer");
+    on = !on;
+
+    commentIcon.style.backgroundImage = on ? "url('../imgs/comments_on.png')" : "url('../imgs/comments_off.png')";
+    commentContainer.style.display    = on ? "block" : "none";
+}

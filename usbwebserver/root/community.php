@@ -52,7 +52,7 @@ if($isLoggedIn) {
         echo "<div class='community_cell_container_header'>
                     <div class='community_cell_icon_header' style='background-image: url(files/" . htmlentities($community["imageDeProfil"]) . "),  url(\"files/community_default.PNG\")'></div>"
             . htmlentities($community["nom"]) . "
-                    <a href='../index.php' class='community_exit_button_header'></a>
+                    <a href='../index.php' id='exitCommunity'>X</a>
                 </div>
 
                 <div class='community_description'>" . htmlentities($community["detail"]) . "</div>";

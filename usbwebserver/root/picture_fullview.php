@@ -19,7 +19,7 @@ if (empty($picture)) {
 }
 
 // Pour récuperer l'image de profil mais marche pas...
-$community = $db->getCommunityByName($picture["nomCommunaute"]);
+$community = $db->getCommunityByName($picture["nomCommunaute"])[0];
 
 ?>
 
@@ -27,6 +27,7 @@ $community = $db->getCommunityByName($picture["nomCommunaute"]);
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <link rel="stylesheet" href="/css/interface_fullview.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/css/popup.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" />
 
     <title>PICTURA -  <?php echo $picture["titre"]; ?></title>
@@ -46,28 +47,47 @@ $community = $db->getCommunityByName($picture["nomCommunaute"]);
             <?php
                 echo '
                     <div class="community_cell_container">
-                        <div class="community_cell_icon" style="background-image: url(files/community_default.PNG)"></div> ' . htmlentities($picture["nomCommunaute"]) . '
+                        <div class="community_cell_icon" style="background-image: url(files/'. htmlentities($community["imageDeProfil"]) .'), url(files/community_default.PNG)"></div> ' . htmlentities($picture["nomCommunaute"]) . '
                     </div>
 
                     <div class="pictureHeaderRight">
-                    <div class="pictureFullHeaderTitle">' . htmlentities($picture["titre"]) . '</div>
-                    <div class="pictureFullHeaderSubtitle">' . htmlentities($picture["pseudoUtilisateur"]) . ' • ' . htmlentities($picture["dateHeureAjout"]) . '</div>
-                    <button class="picturePreviewOptionsButton"></button>
+                        <div class="pictureFullHeaderTitle">' . htmlentities($picture["titre"]) . '</div>
+                        <div class="pictureFullHeaderSubtitle">' . htmlentities($picture["pseudoUtilisateur"]) . ' • ' . htmlentities($picture["dateHeureAjout"]) . '</div>
+                        <button id="exitpopup">X</button>
                     </div>
+
+
                 ';
             ?>
-
-
         </div>
 
-        <div class="pictureFullShadowBottom"></div>
+        <?php
+            echo '
+            <div class="pictureFullShadowBottom"></div>
+    
+            <div class="pictureFullFooter">
+                <button class="pictureFullFooterButton" id="commentsButton" onclick="toggleComments()"></button>
+                <button class="pictureFullFooterButton"></button>
+                <div class="textLikeContainer">' . $db->getTotalLikes($picture["id"]) . ' like(s)</div>
+            </div>';
 
-        <div class="pictureFullFooter">
-            <button class="pictureFullFooterButton"></button>
-            <button class="pictureFullFooterButton"></button>
-        </div>
+            echo '<div class="commentsContainer" id="commentsContainer">';
+
+                $comments = $db->getPictureComments($picture["id"]);
+                for ($i = 0; $i < count($comments); ++$i) {
+                    echo '<div class="comment">' 
+                            . $comments[$i]["commentaire"] .
+                            '<br><div class="commentAuthor">- ' . $comments[$i]["pseudoUtilisateur"] .
+                         '</div></div>';
+                }              
+
+            echo '</div>';
+
+        ?>
     </div>
 </body>
+
+
 <!--<body>
 <?php
 

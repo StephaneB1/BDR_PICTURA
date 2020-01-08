@@ -85,6 +85,8 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
                     $user_feed_posts = $db->getUserFeedPictures($user["pseudo"]);
                     
                     for ($i = 0; $i < count($user_feed_posts); ++$i) {
+                        $post_community = $db->getCommunityByName($user_feed_posts[$i]["nomCommunaute"])[0];
+
                         echo 
                         '<a href="picture_fullview.php?id=' . htmlentities($user_feed_posts[$i]["id"]) . '" class="picturePreview" id='. htmlentities($user_feed_posts[$i]["id"]) . ' style="background-image: url(files/'. htmlentities($user_feed_posts[$i]["urlPhoto"]) .')" >
                             <div class="picturePreviewShadowTop"></div>
@@ -93,14 +95,20 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
                             <div class="picturePreviewHeader">
                                 <div class="picturePreviewHeaderTitle">'. htmlentities($user_feed_posts[$i]["titre"]) . '</div>
                                 <div class="picturePreviewHeaderSubtitle">'. htmlentities($user_feed_posts[$i]["pseudoUtilisateur"]) . ' • ' . htmlentities($user_feed_posts[$i]["dateHeureAjout"]) . '</div>
-                                <button class="picturePreviewOptionsButton"></button>
                             </div>
                                         
                             <div class="picturePreviewFooter">
-                                <button class="picturePreviewFooterButton"></button>	
-                                <button class="picturePreviewFooterButton"></button>
-                            </div>
-                        </a>';
+                                <div class="picturePreviewFooterButton" style="background-image: url(files/'. htmlentities($post_community["imageDeProfil"]) .'), url(files/community_default.PNG);"></div>	
+                            ';
+                            
+                            $userLiked = $db->checkIfUserLikedAPicture($user["pseudo"], $user_feed_posts[$i]["id"]);
+                            if($userLiked) {
+                                echo '<button onclick="likePicture('.htmlentities($user["pseudo"]).','.htmlentities($user_feed_posts[$i]["id"]).')" class="picturePreviewFooterButton" style="background-image: url(/imgs/like_on.png);"></button>';
+                            } else {
+                                echo '<button onclick="likePicture('.htmlentities($user["pseudo"]).','.htmlentities($user_feed_posts[$i]["id"]).')" class="picturePreviewFooterButton" style="background-image: url(/imgs/like_off.png);"></button>';
+                            }
+                            
+                            echo '</div></a>';
                     }
                 }
                 ?>
