@@ -105,6 +105,24 @@ input[type=submit]:hover {
 	margin-bottom:20px;
 }
 
+#commentAnswer {
+	height: 50px;
+	width: 100%;
+	padding: 12px 20px;
+	display: inline-block;
+	border: 1px solid #ccc;
+	border-radius: 0px;
+	box-sizing: border-box;
+	background-color: rgba(255, 255, 255, 0.6);
+}
+
+#replyAnswer {
+	padding: 7px 10px;
+	border-radius: 0px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+}
+
 #exitpopup {
 	width: 30px;
 	height: 30px;

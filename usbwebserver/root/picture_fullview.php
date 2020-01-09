@@ -12,6 +12,7 @@ include_once("php/include/dbConnect.php");
 
 $db = new db;
 $picture = $db->getPictureById($_GET["id"])[0];
+$_SESSION["idPhoto"] = $picture["id"];
 
 if (empty($picture)) {
     //Error: invalid picture ID
@@ -67,19 +68,55 @@ $community = $db->getCommunityByName($picture["nomCommunaute"])[0];
     
             <div class="pictureFullFooter">
                 <button class="pictureFullFooterButton" id="commentsButton" onclick="toggleComments()"></button>
-                <button class="pictureFullFooterButton"></button>
+
+                <form id="likePictureForm" name="likePictureForm" action="php/form/likePictureForm.php" method="post">
+                    <input type="hidden" name="picture" value="'. htmlentities($picture['id']) . '"/>
+                    <button  onclick="document.getElementById(\"likePictureForm\").submit()" class="pictureFullFooterButton" style="background-image: url(/imgs/like_on.png)"></button>
+                </form>
                 <div class="textLikeContainer">' . $db->getTotalLikes($picture["id"]) . ' like(s)</div>
             </div>';
 
             echo '<div class="commentsContainer" id="commentsContainer">';
 
-                $comments = $db->getPictureComments($picture["id"]);
+                $comments = $db->getRootPictureComments($picture["id"]);
                 for ($i = 0; $i < count($comments); ++$i) {
+                    //Un seul niveau de réponse (pas trop le time de faire un truc récursif)
+                    $answers = $db->getCommentAnswers($comments[$i]["dateHeureAjout"], $comments[$i]["idPhoto"]);
                     echo '<div class="comment">' 
                             . $comments[$i]["commentaire"] .
-                            '<br><div class="commentAuthor">- ' . $comments[$i]["pseudoUtilisateur"] .
-                         '</div></div>';
-                }              
+                            '<br><div class="commentAuthor">- ' . $comments[$i]["pseudoUtilisateur"] .'</div>
+                         </div>';
+
+                        for ($j = 0; $j < count($answers); ++$j) {
+                            echo '<div class="comment" id="answer">' . $answers[$j]["commentaire"] . 
+                                        '<br><div class="commentAuthor" id="answerAuthor">- ' . $answers[$j]["pseudoUtilisateur"] .'</div>
+                                    </div>';
+                        }
+
+                        echo "<form id='insertCommentForm' name='insertCommentForm' action='php/form/insertCommentForm.php' method='post' enctype='multipart/form-data'>
+                            <!-- Comment input-->
+                            <textarea id='commentAnswer' name='comment' placeholder='Reply to this comment...' required></textarea>
+        
+                            <!-- Photo (hidden) -->
+                            <input type='hidden' name='photo' value='" . $picture["id"] . "'/>
+
+                            <!-- Parent (hidden) -->
+                            <input type='hidden' name='parent' value='" . $comments[$i]["dateHeureAjout"] . "'/>
+
+                            <input type='submit' id='replyAnswer' value='Reply'>
+                        </form>";
+                }             
+            
+            echo "<form id='insertCommentForm' name='insertCommentForm' action='php/form/insertCommentForm.php' method='post' enctype='multipart/form-data'>
+ 
+                    <!-- Comment input-->
+                    <textarea id='name' name='comment' placeholder='Comment on this picture...' required></textarea>
+
+                    <!-- Photo (hidden) -->
+                    <input type='hidden' name='photo' value='" . $picture["id"] . "'/>
+
+                    <input type='submit' style='margin-bottom: 10px;' value='Comment'>
+                </form>";
 
             echo '</div>';
 

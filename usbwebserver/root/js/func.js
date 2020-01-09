@@ -97,10 +97,11 @@ function likePicture(username, photoId) {
    });*/
 }
 
-var on = false;
+var on = true;
 function toggleComments() {
     var commentIcon = document.getElementById("commentsButton");
     var commentContainer = document.getElementById("commentsContainer");
+
     on = !on;
 
     commentIcon.style.backgroundImage = on ? "url('../imgs/comments_on.png')" : "url('../imgs/comments_off.png')";

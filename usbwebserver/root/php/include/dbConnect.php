@@ -161,7 +161,7 @@ class db
      * Insert new community
 	 * return true or false wether the query was a success or not
      */
-    public function insertCommunity($name, $detail, $picture, $creator) {
+    public function insertCommunity($name, $detail, $picture) {
         $this->correctNullString($picture);
 
         $query = $this->connexion->prepare("
@@ -169,14 +169,7 @@ class db
 		  VALUES ('$name', '$detail', $picture)
 		");
 
-        $result = $query->execute();
-
-        // Creator is set as the community's administrator
-        if($result) {
-            $result = $this->insertAdmin($creator, $name, 1);
-        }
-
-        return $result;
+        return $query->execute();
     }
 
     public function getUserCommunities($username) {
@@ -286,7 +279,14 @@ class db
         return false; // Query error
     }
 
-   public function insertPhoto($title, $detail, $user, $community, $fileName, $tags) {
+    // TODO
+    /*public function addNewPicture() {
+        INSERT INTO photo (titre, detail, dateHeureAjout, masquee, pseudoUtilisateur, nomCommunaute, urlPhoto) 
+        VALUES (...);
+    }*/
+
+   public function insertPhoto($title, $detail, $user, $community, $fileName, $tags)
+   {
        $this->correctNullString($detail);
        $result = true;
 
@@ -321,32 +321,6 @@ class db
         if($query->execute())
             return $query->fetchAll(PDO::FETCH_ASSOC);
         return false; // Query error
-    }
-
-    /* ------ Comments ------ */
-
-    public function insertComment($photoId, $user, $comment, $parent) {
-        // Define exact same datetime for both INSERT (for table Commentaire and Reponse_Commentaire)
-        $dateTime = date("Y-m-d H-i-s");
-
-        $query = $this->connexion->prepare("
-          INSERT INTO Commentaire (dateHeureAjout, idPhoto, pseudoUtilisateur, commentaire)
-		  VALUES ('$dateTime', $photoId, '$user', '$comment');
-		");
-
-        $result = $query->execute();
-
-        if($result && !empty($parent)){
-            // Comment is a response
-            $query = $this->connexion->prepare("
-              INSERT INTO Reponse_Commentaire (dateHeureAjout_Reponse, idPhoto_Reponse, dateHeureAjout_Parent, idPhoto_Parent)
-              VALUES ('$dateTime', $photoId, '$parent', $photoId)
-            ");
-
-            $result = $result && $query->execute();
-        }
-
-        return $result;
     }
 
     /* ------ Tags ------ */
@@ -438,43 +412,55 @@ class db
         return false; // Query error
     }
 
-    public function getPictureComments($photoId) {
+    public function getRootPictureComments($photoId) {
         $query = $this->connexion->prepare("
-            SELECT * FROM commentaire
-            WHERE idPhoto = '$photoId';
+            SELECT *
+                FROM commentaire
+                LEFT JOIN reponse_commentaire ON reponse_commentaire.dateHeureAjout_Reponse = commentaire.dateHeureAjout
+                WHERE idPhoto='$photoId' AND reponse_commentaire.dateHeureAjout_Reponse IS NULL;
         ");
 
-        if($query->execute())
         if($query->execute())
             return $query->fetchAll(PDO::FETCH_ASSOC);
         return false; // Query error
     }
 
-
-    /* ------ Administration ------ */
-
-    /**
-     * @param $user
-     * @param $community
-     * @param $privilege 0 = moderator, 1 = administrator
-     * @return bool
-     */
-    public function insertAdmin($user, $community, $privilege) {
+    // TODO
+    public function getCommentAnswers($dateAjoutParent, $idPhoto) {
         $query = $this->connexion->prepare("
-          INSERT INTO Utilisateur_Modere_Communaute (pseudoUtilisateur, nomCommunaute, niveauPrivilege)
-		  VALUES ('$user', '$community', $privilege)
-		");
+            SELECT * FROM commentaire
+                INNER JOIN reponse_commentaire
+                    ON commentaire.dateHeureAjout = reponse_commentaire.dateHeureAjout_Reponse AND commentaire.idPhoto = reponse_commentaire.idPhoto_Parent
+            WHERE dateHeureAjout_Parent = '$dateAjoutParent' AND idPhoto_Parent = '$idPhoto';
+        ");
 
-        return $query->execute();
+        if($query->execute())
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        return false; // Query error
     }
 
-    public function deleteAdmin($user, $community) {
-        $query = $this->connexion->prepare("
-          DELETE FROM Utilisateur_Modere_Communaute
-          WHERE pseudoUtilisateur = '$user' AND nomCommunaute = '$community'
-		");
+    public function insertComment($photoId, $user, $comment, $parent) {
 
-        return $query->execute();
+        $dateTime = date("Y-m-d H-i-s");
+
+        $query = $this->connexion->prepare("
+            INSERT INTO Commentaire (dateHeureAjout, idPhoto, pseudoUtilisateur, commentaire)
+            VALUES ('$dateTime', '$photoId', '$user', '$comment');
+        ");
+  
+        $result = $query->execute();
+
+        if($result && !empty($parent)) {
+            // Comment is a response
+            $query = $this->connexion->prepare("
+                INSERT INTO reponse_commentaire (dateHeureAjout_Reponse, idPhoto_Reponse, dateHeureAjout_Parent, idPhoto_Parent)
+                VALUES ('$dateTime', '$photoId', '$parent', '$photoId');
+            ");
+
+            $result = $result && $query->execute();
+        }
+
+        return $result;
     }
 
 } //db class
