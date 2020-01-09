@@ -40,7 +40,8 @@ BEGIN
     THEN
 		DELETE FROM Commentaire
         WHERE (NEW.dateHeureAjout_Reponse,NEW.idPhoto_Reponse) = (dateHeureAjout,idPhoto);
-		SIGNAL SQLSTATE '45000';
+		SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = "Comment IdPhoto != Responde IdPhoto";
 	END IF;
 END
 $$
@@ -55,7 +56,8 @@ BEGIN
     THEN
 		DELETE FROM Commentaire
         WHERE (NEW.dateHeureAjout_Reponse,NEW.idPhoto_Reponse) = (dateHeureAjout,idPhoto);
-		SIGNAL SQLSTATE '45000';
+		SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = "Comment date > Response date";
 	END IF;
 END
 $$
@@ -70,7 +72,8 @@ BEGIN
 							  FROM Photo
 							  WHERE NEW.idPhoto = Photo.id)
     THEN
-		SIGNAL SQLSTATE '45000';
+		SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = "Comment date < Photo date";
 	END IF;
 END
 $$
@@ -89,7 +92,8 @@ BEGIN
          FROM Utilisateur_Modere_Communaute
 		 WHERE niveauPrivilege = 1 AND nomCommunaute = OLD.nomCommunaute) = 1
     THEN
-		SIGNAL SQLSTATE '45000';
+		SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = "can't update last admin from community into mod";
 	END IF;
 END
 $$
@@ -105,7 +109,8 @@ BEGIN
          FROM Utilisateur_Modere_Communaute
 		 WHERE niveauPrivilege = 1 AND nomCommunaute = OLD.nomCommunaute) = 1
     THEN
-		SIGNAL SQLSTATE '45000';
+		SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = "can't delete last admin from community";
 	END IF;
 END
 $$
