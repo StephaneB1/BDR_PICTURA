@@ -161,7 +161,7 @@ class db
      * Insert new community
 	 * return true or false wether the query was a success or not
      */
-    public function insertCommunity($name, $detail, $picture) {
+    public function insertCommunity($name, $detail, $picture, $creator) {
         $this->correctNullString($picture);
 
         $query = $this->connexion->prepare("
@@ -169,7 +169,14 @@ class db
 		  VALUES ('$name', '$detail', $picture)
 		");
 
-        return $query->execute();
+        $result = $query->execute();
+
+        // Creator is set as the community's administrator
+        if($result) {
+            $result = $this->insertAdmin($creator, $name, 1);
+        }
+
+        return $result;
     }
 
     public function getUserCommunities($username) {
@@ -279,14 +286,7 @@ class db
         return false; // Query error
     }
 
-    // TODO
-    /*public function addNewPicture() {
-        INSERT INTO photo (titre, detail, dateHeureAjout, masquee, pseudoUtilisateur, nomCommunaute, urlPhoto) 
-        VALUES (...);
-    }*/
-
-   public function insertPhoto($title, $detail, $user, $community, $fileName, $tags)
-   {
+   public function insertPhoto($title, $detail, $user, $community, $fileName, $tags) {
        $this->correctNullString($detail);
        $result = true;
 
@@ -461,6 +461,32 @@ class db
         }
 
         return $result;
+    }
+
+    /* ------ Administration ------ */
+
+    /**
+     * @param $user
+     * @param $community
+     * @param $privilege 0 = moderator, 1 = administrator
+     * @return bool
+     */
+    public function insertAdmin($user, $community, $privilege) {
+        $query = $this->connexion->prepare("
+          INSERT INTO Utilisateur_Modere_Communaute (pseudoUtilisateur, nomCommunaute, niveauPrivilege)
+		  VALUES ('$user', '$community', $privilege)
+		");
+
+        return $query->execute();
+    }
+
+    public function deleteAdmin($user, $community) {
+        $query = $this->connexion->prepare("
+          DELETE FROM Utilisateur_Modere_Communaute
+          WHERE pseudoUtilisateur = '$user' AND nomCommunaute = '$community'
+		");
+
+        return $query->execute();
     }
 
 } //db class
