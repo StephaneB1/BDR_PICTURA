@@ -123,7 +123,7 @@ CREATE TABLE Commentaire (
   idPhoto INT UNSIGNED,
   pseudoUtilisateur VARCHAR(20) NOT NULL,
   commentaire VARCHAR(500) NOT NULL,
-  CONSTRAINT PK_Commentaire PRIMARY KEY (dateHeureAjout, idPhoto)
+  CONSTRAINT PK_Commentaire PRIMARY KEY (dateHeureAjout, idPhoto, pseudoUtilisateur)
 ) 
 ENGINE = InnoDB;
 
@@ -133,9 +133,11 @@ ENGINE = InnoDB;
 CREATE TABLE Reponse_Commentaire (  
   dateHeureAjout_Reponse DATETIME,
   idPhoto_Reponse INT UNSIGNED,
+  pseudoUtilisateur_Reponse VARCHAR(20),
   dateHeureAjout_Parent DATETIME NOT NULL,
   idPhoto_Parent INT UNSIGNED NOT NULL,
-  CONSTRAINT PK_Reponse_Commentaire PRIMARY KEY (dateHeureAjout_Reponse, idPhoto_Reponse)
+  pseudoUtilisateur_Parent VARCHAR(20) NOT NULL,
+  CONSTRAINT PK_Reponse_Commentaire PRIMARY KEY (dateHeureAjout_Reponse, idPhoto_Reponse, pseudoUtilisateur_Reponse)
 ) 
 ENGINE = InnoDB;
 
@@ -210,11 +212,11 @@ ALTER TABLE Commentaire ADD CONSTRAINT FK_Commentaire_pseudoUtilisateur
     ON DELETE CASCADE;
     
  ALTER TABLE Reponse_Commentaire ADD CONSTRAINT FK_Commentaire_Parent
-    FOREIGN KEY (dateHeureAjout_Parent , idPhoto_Parent) REFERENCES Commentaire (dateHeureAjout , idPhoto)
+    FOREIGN KEY (dateHeureAjout_Parent , idPhoto_Parent, pseudoUtilisateur_Parent) REFERENCES Commentaire (dateHeureAjout , idPhoto, pseudoUtilisateur)
     ON DELETE CASCADE
     ON UPDATE CASCADE;
     
 ALTER TABLE Reponse_Commentaire ADD CONSTRAINT FK_Commentaire_Reponse
-    FOREIGN KEY (dateHeureAjout_Parent , idPhoto_Parent) REFERENCES Commentaire (dateHeureAjout , idPhoto)
+    FOREIGN KEY (dateHeureAjout_Reponse , idPhoto_Reponse, pseudoUtilisateur_Reponse) REFERENCES Commentaire (dateHeureAjout , idPhoto, pseudoUtilisateur)
     ON DELETE CASCADE
     ON UPDATE CASCADE;

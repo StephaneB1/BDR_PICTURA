@@ -39,7 +39,7 @@ BEGIN
 		NEW.idPhoto_Parent <> NEW.idPhoto_Reponse
     THEN
 		DELETE FROM Commentaire
-        WHERE (NEW.dateHeureAjout_Reponse,NEW.idPhoto_Reponse) = (dateHeureAjout,idPhoto);
+        WHERE (NEW.dateHeureAjout_Reponse,NEW.idPhoto_Reponse,NEW.pseudoUtilisateur_Reponse) = (dateHeureAjout,idPhoto,pseudoUtilisateur);
 		SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = "Comment IdPhoto != Responde IdPhoto";
 	END IF;
@@ -55,7 +55,7 @@ BEGIN
 		NEW.dateHeureAjout_Parent >= NEW.dateHeureAjout_Reponse
     THEN
 		DELETE FROM Commentaire
-        WHERE (NEW.dateHeureAjout_Reponse,NEW.idPhoto_Reponse) = (dateHeureAjout,idPhoto);
+        WHERE (NEW.dateHeureAjout_Reponse,NEW.idPhoto_Reponse,NEW.pseudoUtilisateur_Reponse) = (dateHeureAjout,idPhoto,pseudoUtilisateur);
 		SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = "Comment date > Response date";
 	END IF;

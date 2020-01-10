@@ -34,7 +34,7 @@ INSERT INTO Commentaire VALUES ("2010-10-10 14:30:30","2","Steph","c'est nul");
 INSERT INTO Commentaire VALUES ("2011-10-10 14:30:30","1","Steph","c'est nul");
 
 -- INSERT INTO Reponse_Commentaire VALUES ("2010-10-10 14:30:30","2","2010-10-10 15:30:30","2"); TRIGGER reponse_bonne_date
-INSERT INTO Reponse_Commentaire VALUES ("2011-10-10 14:30:30","1","2010-10-10 15:30:30","1");
+INSERT INTO Reponse_Commentaire VALUES ("2011-10-10 14:30:30","1","Steph","2010-10-10 15:30:30","1","Simon");
 -- INSERT INTO Reponse_Commentaire VALUES ("2011-10-10 14:30:30","1","2010-10-10 15:30:30","2"); TRIGGER reponse_meme_photo
 
 -- INSERT INTO Commentaire VALUES ("2009-09-10 14:30:30","1","Robin","j'adore tester la BD"); TRIGGER commentaire_bonne_date
@@ -65,3 +65,6 @@ WHERE pseudoUtilisateur = "Steph";
 
 INSERT INTO Photo_Balise VALUES("1","funny");
 INSERT INTO Photo_Balise VALUES("2","cool");
+
+DELETE FROM Communaute
+WHERE nom = "Chats";
