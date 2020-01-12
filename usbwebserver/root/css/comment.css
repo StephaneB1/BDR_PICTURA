@@ -1,0 +1,44 @@
+/*
+
+EXAMPLE
+
+<!-- Parent comment -->
+<div class="comment">
+    <p class="author">user</p>
+    <p class="content">bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
+        <br/><a href="">Respond</a>
+    </p>
+
+    <!-- Child comment -->
+    <div class="comment-child">
+        <p class="author">user</p>
+        <p class="content">bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
+            <br/><a href="">Respond</a>
+        </p>
+    </div>
+</div>
+
+*/
+
+[class*='comment'] {
+    position: relative;
+    float: left;
+    width: 60%;
+    padding: 10px 0 0 10px;
+    /*border-top: rgba(150, 150, 150, 0.6) solid 1px;*/
+}
+.comment-child {
+    float: right;
+    width: 96%;
+    border-left: rgba(150, 150, 150, 0.6) solid 3px;
+    background-color: rgba(150, 150, 150, 0.1);
+}
+[class*='comment'] .author {
+    font-style: italic;
+}
+[class*='comment'] .content {
+    margin-bottom: 1%;
+}
+[class*='comment'] a {
+    font-size: 0.8em;
+}

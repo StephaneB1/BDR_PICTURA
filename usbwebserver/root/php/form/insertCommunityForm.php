@@ -49,7 +49,7 @@ if ($formCorrect == true) {
     include_once($_SERVER['DOCUMENT_ROOT'] . "/php/include/dbConnect.php");
     $db = new db;
 
-    if (!$db->insertCommunity($name, $detail, $fileName)) { // Insert community
+    if (!$db->insertCommunity($name, $detail, $fileName, $_SESSION["pseudo"])) { // Insert community
         //$_SESSION["e"] = 1; // Store error code
         previousPage(); // Go back to form page (keep form values)
     }

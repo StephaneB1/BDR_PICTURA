@@ -474,7 +474,7 @@ class db
     public function insertAdmin($user, $community, $privilege) {
         $query = $this->connexion->prepare("
           INSERT INTO Utilisateur_Modere_Communaute (pseudoUtilisateur, nomCommunaute, niveauPrivilege)
-		  VALUES ('$user', '$community', $privilege)
+		  VALUES ('$user', '$community', $privilege);
 		");
 
         return $query->execute();
@@ -483,10 +483,45 @@ class db
     public function deleteAdmin($user, $community) {
         $query = $this->connexion->prepare("
           DELETE FROM Utilisateur_Modere_Communaute
-          WHERE pseudoUtilisateur = '$user' AND nomCommunaute = '$community'
+          WHERE pseudoUtilisateur = '$user' AND nomCommunaute = '$community';
 		");
 
         return $query->execute();
+    }
+
+    public function banPhoto($photoId) {
+        $query = $this->connexion->prepare("
+          UPDATE TABLE Photo
+          SET masquee = 1
+          WHERE id = $photoId;
+		");
+
+        return $query->execute();
+    }
+
+    /**
+     * @param $user
+     * @param $community
+     * @param $privilege if null, check for any value of niveauPrivilege
+     * @return bool
+     */
+    public function isAdmin($user, $community, $privilege) {
+
+        $query = $this->connexion->prepare("
+            SELECT * FROM Utilisateur_Modere_Communaute
+                WHERE pseudoUtilisateur = '$user'
+                    AND nomCommunaute = '$community'
+                    " . (empty($privilege) ? "" : "AND niveauPrivilege = ".$privilege).";
+        ");
+
+        if(!$query->execute())
+            return false; // Query error
+
+        // Check if admin
+        if(!empty($query->fetchAll(PDO::FETCH_ASSOC)))
+            return true;
+        return false;
+
     }
 
 } //db class
