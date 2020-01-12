@@ -57,9 +57,25 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
 
     <div class="container" id="main_container">
 	
+
+        <!-- TOP BAR -->
+        <div class="topPanel" id="topSearchPanel">
+            <div>
+                <button class="topPanelButton" id="openSideBarButton" onClick="openSidePanel()"></button>
+                <img src="imgs/pictura_logo.png" style="height: 30px;" />
+            </div>
+            
+            <div class="topPanelRight">
+                <button class="topPanelButton" id="gridButton"></button>
+                <button class="topPanelButton" id="nightmodeButton" onClick="switchNightMode()"></button>
+                <button class="topPanelButton" id="profileButton"></button>
+            </div>
+
+            <div class="shadow"></div>
+        </div> 
+
         <!-- COMMUNITY PANEL -->
         <div class="leftpanel" id="community_panel">
-            <img src="imgs/pictura_logo.png" style="width:80%; margin-top:10px; margin-bottom: 20px;" />
             <div class="title_container" id="community_title_container">
                 Communities
                 <div class="title_line" id="community_title_line"></div>
@@ -117,20 +133,22 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
         </div>
         
         <!-- PROFILE PANEL -->
-        <div class="rightpanel" id="user_panel">
-            <div class="option_buttons_container">
-                <button type="image" class="option_button" onClick="switchNightMode()">N</button>
-                <button class="option_button" onClick=""></button>
-                <button class="option_button" onClick=""></button>
-                <button class="option_button" onClick=""></button>                
-            </div>
+        <div class="profileContainer">
+            <div class="arrow-up"></div>
+
+                My Profile
+
+
+        <div>
+
+
+        <!-- <div class="rightpanel" id="user_panel">
 			
 			<div class="title_container" id="profile_title_container">
                 My Profile
                 <div class="title_line" id="profile_title_line"></div>
             </div>
 			
-            <!-- BASIC PROFILE INFO -->
 			<?php
 	        if ($isLoggedIn) {
                 echo '
@@ -156,7 +174,7 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
         		<form id="loginUserForm" name="loginUserForm" action="php/form/loginUserForm.php" method="post">
 	        	<!-- pseudo -->
 	            <p>
-					<input type="text" id="pseudo" name="pseudo" placeholder="User name" required autofocus/>
+					<input type="text" id="pseudo" name="pseudo" placeholder="Username" required autofocus/>
 				</p>
 	        	<!-- Password -->
 	            <p>
@@ -170,7 +188,6 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
             }
        		?>
 
-            <!-- USER COMMUNITIES -->
             <?php
             if ($isLoggedIn) {
 
@@ -205,7 +222,7 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
             
 
         </div>
-    </div>
+    </div>-->
 
     <!-- Create a new community form -->
     <?php
@@ -241,6 +258,7 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
 
 <script src="js/home.js"></script>
 <script src="js/interface.js"></script>
+<script src="js/func.js"></script>
 
 <?php
 /*

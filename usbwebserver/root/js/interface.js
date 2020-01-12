@@ -5,6 +5,7 @@
 function switchNightMode() {
     document.getElementById("main_container").classList.toggle("nightmode");
     document.getElementById("community_panel").classList.toggle("nightmode");
+    document.getElementById("topSearchPanel").classList.toggle("nightmode");
     document.getElementById("feed_panel").classList.toggle("nightmode");
     document.getElementById("user_panel").classList.toggle("nightmode");
     document.getElementById("community_title_line").classList.toggle("nightmode");
@@ -22,13 +23,3 @@ function switchNightMode() {
         buttons.item(i).classList.toggle("nightmode");
     }
 }
-
-// Hide nav on scroll function
-var nav = document.querySelector('.mainNav');
-var position = 0;
-window.addEventListener('scroll', function() {
-    document.getElementById("topNavBar").style.display = position < window.pageYOffset ? "none" : "block";
-    position = window.pageYOffset;
-})
-
-

@@ -22,11 +22,47 @@ function displayTab(tabName, selector) {
     selector.className += " tab-selected";
 }
 
+// OK donc toutes les fonctions que je met ici je peux pas les appelers ? 
+/*
+ * @brief Enables / disables night mode
+ */
+/*function switchNightMode() {
+    document.getElementById("main_container").classList.toggle("nightmode");
+    document.getElementById("community_panel").classList.toggle("nightmode");
+    document.getElementById("feed_panel").classList.toggle("nightmode");
+    document.getElementById("user_panel").classList.toggle("nightmode");
+    document.getElementById("community_title_line").classList.toggle("nightmode");
+    document.getElementById("username_highlight").classList.toggle("nightmode");
+    
+    var communities = document.getElementsByClassName("community_cell_container");
+    for(var i = 0; i < communities.length; i++)
+    {
+        communities.item(i).classList.toggle("nightmode");
+    }
+
+    var buttons = document.getElementsByClassName("panel_button");
+    for(var i = 0; i < buttons.length; i++)
+    {
+        buttons.item(i).classList.toggle("nightmode");
+    }
+}*/
+
+// MARCHE PAS MAIS WHY ??? >:(
+/*document.getElementById ("openSideBarButton").addEventListener("click", openSidePanel, false);
+var on = false;
+function openSidePanel() {      
+    alert("hmmmm");
+    document.getElementById('community_panel').style.display = on ? "block" : "none";
+    document.getElementById('openSideBarButton').style.backgroundImage = URL("../imgs/sidePanelButtonHover.png");
+    on = !on;
+}*/
 
 /*
 * Summary: Displays and hide the elements from their id
 */
 function displayId(idToShow, idToHide) {
+
+    alert("okkk");
     
 	var divToShow = document.getElementById(idToShow);
 	var divToHide = document.getElementById(idToHide);
