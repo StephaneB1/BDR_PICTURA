@@ -135,20 +135,10 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
         <!-- PROFILE PANEL -->
         <div class="profileContainer">
             <div class="arrow-up"></div>
-
-                My Profile
-
-
-        <div>
-
-
-        <!-- <div class="rightpanel" id="user_panel">
-			
-			<div class="title_container" id="profile_title_container">
+            <div class="title_container" id="profile_title_container"> 
                 My Profile
                 <div class="title_line" id="profile_title_line"></div>
             </div>
-			
 			<?php
 	        if ($isLoggedIn) {
                 echo '
@@ -160,7 +150,7 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
 
                         <button class="panel_button">Edit my profile</button>
                         <button class="panel_button">Admin page</button>
-                        <button class="panel_button" onclick="location.href=\''. getHostUrl() . '/php/form/logoutUserForm.php\';">Logout</button>
+                        <button class="panel_button" id="logout_button" onclick="location.href=\''. getHostUrl() . '/php/form/logoutUserForm.php\';">Logout</button>
                     </div>
 
                     <div class="title_container" id="profile_title_container"> 
@@ -168,6 +158,26 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
                         <div class="title_line" id="profile_title_line"></div>
                     </div>
 					';
+					
+				$userCommunities = $db->getUserCommunities($user["pseudo"]);
+
+                if(count($userCommunities) == 0) {
+                    echo "You are not following any communities";
+                } else {
+                    echo "<div class=communities_bubble_container>";
+                }
+
+                for ($i = 0; $i < count($userCommunities); ++$i) {
+                    echo "          
+				    <a class='community_cell_container' href='community.php?n=" . htmlentities($userCommunities[$i]["nom"]) . "' title='" . htmlentities($userCommunities[$i]["detail"]) . "'>
+				    	<div class='community_cell_icon' style='background-image: url(files/". htmlentities($userCommunities[$i]["imageDeProfil"]) ."),  url(\"files/community_default.PNG\")'></div> " . htmlentities($communities[$i]["nom"]) . "
+				    </a>";
+                }
+
+                echo "
+                    <a class='panel_button' onclick=\"displayId('createCommunityPopup', null)\">Create a new community</a>
+                </div>";
+
 	        } else {
 				echo '
 				<!-- Login form -->		
@@ -187,6 +197,16 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
 				<a href="connexion.php">register</a>	';
             }
        		?>
+
+        <div>
+
+
+        <!-- <div class="rightpanel" id="user_panel">
+			
+			<div class="title_container" id="profile_title_container">
+                My Profile
+                <div class="title_line" id="profile_title_line"></div>
+            </div>
 
             <?php
             if ($isLoggedIn) {

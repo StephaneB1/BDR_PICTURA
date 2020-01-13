@@ -1,6 +1,7 @@
 
 #community_feed_panel {
     width:100%;
+	padding: 10px;
 }
 
 /* =====  COMMUNITY CELLS ===== */
@@ -12,7 +13,6 @@
     color: black;
     text-decoration: none;
     align-items: center;
-    padding-left: 10px;
 }
 
 .community_cell_icon_header {
@@ -75,7 +75,6 @@
 .follow_button {
     width: 80%;
     height: 25px;
-    margin-top:5px;
 }
 
 #exitCommunity {
@@ -90,7 +89,10 @@
     color: rgb(255, 70, 70);	
     display: inline-block;
     position: absolute;
-    right: 0px;
+    right: 10px;
+	line-height: 30px;
+	fontsize: 13px;
+	text-align: center;
 }
 
 #exitCommunity:hover {

@@ -44,10 +44,25 @@ if($isLoggedIn) {
 <body id="body">
 
 <div class="container">
+
+    <!-- TOP BAR -->
+    <div class="topPanel" id="topSearchPanel">
+        <div>
+            <button class="topPanelButton" id="openSideBarButton" onClick="openSidePanel()"></button>
+            <img src="imgs/pictura_logo.png" style="height: 30px;" />
+        </div>
+        
+        <div class="topPanelRight">
+            <button class="topPanelButton" id="gridButton"></button>
+            <button class="topPanelButton" id="nightmodeButton" onClick="switchNightMode()"></button>
+            <button class="topPanelButton" id="profileButton"></button>
+        </div>
+
+        <div class="shadow"></div>
+    </div> 
+		
     <!-- COMMUNITY PANEL -->
     <div class="leftpanel">
-        <img src="../imgs/pictura_logo.png" style="width:80%; margin-top:10px; margin-bottom: 10px;"/>
-
         <?php
         echo "<div class='community_cell_container_header'>
                     <div class='community_cell_icon_header' style='background-image: url(files/" . htmlentities($community["imageDeProfil"]) . "),  url(\"files/community_default.PNG\")'></div>"
@@ -93,11 +108,16 @@ if($isLoggedIn) {
 
         <?php
         $admins = $db->getAllCommunityAdmins($community["nom"]);
-
         for ($i = 0; $i < count($admins); ++$i) {
+			if($admins[$i]["niveauPrivilege"] == 1) {
+				$adminStatus = "ADMIN";
+			} else {
+				$adminStatus = "MOD";
+			}
+		
             echo "          
                     <div class='community_info_cell'>
-                        " . htmlentities($admins[$i]["pseudoUtilisateur"]) . "
+                        [" . htmlentities($adminStatus) . "] " . htmlentities($admins[$i]["pseudoUtilisateur"]) . "
                     </div>";
         }
         ?>
