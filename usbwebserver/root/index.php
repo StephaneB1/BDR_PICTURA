@@ -61,14 +61,14 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
         <!-- TOP BAR -->
         <div class="topPanel" id="topSearchPanel">
             <div>
-                <button class="topPanelButton" id="openSideBarButton" onClick="openSidePanel()"></button>
+                <button class="topPanelButton" id="openSideBarButton" onclick="openSidePanel()"></button>
                 <img src="imgs/pictura_logo.png" style="height: 30px;" />
             </div>
             
             <div class="topPanelRight">
                 <button class="topPanelButton" id="gridButton"></button>
-                <button class="topPanelButton" id="nightmodeButton" onClick="switchNightMode()"></button>
-                <button class="topPanelButton" id="profileButton"></button>
+                <button class="topPanelButton" id="nightmodeButton" onclick="switchNightMode()"></button>
+                <button class="topPanelButton" id="profileButton" onclick="toggleProfilePanel()"></button>
             </div>
 
             <div class="shadow"></div>
@@ -133,7 +133,7 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
         </div>
         
         <!-- PROFILE PANEL -->
-        <div class="profileContainer">
+        <div class="profileContainer" id="user_panel">
             <div class="arrow-up"></div>
             <div class="title_container" id="profile_title_container"> 
                 My Profile
@@ -148,9 +148,9 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
                             <div class="username_highlight" id="username_highlight">' . htmlentities($user["pseudo"]) . '</div>!
                         </div>
 
-                        <button class="panel_button">Edit my profile</button>
+                        <a href="profile.php?p=' . htmlentities($user["pseudo"]) . '" class="panel_button">Open my profile</a>
                         <button class="panel_button">Admin page</button>
-                        <button class="panel_button" id="logout_button" onclick="location.href=\''. getHostUrl() . '/php/form/logoutUserForm.php\';">Logout</button>
+                        <button class="panel_button" id="red_hover" onclick="location.href=\''. getHostUrl() . '/php/form/logoutUserForm.php\';">Logout</button>
                     </div>
 
                     <div class="title_container" id="profile_title_container"> 
@@ -162,7 +162,7 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
 				$userCommunities = $db->getUserCommunities($user["pseudo"]);
 
                 if(count($userCommunities) == 0) {
-                    echo "You are not following any communities";
+                    echo "<div class='panel_text_container'><i>You are not following any communities</i></div>";
                 } else {
                     echo "<div class=communities_bubble_container>";
                 }
@@ -200,83 +200,35 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
 
         <div>
 
+        <!-- Create a new community form -->
+        <?php
+        createPopup("createCommunityPopup", "
+                <form id='insertCommunityForm' name='insertCommunityForm' action='php/form/insertCommunityForm.php' method='post' enctype='multipart/form-data'>
+                    
+                    <!-- Profile picture icon -->
+                    <img id='profile_picture_popup' class='header_picture_popup'></img>
 
-        <!-- <div class="rightpanel" id="user_panel">
-			
-			<div class="title_container" id="profile_title_container">
-                My Profile
-                <div class="title_line" id="profile_title_line"></div>
-            </div>
+                    <!-- Name input-->
+                    <label for='name'>Name*</label>
+                    <input type='text' id='name' name='name' placeholder=\"Enter your community's public name...\" required>
+                    
+                    <!-- Description input-->
+                    <label for='detail'>Description*</label>
+                    <textarea id='name' name='detail' placeholder='Describe your community here...' required></textarea>
 
-            <?php
-            if ($isLoggedIn) {
+                    <!-- Profile Picture input-->
+                    <label for='files'>Profile Picture  :  </label>                
+                    <input id='ppinput' name='files' onchange=\"loadFile(event, 'profile_picture_popup');\" type='file' placeholder='Profile picture' accept=\"" . getFileFormats() ."\"/>
+                    
+                    <input type='submit' value='Create a new community'>
 
-                $userCommunities = $db->getUserCommunities($user["pseudo"]);
-
-                if(count($userCommunities) == 0) {
-                    echo "You are not following any communities";
-                } else {
-                    echo "<div class=communities_bubble_container>";
-                }
-
-                for ($i = 0; $i < count($userCommunities); ++$i) {
-                    $name = $userCommunities[$i]["nom"];
-                    echo "
-                    <p>
-                    <a class='community_cell_container' href='community.php?n=" . htmlentities($name) . "' title='" . htmlentities($name) . "'>
-                        <div class='community_cell_icon' style='background-image: url(files/". htmlentities($userCommunities[$i]["imageDeProfil"]) ."),  url(\"files/community_default.PNG\")'></div>
-                        " . htmlentities($name) . "
-                    </a>
-                    </p>";
-                }
-
-                /*echo "
-                    <button class='panel_button' id='add_community_button' onclick=\"location.href='insertCommunity.php';\">+</button>
-                </div>";*/
-
-                echo "
-                    <a class='panel_button' onclick=\"displayId('createCommunityPopup', null)\">+</a>
-                </div>";
-            }
-            ?>
-            
-
-        </div>
-    </div>-->
-
-    <!-- Create a new community form -->
-    <?php
-
-    createPopup("createCommunityPopup", "
-            <form id='insertCommunityForm' name='insertCommunityForm' action='php/form/insertCommunityForm.php' method='post' enctype='multipart/form-data'>
-                
-                <!-- Profile picture icon -->
-                <img id='profile_picture_popup' class='header_picture_popup'></img>
-
-                <!-- Name input-->
-                <label for='name'>Name*</label>
-                <input type='text' id='name' name='name' placeholder=\"Enter your community's public name...\" required>
-                
-                <!-- Description input-->
-                <label for='detail'>Description*</label>
-                <textarea id='name' name='detail' placeholder='Describe your community here...' required></textarea>
-
-                <!-- Profile Picture input-->
-                <label for='files'>Profile Picture  :  </label>                
-                <input id='ppinput' name='files' onchange=\"loadFile(event, 'profile_picture_popup');\" type='file' placeholder='Profile picture' accept=\"" . getFileFormats() ."\"/>
-                
-                <input type='submit' value='Create a new community'>
-
-                <div class='note'>*must be provided</div>
-            </form>
-    
-    ");
-
-    ?>
-    
+                    <div class='note'>*must be provided</div>
+                </form>
+        ");
+        ?>
+    </div>
 </body>
 
-<script src="js/home.js"></script>
 <script src="js/interface.js"></script>
 <script src="js/func.js"></script>
 

@@ -8,14 +8,6 @@
  */
 
 include_once("php/include/header.php");
-
-?>
-<title>PITCURA - Profil</title>
-</head>
-<body>
-<?php
-
-include_once("php/include/menu-h.php");
 include_once("php/include/dbConnect.php");
 
 $db = new db;
@@ -37,62 +29,76 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
 } else {
     redirect(null);
 }
-
+echo '<title>PICTURA - ' . htmlentities($user["pseudo"]) . '</title>';
 ?>
 
-<div id="wrapper-content">
-    <!-- First -->
-    <div class="col-1-2 unique">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="/css/interface.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/css/profile.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/css/popup.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" />
+
+    <title>Pictura</title>
+</head>
+
+<body>
+    <!-- TOP BAR -->
+    <div class="topPanel" id="topSearchPanel">
+        <div>
+            <button class="topPanelButton" id="openSideBarButton" onClick="openSidePanel()"></button>
+            <img src="imgs/pictura_logo.png" style="height: 30px;" />
+        </div>
+        
+        <div class="topPanelRight">
+            <button class="topPanelButton" id="gridButton"></button>
+            <button class="topPanelButton" id="nightmodeButton" onClick="switchNightMode()"></button>
+        </div>
+
+        <div class="shadow"></div>
+    </div> 
+
+    <!-- PROFILE PANEL -->
+    <div class="leftpanel" id="community_panel">
         <?php
+            echo '<div class="title_container" id="community_title_container">';
+            
+            // Titre
+            if ($isCurrentUser) {   
+                echo "My Profile";
+            } else {
+                echo htmlentities($user['pseudo']) . "'s Profile";
+            } 
 
-        // Title
+            echo '<div class="title_line" id="community_title_line"></div>
+                </div>';
 
-        if ($isCurrentUser) {
-            echo "<h1>Mon profil</h1>";
-        } else {
-            echo "<h1>Profil de " . htmlentities($user['pseudo']) . "</h1>";
-        }
+            // Pseudo
+            echo "<div class='panel_text_container'>Username : <b>" . htmlentities($user['pseudo']) . "</b></div>";
 
-        // Infos
+            // Nom (si défini)
+            if (!empty($user["nom"])) {
+                echo "<div class='panel_text_container'>Surname : <b>" . htmlentities($user['nom']) . "</b></div>";
+            }
 
-        if (!empty($user["nom"])) {
-            echo "
-            <p>
-                <span class='bold'>Nom: </span>" . htmlentities($user["nom"]) . "
-            </p>";
-        }
+            // Prénom (si défini)
+            if (!empty($user["prenom"])) {
+                echo "<div class='panel_text_container'>Name : <b>" . htmlentities($user['prenom']) . "</b></div>";
+            }
 
-        if (!empty($user["prenom"])) {
-            echo "
-            <p>
-                <span class='bold'>Prénom: </span>" . htmlentities($user["prenom"]) . "
-            </p>";
-        }
-
-        //Display email address only if it's the current user's profile
-        if ($isCurrentUser) {
-            echo "
-			<p>
-				<span class='bold'>Email: </span>" . htmlentities($user["email"]) . "
-			</p>
-			<p>
-				<a href='editUser.php'>
-					<i class='material-icons'>edit</i>Modifier mon profil
-				</a>
-			</p>
-			<p>
-				<a href='php/form/deleteUserForm.php' class='red' onclick='return confirm(\"Supprimer définitivement votre compte?\")'>
-					<i class='material-icons'>delete_forever</i>Supprimer mon profil
-				</a>
-			</p>
-			";
-        }
-
+            // Current user's privileges
+            if ($isCurrentUser) {
+                echo "<div class='panel_text_container'>Name : <b>" . htmlentities($user['email']) . "</b></div>";
+                echo "<a href='editUser.php' class='panel_button'>Edit My Profile</a>";
+                echo "<a href='php/form/deleteUserForm.php' class='panel_button' id='red_hover' onclick='return confirm(\"Do you really want to delete your account ?\n (this will remove all your pictures from PICTURA permanently.)\")'>
+                        Delete my profile
+                    </a>";
+            }
         ?>
-
-
     </div>
-</div> <!-- End wrapper-content -->
+
 <?php
 
 include_once("php/include/footer.php");

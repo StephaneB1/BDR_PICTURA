@@ -5,6 +5,7 @@
     font-family: Arial;
 }
 
+a { color: inherit; } 
 
 /* ========= SCROLLBAR ========= */
 /* width */
@@ -223,7 +224,7 @@
     cursor: pointer;
 }
 
-#logout_button:hover {
+#red_hover:hover {
     background-color: rgb(250, 40, 40);
 }
 
@@ -278,6 +279,13 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+}
+
+.panel_text_container {
+    width: 100%;
+    height: auto;
+    margin-top: 10px;
+    font-size: 14px;
 }
 
 /* =====  OPTIONS  ===== */
@@ -336,6 +344,7 @@
 	justify-content: space-evenly;
 	margin-top: 10px;
 }
+
 
 /* ===== FEEDS ===== */
 .mainFeed {

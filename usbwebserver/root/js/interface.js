@@ -23,3 +23,10 @@ function switchNightMode() {
         buttons.item(i).classList.toggle("nightmode");
     }
 }
+
+var profileOn = false;
+function toggleProfilePanel() {
+    document.getElementById("profileButton").style.display = on ? "block" : "none";
+    //document.getElementById("").style.backgroundImage = URL("../imgs/" + img + ".png");
+    profileOn = !profileOn;
+}
