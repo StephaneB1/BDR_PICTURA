@@ -121,10 +121,25 @@ a { color: inherit; }
     background-repeat: no-repeat;
     background-size: 25px;
     background-position: center;
+    font-size: 15px;
 }
 
 .topPanel button:hover {
     cursor: pointer;
+}
+
+#exitButton {
+    border-radius: 30px;
+	font-weight: bold;
+	background-color: rgb(250, 250, 250);
+    color: rgb(255, 70, 70);	
+	line-height: 30px;
+	text-align: center;
+}
+
+#exitButton:hover {
+	color: rgb(250, 250, 250);
+	background-color: rgb(255, 70, 70);
 }
 
 #openSideBarButton {

@@ -55,6 +55,7 @@ echo '<title>PICTURA - ' . htmlentities($user["pseudo"]) . '</title>';
         <div class="topPanelRight">
             <button class="topPanelButton" id="gridButton"></button>
             <button class="topPanelButton" id="nightmodeButton" onClick="switchNightMode()"></button>
+            <a href="../index.php" class="topPanelButton" id="exitButton">X</a>
         </div>
 
         <div class="shadow"></div>

@@ -56,6 +56,7 @@ if($isLoggedIn) {
             <button class="topPanelButton" id="gridButton"></button>
             <button class="topPanelButton" id="nightmodeButton" onClick="switchNightMode()"></button>
             <button class="topPanelButton" id="profileButton"></button>
+            <a href="../index.php" class="topPanelButton" id="exitButton">X</a>
         </div>
 
         <div class="shadow"></div>
@@ -67,7 +68,6 @@ if($isLoggedIn) {
         echo "<div class='community_cell_container_header'>
                     <div class='community_cell_icon_header' style='background-image: url(files/" . htmlentities($community["imageDeProfil"]) . "),  url(\"files/community_default.PNG\")'></div>"
             . htmlentities($community["nom"]) . "
-                    <a href='../index.php' id='exitCommunity'>X</a>
                 </div>
 
                 <div class='community_description'>" . htmlentities($community["detail"]) . "</div>";
