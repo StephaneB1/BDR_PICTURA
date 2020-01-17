@@ -59,7 +59,7 @@ function switchNightMode() {
     }
 }
 
-var on = true;
+var on = false;
 function openSidePanel() {      
     document.getElementById('community_panel').style.display = on ? "block" : "none";
     on = !on;
@@ -76,8 +76,6 @@ function openProfilePanel() {
 */
 function displayId(idToShow, idToHide) {
 
-    alert("okkk");
-    
 	var divToShow = document.getElementById(idToShow);
 	var divToHide = document.getElementById(idToHide);
 
