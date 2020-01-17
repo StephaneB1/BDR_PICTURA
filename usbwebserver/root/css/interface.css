@@ -56,6 +56,7 @@ a { color: inherit; }
     overflow-y: scroll;
     margin-top: 40px;
     padding: 10px;
+    display: none;
 }
 
 .leftpanel.nightmode {
@@ -65,7 +66,6 @@ a { color: inherit; }
 .middlepanel {
     width: 100%;
     height: 100%;
-    margin-left: 230px;
     background-color: rgba(200, 200, 200, 1);
     padding: 20px;
     overflow-y: scroll;
@@ -90,7 +90,7 @@ a { color: inherit; }
 }
 
 .topPanel.nightmode {
-    background-color: rgba(50, 50, 50, 1);
+    background-color: rgba(70, 70, 70, 1);
 }
 
 .topPanel .shadow {
@@ -111,6 +111,15 @@ a { color: inherit; }
     align-items: center;
 }
 
+.topPanel .topPanelLeft {
+    display: flex;
+    float: left;
+    width: auto;
+    height: 100%;
+    margin-left: 10px;
+    align-items: center;
+}
+
 .topPanelButton {
     background-color: rgba(0, 0, 0, 0);
     height: 30px;
@@ -126,6 +135,22 @@ a { color: inherit; }
 
 .topPanel button:hover {
     cursor: pointer;
+}
+
+.searchbarContainer {
+    width: 100%;
+    height: 40px;
+    align-items: center;
+    display: flex;
+    justify-content: center; 
+    vertical-align: middle;
+    line-height: 40px;
+}
+
+.searchbarContainer input[type=text] {
+    width: 90%;
+    height: 30px;
+    margin: 0 auto;
 }
 
 #exitButton {
@@ -183,6 +208,11 @@ a { color: inherit; }
     right: 10px;
     border-radius: 10px;
     padding: 10px;
+    display: none;
+}
+
+.profileContainer.nightmode {
+    background-color: rgba(70, 70, 70, 1);
 }
 
 .arrow-up {
@@ -195,6 +225,10 @@ a { color: inherit; }
     position: absolute;
     top: -5px;
     right: 10px;
+}
+
+.arrow-up.nightmode {
+    border-bottom: 5px solid rgba(70, 70, 70, 1); 
 }
   
 

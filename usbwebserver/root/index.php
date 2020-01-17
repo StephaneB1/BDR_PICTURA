@@ -53,22 +53,26 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
     <![endif]-->
 </head>
 
-<body id="body">
+<body id="body" onload="init()">
 
     <div class="container" id="main_container">
 	
 
         <!-- TOP BAR -->
         <div class="topPanel" id="topSearchPanel">
-            <div>
+            <div class="topPanelLeft">
                 <button class="topPanelButton" id="openSideBarButton" onclick="openSidePanel()"></button>
                 <img src="imgs/pictura_logo.png" style="height: 30px;" />
             </div>
-            
+
+            <div class="searchbarContainer">
+                <input type="text" placeholder="Search.." id="searchBar">
+            </div>
+
             <div class="topPanelRight">
                 <button class="topPanelButton" id="gridButton"></button>
                 <button class="topPanelButton" id="nightmodeButton" onclick="switchNightMode()"></button>
-                <button class="topPanelButton" id="profileButton" onclick="toggleProfilePanel()"></button>
+                <button class="topPanelButton" id="profileButton" onclick="openProfilePanel()"></button>
             </div>
 
             <div class="shadow"></div>
@@ -93,7 +97,7 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
         </div>
 		
         <!-- PICTURE FEED -->
-        <div class="middlepanel">
+        <div class="middlepanel" id="middle_panel">
             <div class="mainFeed">
                 <?php
                 
@@ -134,7 +138,7 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
         
         <!-- PROFILE PANEL -->
         <div class="profileContainer" id="user_panel">
-            <div class="arrow-up"></div>
+            <div class="arrow-up" id="profileArrow"></div>
             <div class="title_container" id="profile_title_container"> 
                 My Profile
                 <div class="title_line" id="profile_title_line"></div>
