@@ -17,6 +17,7 @@ INSERT INTO utilisateur VALUES ("Simon", "simon@heig-vd.ch", "dfkjhfor3t5t54", "
 
 INSERT INTO Communaute VALUES ("Chats","cest mignon",NULL);
 INSERT INTO Communaute VALUES ("Chiens","cest mignon",NULL);
+INSERT INTO Communaute VALUES ("Oiseaux","meilleure communaute",NULL);
 
 INSERT INTO Balise VALUES ("funny");
 INSERT INTO Balise VALUES ("cool");
@@ -24,7 +25,9 @@ INSERT INTO Balise VALUES ("sick");
 
 INSERT INTO Photo VALUES ("1","chat",NULL,"2009-10-10 15:30:20","0","dot.com","Steph","Chats");
 INSERT INTO Photo VALUES ("2","chat2",NULL,"2001-10-10 15:30:20","0","dot.com","Simon","Chats");
-INSERT INTO Photo VALUES ("3","chien",NULL,"2001-10-10 15:30:20","0","dot.com","Robin","Chiens");
+INSERT INTO Photo VALUES ("3","chien1",NULL,"2001-10-10 15:30:20","0","dot.com","Robin","Chiens");
+-- INSERT INTO Photo VALUES ("4","Oiseaux1",NULL,"2021-10-10 15:30:20","0","dot.com","Simon","Oiseaux"); TRIGGER photo_bonne_date
+INSERT INTO Photo VALUES ("4","Oiseaux1",NULL,"2018-10-10 15:30:20","0","dot.com","Simon","Oiseaux");
 
 INSERT INTO Commentaire VALUES ("2010-10-10 15:30:30","1","Simon","undeuxtrois");
 INSERT INTO Commentaire VALUES ("2010-10-10 15:30:30","2","Simon","undeuxtrois");
@@ -66,5 +69,9 @@ WHERE pseudoUtilisateur = "Steph";
 INSERT INTO Photo_Balise VALUES("1","funny");
 INSERT INTO Photo_Balise VALUES("2","cool");
 
-DELETE FROM Communaute
-WHERE nom = "Chats";
+INSERT INTO Utilisateur_Like_Photo VALUES("Simon","4");
+INSERT INTO Utilisateur_Like_Photo VALUES("Robin","1");
+
+INSERT INTO Utilisateur_Suit_Communaute VALUES("Steph","Chats");
+INSERT INTO Utilisateur_Suit_Communaute VALUES("Steph","Chiens");
+INSERT INTO Utilisateur_Suit_Communaute VALUES("Simon","Oiseaux");

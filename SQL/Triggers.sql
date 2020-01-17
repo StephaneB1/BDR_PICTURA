@@ -78,6 +78,20 @@ BEGIN
 END
 $$
 
+-- Photo date < today
+DELIMITER $$
+CREATE TRIGGER photo_bonne_date BEFORE INSERT ON Photo
+FOR EACH ROW
+BEGIN
+	IF 
+		NEW.dateHeureAjout > NOW()
+    THEN
+		SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = "Photo date > Today";
+	END IF;
+END
+$$
+
 -- there must always be one admin per community (2 triggers)
 DELIMITER $$
 CREATE TRIGGER admin_update BEFORE UPDATE ON Utilisateur_Modere_Communaute
@@ -114,3 +128,8 @@ BEGIN
 	END IF;
 END
 $$
+
+
+
+
+
