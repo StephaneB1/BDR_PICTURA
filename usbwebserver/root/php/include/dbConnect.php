@@ -222,6 +222,17 @@ class db
         return false; // Query error
     }
 
+    public function getUserPictures($username) {
+        $query = $this->connexion->prepare("
+            SELECT * FROM photo
+            WHERE pseudoUtilisateur = '$username';
+        ");
+
+        if($query->execute())
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        return false; // Query error
+    }
+
     public function getCommunityFeedPictures($community_name) {
         $query = $this->connexion->prepare("
             SELECT * FROM photo

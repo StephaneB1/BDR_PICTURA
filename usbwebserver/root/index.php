@@ -82,40 +82,38 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
         <!-- PICTURE FEED -->
         <div class="middlepanel" id="middle_panel">
             <div class="mainFeed">
-                <?php
-                
+            <?php    
                 if ($isLoggedIn) {
-                    $user_feed_posts = $db->getUserFeedPictures($user["pseudo"]);
+                    $feed = $db->getUserFeedPictures($user["pseudo"]);
                     
-                    for ($i = 0; $i < count($user_feed_posts); ++$i) {
-                        $post_community = $db->getCommunityByName($user_feed_posts[$i]["nomCommunaute"])[0];
+                    for ($i = 0; $i < count($feed); ++$i) {
+                        $post_community = $db->getCommunityByName($feed[$i]["nomCommunaute"])[0];
 
                         echo 
-                        '<a href="picture_fullview.php?id=' . htmlentities($user_feed_posts[$i]["id"]) . '" class="picturePreview" id='. htmlentities($user_feed_posts[$i]["id"]) . ' style="background-image: url(files/'. htmlentities($user_feed_posts[$i]["urlPhoto"]) .')" >
+                        '<a href="picture_fullview.php?id=' . htmlentities($feed[$i]["id"]) . '" class="picturePreview" id='. htmlentities($feed[$i]["id"]) . ' style="background-image: url(files/'. htmlentities($feed[$i]["urlPhoto"]) .')" >
                             <div class="picturePreviewShadowTop"></div>
                             <div class="picturePreviewShadowBottom"></div>	
                             
                             <div class="picturePreviewHeader">
-                                <div class="picturePreviewHeaderTitle">'. htmlentities($user_feed_posts[$i]["titre"]) . '</div>
-                                <div class="picturePreviewHeaderSubtitle">'. htmlentities($user_feed_posts[$i]["pseudoUtilisateur"]) . ' • ' . htmlentities($user_feed_posts[$i]["dateHeureAjout"]) . '</div>
+                                <div class="picturePreviewHeaderTitle">'. htmlentities($feed[$i]["titre"]) . '</div>
+                                <div class="picturePreviewHeaderSubtitle">'. htmlentities($feed[$i]["pseudoUtilisateur"]) . ' • ' . htmlentities($feed[$i]["dateHeureAjout"]) . '</div>
                             </div>
                                         
                             <div class="picturePreviewFooter">
                                 <div class="picturePreviewFooterButton" style="background-image: url(files/'. htmlentities($post_community["imageDeProfil"]) .'), url(files/community_default.PNG);"></div>	
                             ';
                             
-                            $userLiked = $db->checkIfUserLikedAPicture($user["pseudo"], $user_feed_posts[$i]["id"]);
+                            $userLiked = $db->checkIfUserLikedAPicture($user["pseudo"], $feed[$i]["id"]);
                             if($userLiked) {
-                                echo '<button onclick="likePicture('.htmlentities($user["pseudo"]).','.htmlentities($user_feed_posts[$i]["id"]).')" class="picturePreviewFooterButton" style="background-image: url(/imgs/like_on.png);"></button>';
+                                echo '<button onclick="likePicture('.htmlentities($user["pseudo"]).','.htmlentities($feed[$i]["id"]).')" class="picturePreviewFooterButton" style="background-image: url(/imgs/like_on.png);"></button>';
                             } else {
-                                echo '<button onclick="likePicture('.htmlentities($user["pseudo"]).','.htmlentities($user_feed_posts[$i]["id"]).')" class="picturePreviewFooterButton" style="background-image: url(/imgs/like_off.png);"></button>';
+                                echo '<button onclick="likePicture('.htmlentities($user["pseudo"]).','.htmlentities($feed[$i]["id"]).')" class="picturePreviewFooterButton" style="background-image: url(/imgs/like_off.png);"></button>';
                             }
                             
                             echo '</div></a>';
                     }
                 }
                 ?>
-
             </div>
         </div>
         
