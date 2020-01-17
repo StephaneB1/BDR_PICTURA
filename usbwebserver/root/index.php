@@ -28,7 +28,7 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
 } else {
     //redirect(null);
 }
-
+$searching = false;
 ?>
 <title>PICTURA</title>
 
@@ -85,33 +85,42 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
             <?php    
                 if ($isLoggedIn) {
                     $feed = $db->getUserFeedPictures($user["pseudo"]);
-                    
-                    for ($i = 0; $i < count($feed); ++$i) {
-                        $post_community = $db->getCommunityByName($feed[$i]["nomCommunaute"])[0];
+                } else {
+                    $feed = $db->getAllPictures();
+                }
+                
+                if ($searching) {
+                    //$feed = $db->getPicturesByNameSearch($user["pseudo"]);
+                }
+                                
+                for ($i = 0; $i < count($feed); ++$i) {
+                    $post_community = $db->getCommunityByName($feed[$i]["nomCommunaute"])[0];
 
-                        echo 
-                        '<a href="picture_fullview.php?id=' . htmlentities($feed[$i]["id"]) . '" class="picturePreview" id='. htmlentities($feed[$i]["id"]) . ' style="background-image: url(files/'. htmlentities($feed[$i]["urlPhoto"]) .')" >
-                            <div class="picturePreviewShadowTop"></div>
-                            <div class="picturePreviewShadowBottom"></div>	
-                            
-                            <div class="picturePreviewHeader">
-                                <div class="picturePreviewHeaderTitle">'. htmlentities($feed[$i]["titre"]) . '</div>
-                                <div class="picturePreviewHeaderSubtitle">'. htmlentities($feed[$i]["pseudoUtilisateur"]) . ' • ' . htmlentities($feed[$i]["dateHeureAjout"]) . '</div>
-                            </div>
-                                        
-                            <div class="picturePreviewFooter">
-                                <div class="picturePreviewFooterButton" style="background-image: url(files/'. htmlentities($post_community["imageDeProfil"]) .'), url(files/community_default.PNG);"></div>	
-                            ';
-                            
-                            $userLiked = $db->checkIfUserLikedAPicture($user["pseudo"], $feed[$i]["id"]);
-                            if($userLiked) {
-                                echo '<button onclick="likePicture('.htmlentities($user["pseudo"]).','.htmlentities($feed[$i]["id"]).')" class="picturePreviewFooterButton" style="background-image: url(/imgs/like_on.png);"></button>';
-                            } else {
-                                echo '<button onclick="likePicture('.htmlentities($user["pseudo"]).','.htmlentities($feed[$i]["id"]).')" class="picturePreviewFooterButton" style="background-image: url(/imgs/like_off.png);"></button>';
-                            }
-                            
-                            echo '</div></a>';
+                    echo 
+                    '<a href="picture_fullview.php?id=' . htmlentities($feed[$i]["id"]) . '" class="picturePreview" id='. htmlentities($feed[$i]["id"]) . ' style="background-image: url(files/'. htmlentities($feed[$i]["urlPhoto"]) .')" >
+                        <div class="picturePreviewShadowTop"></div>
+                        <div class="picturePreviewShadowBottom"></div>	
+                        
+                        <div class="picturePreviewHeader">
+                            <div class="picturePreviewHeaderTitle">'. htmlentities($feed[$i]["titre"]) . '</div>
+                            <div class="picturePreviewHeaderSubtitle">'. htmlentities($feed[$i]["pseudoUtilisateur"]) . ' • ' . htmlentities($feed[$i]["dateHeureAjout"]) . '</div>
+                        </div>
+                                    
+                        <div class="picturePreviewFooter">
+                            <div class="picturePreviewFooterButton" style="background-image: url(files/'. htmlentities($post_community["imageDeProfil"]) .'), url(files/community_default.PNG);"></div>	
+                        ';
+
+                    if($isLoggedIn) {
+                        $userLiked = $db->checkIfUserLikedAPicture($user["pseudo"], $feed[$i]["id"]);
+                        if($userLiked) {
+                            echo '<button onclick="likePicture('.htmlentities($user["pseudo"]).','.htmlentities($feed[$i]["id"]).')" class="picturePreviewFooterButton" style="background-image: url(/imgs/like_on.png);"></button>';
+                        } else {
+                            echo '<button onclick="likePicture('.htmlentities($user["pseudo"]).','.htmlentities($feed[$i]["id"]).')" class="picturePreviewFooterButton" style="background-image: url(/imgs/like_off.png);"></button>';
+                        }
+                        
                     }
+
+                    echo '</div></a>';
                 }
                 ?>
             </div>
@@ -152,56 +161,4 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
 <script src="js/interface.js"></script>
 <script src="js/func.js"></script>
 
-<?php
-/*
-if ($isLoggedIn) {
-    createPopup("insertCommunityPopup", "
-    <h1>Créer nouvelle communauté</h1>
-        <form id='insertCommunityForm' name='insertCommunityForm' action='php/form/insertCommunityForm.php' method='post' enctype='multipart/form-data'>
-            <p>Merci de saisir les informations concernants votre nouvelle communauté:</p>
-            <!-- Name -->
-            <p>
-                <label for='name'>
-                    <i class='material-icons'>label</i>
-                </label>
-                <input type='text' id='name' name='name' placeholder='Nom de la communauté*' pattern='[a-zA-Z0-9]{1,20}' required autofocus/>
-            </p>
-
-            <!-- Detail -->
-            <p>
-                <label for='detail'>
-                    <i class='material-icons'>notes</i>
-                </label>
-                <textarea id='name' name='detail' placeholder='Description*' required></textarea>
-            </p>
-            
-            <!-- Profile picture -->
-            <p>
-                <label>
-                    <i class='material-icons'>photo</i>
-                </label>
-                <input name='files' type='file' placeholder='Photo de profil' accept='" . join(',', prefixStringArray(IMAGE_FORMATS, ".")) . "'/>
-            </p>
-
-            <p class='note'>*Obligatoires</p>
-            <p><input type='submit' value='Créer'/></p>
-        </form>");
-}
-include_once("php/include/footer.php");
-*/
-?>
 </html>
-
-
-
-
-		
-					<!--<div class='input_container'>
-						<input type='text' placeholder='Username'></input>
-						<input type='password' placeholder='Password'></input>
-					</div>
-
-					<div class='login_container'>
-						<button>login</button>
-						<button>register</button>
-					</div>-->

@@ -211,6 +211,16 @@ class db
         return $query->execute();
     }
 
+    public function getAllPictures() {
+        $query = $this->connexion->prepare("
+            SELECT * FROM photo;
+        ");
+
+        if($query->execute())
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        return false; // Query error
+    }
+
     public function getUserFeedPictures($username) {
         $query = $this->connexion->prepare("
             SELECT * FROM photo

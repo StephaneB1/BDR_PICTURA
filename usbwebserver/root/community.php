@@ -117,7 +117,7 @@ if($isLoggedIn) {
         <div class="mainFeed">
         <?php    
             if ($isLoggedIn) {
-                $feed = $db->getCommunityFeedPictures($user["pseudo"]);
+                $feed = $db->getCommunityFeedPictures($community["nom"]);
                 
                 for ($i = 0; $i < count($feed); ++$i) {
                     $post_community = $db->getCommunityByName($feed[$i]["nomCommunaute"])[0];
