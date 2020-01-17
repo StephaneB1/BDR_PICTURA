@@ -53,26 +53,13 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
     <![endif]-->
 </head>
 
-<body id="body">
+<body id="body" onload="init()">
 
     <div class="container" id="main_container">
 	
 
         <!-- TOP BAR -->
-        <div class="topPanel" id="topSearchPanel">
-            <div>
-                <button class="topPanelButton" id="openSideBarButton" onclick="openSidePanel()"></button>
-                <img src="imgs/pictura_logo.png" style="height: 30px;" />
-            </div>
-            
-            <div class="topPanelRight">
-                <button class="topPanelButton" id="gridButton"></button>
-                <button class="topPanelButton" id="nightmodeButton" onclick="switchNightMode()"></button>
-                <button class="topPanelButton" id="profileButton" onclick="toggleProfilePanel()"></button>
-            </div>
-
-            <div class="shadow"></div>
-        </div> 
+        <?php include_once("php/include/topbar.php"); ?>
 
         <!-- COMMUNITY PANEL -->
         <div class="leftpanel" id="community_panel">
@@ -93,112 +80,45 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
         </div>
 		
         <!-- PICTURE FEED -->
-        <div class="middlepanel">
+        <div class="middlepanel" id="middle_panel">
             <div class="mainFeed">
-                <?php
-                
+            <?php    
                 if ($isLoggedIn) {
-                    $user_feed_posts = $db->getUserFeedPictures($user["pseudo"]);
+                    $feed = $db->getUserFeedPictures($user["pseudo"]);
                     
-                    for ($i = 0; $i < count($user_feed_posts); ++$i) {
-                        $post_community = $db->getCommunityByName($user_feed_posts[$i]["nomCommunaute"])[0];
+                    for ($i = 0; $i < count($feed); ++$i) {
+                        $post_community = $db->getCommunityByName($feed[$i]["nomCommunaute"])[0];
 
                         echo 
-                        '<a href="picture_fullview.php?id=' . htmlentities($user_feed_posts[$i]["id"]) . '" class="picturePreview" id='. htmlentities($user_feed_posts[$i]["id"]) . ' style="background-image: url(files/'. htmlentities($user_feed_posts[$i]["urlPhoto"]) .')" >
+                        '<a href="picture_fullview.php?id=' . htmlentities($feed[$i]["id"]) . '" class="picturePreview" id='. htmlentities($feed[$i]["id"]) . ' style="background-image: url(files/'. htmlentities($feed[$i]["urlPhoto"]) .')" >
                             <div class="picturePreviewShadowTop"></div>
                             <div class="picturePreviewShadowBottom"></div>	
                             
                             <div class="picturePreviewHeader">
-                                <div class="picturePreviewHeaderTitle">'. htmlentities($user_feed_posts[$i]["titre"]) . '</div>
-                                <div class="picturePreviewHeaderSubtitle">'. htmlentities($user_feed_posts[$i]["pseudoUtilisateur"]) . ' • ' . htmlentities($user_feed_posts[$i]["dateHeureAjout"]) . '</div>
+                                <div class="picturePreviewHeaderTitle">'. htmlentities($feed[$i]["titre"]) . '</div>
+                                <div class="picturePreviewHeaderSubtitle">'. htmlentities($feed[$i]["pseudoUtilisateur"]) . ' • ' . htmlentities($feed[$i]["dateHeureAjout"]) . '</div>
                             </div>
                                         
                             <div class="picturePreviewFooter">
                                 <div class="picturePreviewFooterButton" style="background-image: url(files/'. htmlentities($post_community["imageDeProfil"]) .'), url(files/community_default.PNG);"></div>	
                             ';
                             
-                            $userLiked = $db->checkIfUserLikedAPicture($user["pseudo"], $user_feed_posts[$i]["id"]);
+                            $userLiked = $db->checkIfUserLikedAPicture($user["pseudo"], $feed[$i]["id"]);
                             if($userLiked) {
-                                echo '<button onclick="likePicture('.htmlentities($user["pseudo"]).','.htmlentities($user_feed_posts[$i]["id"]).')" class="picturePreviewFooterButton" style="background-image: url(/imgs/like_on.png);"></button>';
+                                echo '<button onclick="likePicture('.htmlentities($user["pseudo"]).','.htmlentities($feed[$i]["id"]).')" class="picturePreviewFooterButton" style="background-image: url(/imgs/like_on.png);"></button>';
                             } else {
-                                echo '<button onclick="likePicture('.htmlentities($user["pseudo"]).','.htmlentities($user_feed_posts[$i]["id"]).')" class="picturePreviewFooterButton" style="background-image: url(/imgs/like_off.png);"></button>';
+                                echo '<button onclick="likePicture('.htmlentities($user["pseudo"]).','.htmlentities($feed[$i]["id"]).')" class="picturePreviewFooterButton" style="background-image: url(/imgs/like_off.png);"></button>';
                             }
                             
                             echo '</div></a>';
                     }
                 }
                 ?>
-
             </div>
         </div>
         
         <!-- PROFILE PANEL -->
-        <div class="profileContainer" id="user_panel">
-            <div class="arrow-up"></div>
-            <div class="title_container" id="profile_title_container"> 
-                My Profile
-                <div class="title_line" id="profile_title_line"></div>
-            </div>
-			<?php
-	        if ($isLoggedIn) {
-                echo '
-                    <div class="myprofile_container">
-                        <div class="login_welcome">
-                            Welcome back 
-                            <div class="username_highlight" id="username_highlight">' . htmlentities($user["pseudo"]) . '</div>!
-                        </div>
-
-                        <a href="profile.php?p=' . htmlentities($user["pseudo"]) . '" class="panel_button">Open my profile</a>
-                        <button class="panel_button">Admin page</button>
-                        <button class="panel_button" id="red_hover" onclick="location.href=\''. getHostUrl() . '/php/form/logoutUserForm.php\';">Logout</button>
-                    </div>
-
-                    <div class="title_container" id="profile_title_container"> 
-                        My Communities
-                        <div class="title_line" id="profile_title_line"></div>
-                    </div>
-					';
-					
-				$userCommunities = $db->getUserCommunities($user["pseudo"]);
-
-                if(count($userCommunities) == 0) {
-                    echo "<div class='panel_text_container'><i>You are not following any communities</i></div>";
-                } else {
-                    echo "<div class=communities_bubble_container>";
-                }
-
-                for ($i = 0; $i < count($userCommunities); ++$i) {
-                    echo "          
-				    <a class='community_cell_container' href='community.php?n=" . htmlentities($userCommunities[$i]["nom"]) . "' title='" . htmlentities($userCommunities[$i]["detail"]) . "'>
-				    	<div class='community_cell_icon' style='background-image: url(files/". htmlentities($userCommunities[$i]["imageDeProfil"]) ."),  url(\"files/community_default.PNG\")'></div> " . htmlentities($communities[$i]["nom"]) . "
-				    </a>";
-                }
-
-                echo "
-                    <a class='panel_button' onclick=\"displayId('createCommunityPopup', null)\">Create a new community</a>
-                </div>";
-
-	        } else {
-				echo '
-				<!-- Login form -->		
-        		<form id="loginUserForm" name="loginUserForm" action="php/form/loginUserForm.php" method="post">
-	        	<!-- pseudo -->
-	            <p>
-					<input type="text" id="pseudo" name="pseudo" placeholder="Username" required autofocus/>
-				</p>
-	        	<!-- Password -->
-	            <p>
-					<input type="password" id="password" name="password" placeholder="Password" required/>
-				</p>
-	
-	            <input type="submit" value="Se connecter"/>
-				
-	        	</form>
-				<a href="connexion.php">register</a>	';
-            }
-       		?>
-
-        <div>
+        <?php include_once("php/include/profilePanel.php"); ?>
 
         <!-- Create a new community form -->
         <?php

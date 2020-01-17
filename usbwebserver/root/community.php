@@ -23,6 +23,7 @@ $isLoggedIn = checkIfLoggedIn();
 if($isLoggedIn) {
     $pseudo = $_SESSION["pseudo"];
     $following = !empty($db->isUserFollowing($pseudo, $community["nom"]));
+    $user = $db->getUserByPseudo($_SESSION["pseudo"])[0];
 } else {
     $following = false;
 }
@@ -46,29 +47,16 @@ if($isLoggedIn) {
 <div class="container">
 
     <!-- TOP BAR -->
-    <div class="topPanel" id="topSearchPanel">
-        <div>
-            <button class="topPanelButton" id="openSideBarButton" onClick="openSidePanel()"></button>
-            <img src="imgs/pictura_logo.png" style="height: 30px;" />
-        </div>
-        
-        <div class="topPanelRight">
-            <button class="topPanelButton" id="gridButton"></button>
-            <button class="topPanelButton" id="nightmodeButton" onClick="switchNightMode()"></button>
-            <button class="topPanelButton" id="profileButton"></button>
-        </div>
-
-        <div class="shadow"></div>
-    </div> 
+    <?php include_once("php/include/topbar.php"); ?>
 		
     <!-- COMMUNITY PANEL -->
-    <div class="leftpanel">
+    <div class="leftpanel" id="community_panel">
         <?php
         echo "<div class='community_cell_container_header'>
                     <div class='community_cell_icon_header' style='background-image: url(files/" . htmlentities($community["imageDeProfil"]) . "),  url(\"files/community_default.PNG\")'></div>"
             . htmlentities($community["nom"]) . "
-                    <a href='../index.php' id='exitCommunity'>X</a>
-                </div>
+                    <a href='../index.php' class='topPanelButton' id='exitButton'>X</a>
+            </div>
 
                 <div class='community_description'>" . htmlentities($community["detail"]) . "</div>";
 
@@ -78,12 +66,12 @@ if($isLoggedIn) {
             <form id='followCommunityForm' name='followCommunityForm' action='php/form/followCommunityForm.php' method='post'>
                 <input type='hidden' name='community' value='". htmlentities($community['nom']) . "'/>
                 <input type='hidden' name='follow' value='" . ($following ? 0 : 1) . "'/>
-                <button  onclick=\"document.getElementById('followCommunityForm').submit()\" class='panel_button'>" . ($following ? "Leave this community" : "Follow this community") . "</button>
+                <button  onclick=\"document.getElementById('followCommunityForm').submit()\" class='panel_button' " . ($following ? "id='red_hover'" : "")  . ">" . ($following ? "Leave this community" : "Follow this community") . "</button>
             </form>
         </div>
 
         <div class='myprofile_container'>
-        <button  onclick=\"displayId('postPicturePopup', null)\" class='panel_button'>Post a new picture</button>
+            <button  onclick=\"displayId('postPicturePopup', null)\" class='panel_button'>Post a new picture</button>
         </div>
         ";
         ?>
@@ -125,32 +113,45 @@ if($isLoggedIn) {
     </div>
 
     <!-- PICTURE FEED -->
-    <div class="middlepanel" id="community_feed_panel">
+    <div class="middlepanel">
         <div class="mainFeed">
-            <?php
-            $community_feed_posts = $db->getCommunityFeedPictures($community["nom"]);
+        <?php    
+            if ($isLoggedIn) {
+                $feed = $db->getCommunityFeedPictures($user["pseudo"]);
+                
+                for ($i = 0; $i < count($feed); ++$i) {
+                    $post_community = $db->getCommunityByName($feed[$i]["nomCommunaute"])[0];
 
-            for ($i = 0; $i < count($community_feed_posts); ++$i) {
-                echo
-                    '<a href="html/picture_fullview.html" class="picturePreview" id=' . htmlentities($community_feed_posts[$i]["id"]) . ' style="background-image: url(files/' . htmlentities($community_feed_posts[$i]["urlPhoto"]) . ')" >
+                    echo 
+                    '<a href="picture_fullview.php?id=' . htmlentities($feed[$i]["id"]) . '" class="picturePreview" id='. htmlentities($feed[$i]["id"]) . ' style="background-image: url(files/'. htmlentities($feed[$i]["urlPhoto"]) .')" >
                         <div class="picturePreviewShadowTop"></div>
                         <div class="picturePreviewShadowBottom"></div>	
                         
                         <div class="picturePreviewHeader">
-                            <div class="picturePreviewHeaderTitle">' . htmlentities($community_feed_posts[$i]["titre"]) . '</div>
-                            <div class="picturePreviewHeaderSubtitle">' . htmlentities($community_feed_posts[$i]["pseudoUtilisateur"]) . ' • ' . htmlentities($community_feed_posts[$i]["dateHeureAjout"]) . '</div>
-                            <button class="picturePreviewOptionsButton"></button>
+                            <div class="picturePreviewHeaderTitle">'. htmlentities($feed[$i]["titre"]) . '</div>
+                            <div class="picturePreviewHeaderSubtitle">'. htmlentities($feed[$i]["pseudoUtilisateur"]) . ' • ' . htmlentities($feed[$i]["dateHeureAjout"]) . '</div>
                         </div>
                                     
                         <div class="picturePreviewFooter">
-                            <button class="picturePreviewFooterButton"></button>	
-                            <button class="picturePreviewFooterButton"></button>
-                        </div>
-                    </a>';
+                            <div class="picturePreviewFooterButton" style="background-image: url(files/'. htmlentities($post_community["imageDeProfil"]) .'), url(files/community_default.PNG);"></div>	
+                        ';
+                        
+                        $userLiked = $db->checkIfUserLikedAPicture($user["pseudo"], $feed[$i]["id"]);
+                        if($userLiked) {
+                            echo '<button onclick="likePicture('.htmlentities($user["pseudo"]).','.htmlentities($feed[$i]["id"]).')" class="picturePreviewFooterButton" style="background-image: url(/imgs/like_on.png);"></button>';
+                        } else {
+                            echo '<button onclick="likePicture('.htmlentities($user["pseudo"]).','.htmlentities($feed[$i]["id"]).')" class="picturePreviewFooterButton" style="background-image: url(/imgs/like_off.png);"></button>';
+                        }
+                        
+                        echo '</div></a>';
+                }
             }
-            ?>
+            ?>        
         </div>
     </div>
+
+    <!-- PROFILE PANEL -->
+    <?php include_once("php/include/profilePanel.php"); ?>
 
 </div>
 
@@ -197,85 +198,5 @@ createPopup("postPicturePopup", "
 ?>
 
 </body>
-
-<!-- Header -->
-<!--<div class='col-1-2 unique'>
-        <?php
-
-/*if ($community["imageDeProfil"]) {
-    echo "
-<div class='col-1-4'><p>
-        <div class='userpicture viewer-item' style='background-image: url(files/" . $community['imageDeProfil'] . ");'></div>
-    </p>
-</div>
-<div class='col-3-4'>";
-} else {
-    echo "<div class='col-1-2 unique'>";
-}
-
-echo "<h1>" . $community["nom"] . "</h1>";
-echo "<p>" . htmlentities($community["detail"]) . "</p>
-</div>";*/
-?>
-    </div>-->
-
-<!-- Content -->
-<!--<div class='col-1-2 unique center-x'>
-    <p>
-        <a onclick="displayId('insertPhotoPopup', null)">+ Ajouter photo</a>
-    </p>
-</div>
-</div>-->
-<!-- End wrapper-content -->
-
-<?php
-
-//include_once("php/include/footer.php");
-
-/*createPopup("insertPhotoPopup", "
-    <h1>Ajouter une photo</h1>
-        <form id='insertPhotoForm' name='loginUserForm' action='php/form/insertPhotoForm.php' method='post' enctype='multipart/form-data'>
-            <!-- Picture -->
-            <p>
-                <label>
-                    <i class='material-icons'>photo</i>
-                </label>
-                <input name='files' type='file' placeholder='Photo de profil' accept='" . join(',', prefixStringArray(IMAGE_FORMATS, ".")) . "'/>
-            </p>
-            
-            <!-- Name -->
-            <p>
-                <label for='name'>
-                    <i class='material-icons'>label</i>
-                </label>
-                <input type='text' id='name' name='name' placeholder='Titre*' pattern='[a-zA-Z0-9]{1,20}' required autofocus/>
-            </p>
-
-            <!-- Detail -->
-            <p>
-                <label for='detail'>
-                    <i class='material-icons'>notes</i>
-                </label>
-                <textarea id='name' name='detail' placeholder='Description'></textarea>
-            </p>
-
-            <!-- Tags -->
-            <p>
-                <label for='tags'>
-                    <i class='material-icons'>tag</i>
-                </label>
-                <input type='text' id='tags' name='tags' placeholder='Balises (séparées avec un espace)' pattern='[a-zA-Z0-9]{1,20}( [a-zA-Z0-9]{1,20})*' autofocus/>
-            </p>
-
-            <p class='note'>*Obligatoires</p>
-            <p><input type='submit' value='Ajouter'/></p>
-        </form>");
-*/
-?>
-
-
-<!--<div id="gallery-viewer"></div>
-
-</body>-->
 
 </html>

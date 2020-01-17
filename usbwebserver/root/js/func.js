@@ -1,3 +1,15 @@
+
+function init() {
+
+    // Enter on search bar
+    const node = document.getElementById("searchBar");
+    node.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            location.href='test_insertPhoto.php';
+        }
+    });
+}
+
 /*
  * Summary: Displays and hide the tabs
  */
@@ -22,17 +34,17 @@ function displayTab(tabName, selector) {
     selector.className += " tab-selected";
 }
 
-// OK donc toutes les fonctions que je met ici je peux pas les appelers ? 
 /*
  * @brief Enables / disables night mode
  */
-/*function switchNightMode() {
+function switchNightMode() {
     document.getElementById("main_container").classList.toggle("nightmode");
+    document.getElementById("topSearchPanel").classList.toggle("nightmode");
     document.getElementById("community_panel").classList.toggle("nightmode");
-    document.getElementById("feed_panel").classList.toggle("nightmode");
+    document.getElementById("middle_panel").classList.toggle("nightmode");
     document.getElementById("user_panel").classList.toggle("nightmode");
     document.getElementById("community_title_line").classList.toggle("nightmode");
-    document.getElementById("username_highlight").classList.toggle("nightmode");
+    document.getElementById("profileArrow").classList.toggle("nightmode");
     
     var communities = document.getElementsByClassName("community_cell_container");
     for(var i = 0; i < communities.length; i++)
@@ -45,25 +57,25 @@ function displayTab(tabName, selector) {
     {
         buttons.item(i).classList.toggle("nightmode");
     }
-}*/
+}
 
-// MARCHE PAS MAIS WHY ??? >:(
-/*document.getElementById ("openSideBarButton").addEventListener("click", openSidePanel, false);
 var on = false;
 function openSidePanel() {      
-    alert("hmmmm");
     document.getElementById('community_panel').style.display = on ? "block" : "none";
-    document.getElementById('openSideBarButton').style.backgroundImage = URL("../imgs/sidePanelButtonHover.png");
     on = !on;
-}*/
+}
+
+var onProfile = true;
+function openProfilePanel() {      
+    document.getElementById('user_panel').style.display = onProfile ? "block" : "none";
+    onProfile = !onProfile;
+}
 
 /*
 * Summary: Displays and hide the elements from their id
 */
 function displayId(idToShow, idToHide) {
 
-    alert("okkk");
-    
 	var divToShow = document.getElementById(idToShow);
 	var divToHide = document.getElementById(idToHide);
 
@@ -133,13 +145,13 @@ function likePicture(username, photoId) {
    });*/
 }
 
-var on = true;
+var onComment = true;
 function toggleComments() {
     var commentIcon = document.getElementById("commentsButton");
     var commentContainer = document.getElementById("commentsContainer");
 
-    on = !on;
+    onComment = !onComment;
 
-    commentIcon.style.backgroundImage = on ? "url('../imgs/comments_on.png')" : "url('../imgs/comments_off.png')";
-    commentContainer.style.display    = on ? "block" : "none";
+    commentIcon.style.backgroundImage = onComment ? "url('../imgs/comments_on.png')" : "url('../imgs/comments_off.png')";
+    commentContainer.style.display    = onComment ? "block" : "none";
 }
