@@ -1,4 +1,4 @@
---
+-- @
 -- Titre du mini-projet : PICTURA
 -- Auteurs :              Stéphane Bottin, 
 --   		              Robin Demarta &

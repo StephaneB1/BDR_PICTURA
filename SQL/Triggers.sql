@@ -10,7 +10,7 @@
 -- Details 			: Triggers de la base de données
 -- -----------------------------------------------------   
 
--- 
+-- --
 
 USE PICTURA; 
 
