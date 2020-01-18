@@ -88,9 +88,11 @@ $community = $db->getCommunityByName($picture["nomCommunaute"])[0];
 
             $rootComments = $db->getRootPictureComments($picture["id"]);
 
-            for($i = 0; $i < count($rootComments); ++$i) {
-                displayRootCommentWithChildren($rootComments[$i], true);
-            }
+            if(empty($rootComments))
+                echo "<p style='font-style: italic; padding: 50px; text-align: center'>There are no comments yet.</p>";
+            else
+                for($i = 0; $i < count($rootComments); ++$i)
+                    displayRootCommentWithChildren($rootComments[$i], true);
 
             echo "<form id='insertCommentForm' name='insertCommentForm' action='php/form/insertCommentForm.php' method='post' enctype='multipart/form-data'> 
                     <!-- Comment input-->
