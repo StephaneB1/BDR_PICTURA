@@ -30,6 +30,7 @@ $community = $db->getCommunityByName($picture["nomCommunaute"])[0];
     <link rel="stylesheet" href="/css/interface_fullview.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="/css/popup.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" />
+    <link rel="stylesheet" href="/css/comment.css" />
 
     <title>PICTURA -  <?php echo $picture["titre"]; ?></title>
 </head>
@@ -53,7 +54,7 @@ $community = $db->getCommunityByName($picture["nomCommunaute"])[0];
 
                     <div class="pictureHeaderRight">
                         <div class="pictureFullHeaderTitle">' . htmlentities($picture["titre"]) . '</div>
-                        <div class="pictureFullHeaderSubtitle">' . htmlentities($picture["pseudoUtilisateur"]) . ' • ' . htmlentities($picture["dateHeureAjout"]) . '</div>
+                        <div class="pictureFullHeaderSubtitle">' . htmlentities($picture["pseudoUtilisateur"]) . ' • ' . formatDate($picture["dateHeureAjout"], "d.m.Y, H:i") . '</div>
                         <button id="exitpopup">X</button>
                     </div>
 
@@ -76,51 +77,32 @@ $community = $db->getCommunityByName($picture["nomCommunaute"])[0];
                 <div class="textLikeContainer">' . $db->getTotalLikes($picture["id"]) . ' like(s)</div>
             </div>';
 
-            echo '<div class="commentsContainer" id="commentsContainer">';
+        ?>
+    </div>
 
-                $comments = $db->getRootPictureComments($picture["id"]);
-                for ($i = 0; $i < count($comments); ++$i) {
-                    //Un seul niveau de réponse (pas trop le time de faire un truc récursif)
-                    $answers = $db->getCommentAnswers($comments[$i]["dateHeureAjout"], $comments[$i]["idPhoto"]);
-                    echo '<div class="comment">' 
-                            . $comments[$i]["commentaire"] .
-                            '<br><div class="commentAuthor">- ' . $comments[$i]["pseudoUtilisateur"] .'</div>
-                         </div>';
+    <!-- COMMENTS NEW -->
+    <div id="comment-wrapper">
+        <div class="comment-container">
+            <h1>Comments</h1>
+            <?php
 
-                        for ($j = 0; $j < count($answers); ++$j) {
-                            echo '<div class="comment" id="answer">' . $answers[$j]["commentaire"] . 
-                                        '<br><div class="commentAuthor" id="answerAuthor">- ' . $answers[$j]["pseudoUtilisateur"] .'</div>
-                                    </div>';
-                        }
+            $rootComments = $db->getRootPictureComments($picture["id"]);
 
-                        echo "<form id='insertCommentForm' name='insertCommentForm' action='php/form/insertCommentForm.php' method='post' enctype='multipart/form-data'>
-                            <!-- Comment input-->
-                            <textarea id='commentAnswer' name='comment' placeholder='Reply to this comment...' required></textarea>
-        
-                            <!-- Photo (hidden) -->
-                            <input type='hidden' name='photo' value='" . $picture["id"] . "'/>
+            for($i = 0; $i < count($rootComments); ++$i) {
+                displayRootCommentWithChildren($rootComments[$i], true);
+            }
 
-                            <!-- Parent (hidden) -->
-                            <input type='hidden' name='parent' value='" . $comments[$i]["dateHeureAjout"] . "'/>
-
-                            <input type='submit' id='replyAnswer' value='Reply'>
-                        </form>";
-                }             
-            
-            echo "<form id='insertCommentForm' name='insertCommentForm' action='php/form/insertCommentForm.php' method='post' enctype='multipart/form-data'>
- 
+            echo "<form id='insertCommentForm' name='insertCommentForm' action='php/form/insertCommentForm.php' method='post' enctype='multipart/form-data'> 
                     <!-- Comment input-->
                     <textarea id='name' name='comment' placeholder='Comment on this picture...' required></textarea>
-
                     <!-- Photo (hidden) -->
                     <input type='hidden' name='photo' value='" . $picture["id"] . "'/>
-
+                    
                     <input type='submit' style='margin-bottom: 10px;' value='Comment'>
                 </form>";
+            ?>
 
-            echo '</div>';
-
-        ?>
+        </div>
     </div>
 </body>
 

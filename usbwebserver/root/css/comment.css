@@ -20,25 +20,54 @@ EXAMPLE
 
 */
 
-[class*='comment'] {
+#comment-wrapper {
+    width: 100%;
+    height: auto;
+    float: left;
+    background-color: white;
+}
+
+.comment-container {
+    width: 60%;
+    float: left;
+    margin-left: 20%;
+    padding: 5% 0 5% 0;
+}
+
+.comment, .comment-child {
     position: relative;
     float: left;
-    width: 60%;
+    width: 100%;
     padding: 10px 0 0 10px;
+    /*background-color: rgba(150, 150, 150, 0.1);*/
     /*border-top: rgba(150, 150, 150, 0.6) solid 1px;*/
 }
+
 .comment-child {
     float: right;
     width: 96%;
     border-left: rgba(150, 150, 150, 0.6) solid 3px;
-    background-color: rgba(150, 150, 150, 0.1);
 }
-[class*='comment'] .author {
-    font-style: italic;
+
+.comment .author, .comment-child .author {
+    font-weight: bold;
 }
-[class*='comment'] .content {
+
+.comment .content, .comment-child .content {
     margin-bottom: 1%;
 }
-[class*='comment'] a {
+
+.comment .date, .comment-child .date {
+    color: grey;
+    font-size: 0.7em;
+    font-weight: normal;
+    font-style: italic;
+}
+
+.comment a, .comment-child a {
     font-size: 0.8em;
+}
+
+[id*="insertCommentForm_"] {
+    display: none;
 }

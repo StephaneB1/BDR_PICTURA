@@ -11,6 +11,7 @@ date_default_timezone_set("Europe/Zurich");
 
 //File upload settings
 include($_SERVER['DOCUMENT_ROOT'] . "/config/files_config.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/php/include/dbConnect.php");
 
 /*
 * Check if the user is connected with a valid account
@@ -27,7 +28,6 @@ function checkIfLoggedIn()
 
     //Check if session has a valid userId
     if (!empty($_SESSION['pseudo'])) {
-        include_once($_SERVER['DOCUMENT_ROOT'] . "/php/include/dbConnect.php");
         $db = new db;
 
         //Verify user's account existence
@@ -174,6 +174,74 @@ function getHostUrl()
         $protocol = "http://";
     }
     return $protocol . $_SERVER["HTTP_HOST"];
+}
+
+/**
+ * Displays root comment and uses displayCommentChildren() recursively to display children comments
+ * @param $photoId
+ */
+/*function displayComments($photoId) {
+    $db = new db;
+
+    $comments = $db->getRootPictureComments($photoId);
+    for ($i = 0; $i < count($comments); ++$i) {
+        displayCommentDiv($comments[$i], false);
+        displayCommentChildren($comments[$i]["dateHeureAjout"], $comments[$i]["idPhoto"], $comments[$i]["pseudoUtilisateur"]);
+        echo "</div>";
+    }
+}*/
+
+/**
+ * Recursively display a comment's children
+ * @param $comment
+ * @param $isRoot
+ */
+function displayRootCommentWithChildren($comment, $isRoot) {
+    $db = new db;
+    $children = $db->getCommentAnswers($comment["dateHeureAjout"], $comment["idPhoto"], $comment["pseudoUtilisateur"]);
+
+    displayCommentDiv($comment, $isRoot);
+
+    for ($i = 0; $i < count($children); ++$i) {
+        displayRootCommentWithChildren($children[$i], false);
+    }
+    echo "</div>";
+
+}
+
+/**
+ * Creates the HTML elements of a comment (closing tag not created for the recursion)
+ * @param $comment
+ * @param $isRoot
+ */
+function displayCommentDiv($comment, $isRoot) {
+    $formName = "insertCommentForm_" . uniqid();
+
+    // Display
+    echo '
+        <div class="' . ($isRoot ? 'comment' : 'comment-child') . '" title="Posted ' . $comment["dateHeureAjout"] . '">
+            <p class="author">' . $comment["pseudoUtilisateur"] .' <span class="date"> - ' . formatDate($comment["dateHeureAjout"], "d.m.Y, H:i") . '</span></p>
+            <p class="content">
+                '. htmlentities($comment["commentaire"]) .'
+                <br/>
+                <a href="javascript:;" onclick="displayId(\'' . $formName . '\', null)">Respond</a>
+            </p>';
+
+    // Answer form
+    echo "
+            <form id='". $formName ."' name='insertCommentForm' action='php/form/insertCommentForm.php' method='post' enctype='multipart/form-data'>
+                <!-- Comment input-->
+                <textarea id='commentAnswer' name='comment' placeholder='Reply to this comment...' required></textarea>
+
+                <!-- Photo (hidden) -->
+                <input type='hidden' name='photo' value='" . $comment["idPhoto"] . "'/>
+
+                <!-- Parent (hidden) -->
+                <input type='hidden' name='dateHeureAjoutParent' value='" . $comment["dateHeureAjout"] . "'/>
+                <input type='hidden' name='pseudoUtilisateurParent' value='" . $comment["pseudoUtilisateur"] . "'/>
+
+                <input type='submit' id='replyAnswer' value='Reply'>
+            </form>";
 }
 
 ?>

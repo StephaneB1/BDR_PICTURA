@@ -168,11 +168,8 @@ function likePicture(username, photoId) {
 
 var onComment = true;
 function toggleComments() {
-    var commentIcon = document.getElementById("commentsButton");
-    var commentContainer = document.getElementById("commentsContainer");
-
-    onComment = !onComment;
-
-    commentIcon.style.backgroundImage = onComment ? "url('../imgs/comments_on.png')" : "url('../imgs/comments_off.png')";
-    commentContainer.style.display    = onComment ? "block" : "none";
+    //location.hash = "#" + "comment-wrapper"; // Raw movement
+    $('html, body').animate({
+        scrollTop: $("#comment-wrapper").offset().top
+    }, 500);
 }

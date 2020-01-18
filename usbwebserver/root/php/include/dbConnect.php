@@ -457,13 +457,16 @@ class db
         return false; // Query error
     }
 
-    // TODO
-    public function getCommentAnswers($dateAjoutParent, $idPhoto) {
+    public function getCommentAnswers($dateAjoutParent, $idPhoto, $user) {
         $query = $this->connexion->prepare("
-            SELECT * FROM commentaire
-                INNER JOIN reponse_commentaire
-                    ON commentaire.dateHeureAjout = reponse_commentaire.dateHeureAjout_Reponse AND commentaire.idPhoto = reponse_commentaire.idPhoto_Parent
-            WHERE dateHeureAjout_Parent = '$dateAjoutParent' AND idPhoto_Parent = '$idPhoto';
+            SELECT * FROM commentaire AS comm
+                INNER JOIN reponse_commentaire AS rep
+                    ON comm.dateHeureAjout = rep.dateHeureAjout_Reponse
+                        AND comm.idPhoto = rep.idPhoto_Reponse
+                        AND comm.pseudoUtilisateur = rep.pseudoUtilisateur_Reponse
+            WHERE dateHeureAjout_Parent = '$dateAjoutParent'
+                AND idPhoto_Parent = '$idPhoto'
+                AND pseudoUtilisateur_Parent = '$user';
         ");
 
         if($query->execute())
@@ -471,8 +474,7 @@ class db
         return false; // Query error
     }
 
-    public function insertComment($photoId, $user, $comment, $parent) {
-
+    public function insertComment($photoId, $user, $comment, $dateTimeParent, $userParent) {
         $dateTime = date("Y-m-d H-i-s");
 
         $query = $this->connexion->prepare("
@@ -482,11 +484,11 @@ class db
   
         $result = $query->execute();
 
-        if($result && !empty($parent)) {
+        if($result && !empty($dateTimeParent) && !empty($userParent)) {
             // Comment is a response
             $query = $this->connexion->prepare("
-                INSERT INTO reponse_commentaire (dateHeureAjout_Reponse, idPhoto_Reponse, dateHeureAjout_Parent, idPhoto_Parent)
-                VALUES ('$dateTime', '$photoId', '$parent', '$photoId');
+                INSERT INTO reponse_commentaire (dateHeureAjout_Reponse, idPhoto_Reponse, pseudoUtilisateur_Reponse, dateHeureAjout_Parent, idPhoto_Parent, pseudoUtilisateur_Parent)
+                VALUES ('$dateTime', $photoId, '$user', '$dateTimeParent', $photoId, '$userParent');
             ");
 
             $result = $result && $query->execute();

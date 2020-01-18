@@ -35,10 +35,11 @@ if (!empty($_POST["photo"])) {
     $formCorrect = false;
 }
 
-// Parent (dateHeureAjout)
+// Parent
 // (if not null, we are inserting a response)
-if (!empty($_POST["parent"])) {
-    $parent = $_POST["parent"];
+if (!empty($_POST["dateHeureAjoutParent"]) && !empty($_POST["pseudoUtilisateurParent"])) {
+    $dateTimeParent = $_POST["dateHeureAjoutParent"];
+    $pseudoUtilisateurParent = $_POST["pseudoUtilisateurParent"];
 } else { // Not a response
     $parent = null;
 }
@@ -50,7 +51,7 @@ if ($formCorrect == true) {
     include_once($_SERVER['DOCUMENT_ROOT'] . "/php/include/dbConnect.php");
     $db = new db;
 
-    if (!$db->insertComment($photoId, $user, $comment, $parent)) { // Insert comment
+    if (!$db->insertComment($photoId, $user, $comment, $dateTimeParent, $pseudoUtilisateurParent)) { // Insert comment
         //$_SESSION["e"] = 1; // Store error code
         previousPage(); // Go back to form page (keep form values)
     }
