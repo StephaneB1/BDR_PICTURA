@@ -142,13 +142,13 @@ class db
     }
 
     /**
-     * Get a specific community
+     * Get pictures from a community
 	 * return false if an error occured
      */
     public function getCommunityPhotos($name) {
         $query = $this->connexion->prepare("
-          SELECT * FROM Communaute
-          WHERE nom = '$name'
+          SELECT * FROM Photo
+          WHERE nomCommunaute = '$name'
           ORDER BY dateHeureAjout
         ");
 
@@ -337,6 +337,17 @@ class db
         $query = $this->connexion->prepare("
             SELECT * FROM photo
             WHERE id = '$picture_id';
+        ");
+
+        if($query->execute())
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        return false; // Query error
+    }
+
+    public function getPicturesByNameSearch($keywords) {
+        $query = $this->connexion->prepare("
+            SELECT * FROM photo
+            WHERE titre LIKE '%$keywords%';
         ");
 
         if($query->execute())

@@ -112,17 +112,14 @@ if($isLoggedIn) {
 
     </div>
 
-    <!-- PICTURE FEED -->
-    <div class="middlepanel">
-        <div class="mainFeed">
-        <?php    
-            if ($isLoggedIn) {
-                $feed = $db->getCommunityFeedPictures($community["nom"]);
-                
+    <div class="middlepanel" id="middle_panel">
+        <div class="mainFeed" id="main_feed">
+            <?php    
+                $feed = $db->getCommunityPhotos($community["nom"]);
+                                
                 for ($i = 0; $i < count($feed); ++$i) {
-                    $post_community = $db->getCommunityByName($feed[$i]["nomCommunaute"])[0];
 
-                    echo 
+                    echo
                     '<a href="picture_fullview.php?id=' . htmlentities($feed[$i]["id"]) . '" class="picturePreview" id='. htmlentities($feed[$i]["id"]) . ' style="background-image: url(files/'. htmlentities($feed[$i]["urlPhoto"]) .')" >
                         <div class="picturePreviewShadowTop"></div>
                         <div class="picturePreviewShadowBottom"></div>	
@@ -133,9 +130,9 @@ if($isLoggedIn) {
                         </div>
                                     
                         <div class="picturePreviewFooter">
-                            <div class="picturePreviewFooterButton" style="background-image: url(files/'. htmlentities($post_community["imageDeProfil"]) .'), url(files/community_default.PNG);"></div>	
                         ';
-                        
+
+                    if($isLoggedIn) {
                         $userLiked = $db->checkIfUserLikedAPicture($user["pseudo"], $feed[$i]["id"]);
                         if($userLiked) {
                             echo '<button onclick="likePicture('.htmlentities($user["pseudo"]).','.htmlentities($feed[$i]["id"]).')" class="picturePreviewFooterButton" style="background-image: url(/imgs/like_on.png);"></button>';
@@ -143,12 +140,14 @@ if($isLoggedIn) {
                             echo '<button onclick="likePicture('.htmlentities($user["pseudo"]).','.htmlentities($feed[$i]["id"]).')" class="picturePreviewFooterButton" style="background-image: url(/imgs/like_off.png);"></button>';
                         }
                         
-                        echo '</div></a>';
+                    }
+
+                    echo '</div></a>';
                 }
-            }
-            ?>        
+            ?>
         </div>
     </div>
+        
 
     <!-- PROFILE PANEL -->
     <?php include_once("php/include/profilePanel.php"); ?>

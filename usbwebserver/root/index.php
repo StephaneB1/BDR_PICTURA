@@ -28,7 +28,12 @@ if ($isLoggedIn && (empty($_GET["n"]) || $_GET["n"] == $_SESSION["pseudo"])) {
 } else {
     //redirect(null);
 }
-$searching = false;
+
+$searching = "";
+if(!empty($_GET["s"]) && $_GET["s"] != "") {
+    $searching = $_GET["s"];
+}
+
 ?>
 <title>PICTURA</title>
 
@@ -56,7 +61,6 @@ $searching = false;
 <body id="body" onload="init()">
 
     <div class="container" id="main_container">
-	
 
         <!-- TOP BAR -->
         <?php include_once("php/include/topbar.php"); ?>
@@ -81,7 +85,7 @@ $searching = false;
 		
         <!-- PICTURE FEED -->
         <div class="middlepanel" id="middle_panel">
-            <div class="mainFeed">
+            <div class="mainFeed" id="main_feed">
             <?php    
                 if ($isLoggedIn) {
                     $feed = $db->getUserFeedPictures($user["pseudo"]);
@@ -89,8 +93,8 @@ $searching = false;
                     $feed = $db->getAllPictures();
                 }
                 
-                if ($searching) {
-                    //$feed = $db->getPicturesByNameSearch($user["pseudo"]);
+                if ($searching != "") {
+                    $feed = $db->getPicturesByNameSearch($searching);
                 }
                                 
                 for ($i = 0; $i < count($feed); ++$i) {

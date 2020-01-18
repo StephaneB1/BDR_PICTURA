@@ -5,7 +5,7 @@ function init() {
     const node = document.getElementById("searchBar");
     node.addEventListener("keypress", function(event) {
         if (event.key === "Enter") {
-            location.href='test_insertPhoto.php';
+            location.href='../index.php?s=' + node.value;
         }
     });
 }
@@ -37,7 +37,11 @@ function displayTab(tabName, selector) {
 /*
  * @brief Enables / disables night mode
  */
+var nightModeOn = false;
 function switchNightMode() {
+    nightModeOn = !nightModeOn;
+    document.getElementById("nightmodeButton").style.backgroundImage = nightModeOn ? "url(../imgs/nightmodeButtonEnabled.png)" : "url(../imgs/nightmodeButton.png)";
+
     document.getElementById("main_container").classList.toggle("nightmode");
     document.getElementById("topSearchPanel").classList.toggle("nightmode");
     document.getElementById("community_panel").classList.toggle("nightmode");
@@ -59,16 +63,33 @@ function switchNightMode() {
     }
 }
 
-var on = false;
+var sidePanelOn = true;
 function openSidePanel() {      
-    document.getElementById('community_panel').style.display = on ? "block" : "none";
-    on = !on;
+    sidePanelOn = !sidePanelOn;
+    document.getElementById('community_panel').style.display = sidePanelOn ? "block" : "none";
+    document.getElementById('openSideBarButton').style.backgroundImage = sidePanelOn ? "url(../imgs/sidepanelButtonHover.png)" : "url(../imgs/sidepanelButton.png)";
+    document.getElementById('middle_panel').style.paddingLeft = sidePanelOn ? "270px" : "10px";
 }
 
-var onProfile = true;
+var onProfile = false;
 function openProfilePanel() {      
-    document.getElementById('user_panel').style.display = onProfile ? "block" : "none";
     onProfile = !onProfile;
+    document.getElementById('user_panel').style.display = onProfile ? "block" : "none";
+    document.getElementById('profileButton').style.backgroundImage = onProfile ? "url(../imgs/profileButtonEnabled.png)" : "url(../imgs/profileButton.png)";
+}
+
+var gridViewOn = true;
+function toggleGridView() {      
+    gridViewOn = !gridViewOn;
+    document.getElementById('gridButton').style.backgroundImage = gridViewOn ? "url(../imgs/gridButtonEnabled.png)" : "url(../imgs/gridButton.png)";
+    document.getElementById('main_feed').style.gridTemplateColumns = gridViewOn ? "repeat(auto-fill, minmax(230px, 1fr))" : "repeat(auto-fill, minmax(100%, 1fr))";
+
+    var pictures = document.getElementsByClassName("picturePreview");
+    for(var i = 0; i < pictures.length; i++)
+    {
+        pictures.item(i).style.height = gridViewOn ? "260px" : "500px";
+        pictures.item(i).style.width  = gridViewOn ? "230px" : "100%";
+    }
 }
 
 /*
