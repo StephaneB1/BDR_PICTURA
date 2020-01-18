@@ -107,7 +107,7 @@ if(!empty($_GET["s"]) && $_GET["s"] != "") {
                         
                         <div class="picturePreviewHeader">
                             <div class="picturePreviewHeaderTitle">'. htmlentities($feed[$i]["titre"]) . '</div>
-                            <div class="picturePreviewHeaderSubtitle">'. htmlentities($feed[$i]["pseudoUtilisateur"]) . ' • ' . htmlentities($feed[$i]["dateHeureAjout"]) . '</div>
+                            <div class="picturePreviewHeaderSubtitle">'. htmlentities($feed[$i]["pseudoUtilisateur"]) . ' • ' . formatDate($feed[$i]["dateHeureAjout"], "d.m.Y, H:i") . '</div>
                         </div>
                                     
                         <div class="picturePreviewFooter">
