@@ -55,7 +55,7 @@ $community = $db->getCommunityByName($picture["nomCommunaute"])[0];
                     <div class="pictureHeaderRight">
                         <div class="pictureFullHeaderTitle">' . htmlentities($picture["titre"]) . '</div>
                         <div class="pictureFullHeaderSubtitle">' . htmlentities($picture["pseudoUtilisateur"]) . ' • ' . formatDate($picture["dateHeureAjout"], "d.m.Y, H:i") . '</div>
-                        <a id="exitpopup" href="index.php">X</a>
+                        <a id="exitpopup" href="javascript:;" onclick="window.history.go(-1); return false;">X</a>
                     </div>
 
 
