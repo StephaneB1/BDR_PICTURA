@@ -1,10 +1,11 @@
 <?php
-
 /**
- * HEIG-VD
- * Authors: Stéphane Bottin, Robin Demarta, Simon Mattei
- * Date: 20.12.2019
- * Summary: Delete user account and all its content
+ * HEIG-VD - Mini-Projet BDR
+ * 
+ * Authors:     Stéphane Bottin, Robin Demarta, Simon Mattei
+ * Date:        20.12.2019
+ * 
+ * Summary:     Delete user account and all its content
  */
 
 session_start();

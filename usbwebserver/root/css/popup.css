@@ -1,4 +1,12 @@
-/* INSERT BDR HEADER HERE */
+
+/**
+ * HEIG-VD - Mini-Projet BDR
+ * 
+ * Authors:     Stéphane Bottin, Robin Demarta, Simon Mattei
+ * Date:        20.12.2019
+ * 
+ * Summary:     CSS for popups (create a new community, post a new picture, ...)
+ */
 
 .popup_panel {
 	width: 100%;
@@ -58,7 +66,7 @@
 	border-radius: 20px;
 }
 
-input[type=text], input[type=password], select {
+input[type=text], input[type=password], input[type=email], select {
 	width: 100%;
 	padding: 12px 20px;
 	margin: 8px 0;
@@ -66,7 +74,6 @@ input[type=text], input[type=password], select {
 	border: 1px solid #ccc;
 	border-radius: 10px;
 	box-sizing: border-box;
-	margin-bottom:20px;
 }
 
 input[type=file] {
@@ -137,6 +144,8 @@ input[type=submit]:hover {
 	border-radius: 30px;
 	cursor: pointer;
 	color: rgb(255, 70, 70);	
+	line-height: 30px;
+	text-align: center;
 }
 
 #exitpopup:hover {

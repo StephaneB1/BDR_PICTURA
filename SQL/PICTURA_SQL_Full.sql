@@ -341,6 +341,19 @@ BEGIN
 END
 $$
 
+DELIMITER $$
+CREATE TRIGGER user_insert_check BEFORE INSERT ON utilisateur
+FOR EACH ROW
+BEGIN
+	IF
+		NEW.pseudo = ANY(SELECT pseudo FROM utilisateur)
+	THEN
+		SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = "This user already exists.";
+	END IF;
+END
+$$
+
 -- -----------------------------------------------------
 -- -----------------------------------------------------
 -- DONNÉES TEST

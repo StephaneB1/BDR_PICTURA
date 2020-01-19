@@ -1,10 +1,12 @@
 <?php
 
 /**
- * HEIG-VD
- * Authors: Stéphane Bottin, Robin Demarta, Simon Mattei
- * Date: 20.12.2019
- * Summary: Set a user as admin/moderator of a community
+ * HEIG-VD - Mini-Projet BDR
+ * 
+ * Authors:     Stéphane Bottin, Robin Demarta, Simon Mattei
+ * Date:        20.12.2019
+ * 
+ * Summary:     Set a user as admin/moderator of a community
  */
 
 include_once("../include/func.php");

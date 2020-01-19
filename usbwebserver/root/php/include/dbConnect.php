@@ -1,10 +1,12 @@
 <?php
 
 /**
- * HEIG-VD
- * Authors: Stéphane Bottin, Robin Demarta, Simon Mattei
- * Date: 20.12.2019
- * Summary: This class handles all database interactions via specific public functions
+ * HEIG-VD - Mini-Projet BDR
+ * 
+ * Authors:     Stéphane Bottin, Robin Demarta, Simon Mattei
+ * Date:        20.12.2019
+ * 
+ * Summary:     This class handles all database interactions via specific public functions
  */
 
 class db

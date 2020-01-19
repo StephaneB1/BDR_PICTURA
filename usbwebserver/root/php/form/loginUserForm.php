@@ -1,10 +1,12 @@
 <?php
 
 /**
- * HEIG-VD
- * Authors: Stéphane Bottin, Robin Demarta, Simon Mattei
- * Date: 20.12.2019
- * Summary : Login user
+ * HEIG-VD - Mini-Projet BDR
+ * 
+ * Authors:     Stéphane Bottin, Robin Demarta, Simon Mattei
+ * Date:        20.12.2019
+ * 
+ * Summary :    Login user
  */
 
 include_once("../include/func.php");

@@ -1,3 +1,14 @@
+<!--
+/**
+ * HEIG-VD - Mini-Projet BDR
+ * 
+ * Authors:     Stéphane Bottin, Robin Demarta, Simon Mattei
+ * Date:        20.12.2019
+ * 
+ * Summary:     HTML for the profile panel (Login, register and profile infos)
+ */
+-->
+
 <div class="profileContainer" id="user_panel">
             <div class="arrow-up" id="profileArrow"></div>
             <div class="title_container" id="profile_title_container"> 
@@ -35,7 +46,7 @@
                 for ($i = 0; $i < count($userCommunities); ++$i) {
                     echo "          
 				    <a class='community_cell_container' href='community.php?n=" . htmlentities($userCommunities[$i]["nom"]) . "' title='" . htmlentities($userCommunities[$i]["detail"]) . "'>
-				    	<div class='community_cell_icon' style='background-image: url(files/". htmlentities($userCommunities[$i]["imageDeProfil"]) ."),  url(\"files/community_default.PNG\")'></div> " . htmlentities($communities[$i]["nom"]) . "
+				    	<div class='community_cell_icon' style='background-image: url(files/". htmlentities($userCommunities[$i]["imageDeProfil"]) ."),  url(\"files/community_default.PNG\")'></div> " . htmlentities($userCommunities[$i]["nom"]) . "
 				    </a>";
                 }
 
@@ -46,20 +57,43 @@
 	        } else {
 				echo '
 				<!-- Login form -->		
-        		<form id="loginUserForm" name="loginUserForm" action="php/form/loginUserForm.php" method="post">
-	        	<!-- pseudo -->
-	            <p>
-					<input type="text" id="pseudo" name="pseudo" placeholder="Username" required autofocus/>
-				</p>
-	        	<!-- Password -->
-	            <p>
-					<input type="password" id="password" name="password" placeholder="Password" required/>
-				</p>
-	
-	            <input type="submit" value="Se connecter"/>
+                <form id="loginUserForm" name="loginUserForm" action="php/form/loginUserForm.php" method="post">
+                    
+                    <!-- Pseudo -->
+                    <input type="text" id="pseudo" name="pseudo" placeholder="Username" required autofocus/>
+                    
+                    <!-- Password -->
+                    <input type="password" id="password" name="password" placeholder="Password" required/>
+        
+                    <input type="submit" value="Se connecter"/>
 				
-	        	</form>
-				<a href="connexion.php">register</a>	';
+                </form>
+
+                <button id="registerButton" onclick="enableRegisterForm()">Register</button>
+                
+                <!-- Register form -->
+                <form id="registerUserForm" name="registerUserForm" class="hidden" action="php/form/insertUserForm.php" method="post">
+                    
+                    <!-- Pseudo -->
+                    <input type="text" id="regPseudo" name="regPseudo" pattern="[a-zA-Z0-9]{1,20}" placeholder="Username*" title="Letters and numbers only (max. 20 characters)" required/>
+                    
+                    <!-- Email address -->
+                    <input type="email" id="regEmail" name="regEmail" pattern="[a-zA-Z0-9\._-]{1,}[@]{1}[a-zA-Z0-9\._-]{1,}[.]{1}[a-zA-Z0-9\._-]{1,}" placeholder="Adresse email*" required/>
+
+                    <!-- First name -->
+                    <input type="text" id="regFirstName" name="regFirstName" pattern="[a-zA-ZàáâäèéêëìíîïòóôöùúûüÀÁÂÄÈÉÊËÌÍÎÏÒÓÔÖÙÚÛÜ]{1,50}" placeholder="First Name" title="(max. 50 characters)"/>
+
+                    <!-- Last name -->
+                    <input type="text" id="regLastName" name="regLastName" pattern="[a-zA-Z- ]{1,50}" placeholder="Last Name" title="(max. 50 characters)"/>
+
+                    <!-- Password -->
+                    <input type="password" id="regPassword" name="regPassword" minlength="8" placeholder="Password*" title="(min. 8 characters)" required/>
+
+                    <!-- Password confirm -->
+                    <input type="password" id="regPasswordConfirm" name="regPasswordConfirm" minlength="8" placeholder="Confirm Password*" title="(min. 8 characters)" required/>
+        
+                    <input type="submit" value="Create a New Account"/>
+                </form>';
             }
        		?>
 

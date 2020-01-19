@@ -1,10 +1,12 @@
 <?php
 
 /**
- * HEIG-VD
- * Authors: Stéphane Bottin, Robin Demarta, Simon Mattei
- * Date: 20.12.2019
- * Summary: General functions
+ * HEIG-VD - Mini-Projet BDR
+ * 
+ * Authors:     Stéphane Bottin, Robin Demarta, Simon Mattei
+ * Date:        20.12.2019
+ * 
+ * Summary:     Main class for PHP functions
  */
 
 date_default_timezone_set("Europe/Zurich");
@@ -175,21 +177,6 @@ function getHostUrl()
     }
     return $protocol . $_SERVER["HTTP_HOST"];
 }
-
-/**
- * Displays root comment and uses displayCommentChildren() recursively to display children comments
- * @param $photoId
- */
-/*function displayComments($photoId) {
-    $db = new db;
-
-    $comments = $db->getRootPictureComments($photoId);
-    for ($i = 0; $i < count($comments); ++$i) {
-        displayCommentDiv($comments[$i], false);
-        displayCommentChildren($comments[$i]["dateHeureAjout"], $comments[$i]["idPhoto"], $comments[$i]["pseudoUtilisateur"]);
-        echo "</div>";
-    }
-}*/
 
 /**
  * Recursively display a comment's children

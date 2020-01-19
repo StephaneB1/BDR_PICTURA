@@ -64,6 +64,9 @@ if(!empty($_GET["s"]) && $_GET["s"] != "") {
 
         <!-- TOP BAR -->
         <?php include_once("php/include/topbar.php"); ?>
+        
+        <!-- PROFILE PANEL -->
+        <?php include_once("php/include/profilePanel.php"); ?>
 
         <!-- COMMUNITY PANEL -->
         <div class="leftpanel" id="community_panel">
@@ -129,9 +132,6 @@ if(!empty($_GET["s"]) && $_GET["s"] != "") {
                 ?>
             </div>
         </div>
-        
-        <!-- PROFILE PANEL -->
-        <?php include_once("php/include/profilePanel.php"); ?>
 
         <!-- Create a new community form -->
         <?php

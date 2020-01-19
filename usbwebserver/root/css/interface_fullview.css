@@ -1,5 +1,14 @@
-/* INSERT BDR HEADER HERE */
-body, html {
+
+/**
+ * HEIG-VD - Mini-Projet BDR
+ * 
+ * Authors:     Stéphane Bottin, Robin Demarta, Simon Mattei
+ * Date:        20.12.2019
+ * 
+ * Summary:     CSS for the pictures' fullview interface
+ */
+
+ body, html {
   height: 100%;
   width: 100%;
   margin: 0;

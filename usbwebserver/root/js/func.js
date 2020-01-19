@@ -1,3 +1,11 @@
+/**
+ * HEIG-VD - Mini-Projet BDR
+ * 
+ * Authors:     Stéphane Bottin, Robin Demarta, Simon Mattei
+ * Date:        19.01.2019
+ * 
+ * Summary:     Main class for javascript functions
+ */
 
 function init() {
 
@@ -35,7 +43,7 @@ function displayTab(tabName, selector) {
 }
 
 /*
- * @brief Enables / disables night mode
+ * Summary: Enables / disables night mode
  */
 var nightModeOn = false;
 function switchNightMode() {
@@ -63,6 +71,9 @@ function switchNightMode() {
     }
 }
 
+/*
+ * Summary: Enables / disables the side panel
+ */
 var sidePanelOn = true;
 function openSidePanel() {      
     sidePanelOn = !sidePanelOn;
@@ -71,6 +82,9 @@ function openSidePanel() {
     document.getElementById('middle_panel').style.paddingLeft = sidePanelOn ? "270px" : "10px";
 }
 
+/*
+ * Summary: Enables / disables the profile panel
+ */
 var onProfile = false;
 function openProfilePanel() {      
     onProfile = !onProfile;
@@ -78,6 +92,17 @@ function openProfilePanel() {
     document.getElementById('profileButton').style.backgroundImage = onProfile ? "url(../imgs/profileButtonEnabled.png)" : "url(../imgs/profileButton.png)";
 }
 
+/*
+ * Summary: Enables the register form to create a new user
+ */
+function enableRegisterForm() {
+    document.getElementById('registerButton').style.display = "none";
+    document.getElementById('registerUserForm').style.display = "block";
+}
+
+/*
+ * Summary: Enables / disables the grid view
+ */
 var gridViewOn = true;
 function toggleGridView() {      
     gridViewOn = !gridViewOn;
@@ -133,10 +158,6 @@ function displayClass(classToShow, classToHide) {
 	}
 }
 
-
-/*
-* Summary:
-*/
 function slideById(clicker, divId, inOut, ms) {
 	if(inOut == true) {
 		$("#"+divId).slideDown(ms);
@@ -154,22 +175,3 @@ var loadFile = function(event, id) {
 	var image = document.getElementById(id);
 	image.src = URL.createObjectURL(event.target.files[0]);
 };
-
-function likePicture(username, photoId) {
-    alert(username + " " + photoId);
-    /*$.ajax({
-      url:"test.php", //the page containing php script
-      type: "POST", //request type
-      success:function(result){
-       alert(result);
-     }
-   });*/
-}
-
-var onComment = true;
-function toggleComments() {
-    //location.hash = "#" + "comment-wrapper"; // Raw movement
-    $('html, body').animate({
-        scrollTop: $("#comment-wrapper").offset().top
-    }, 500);
-}
