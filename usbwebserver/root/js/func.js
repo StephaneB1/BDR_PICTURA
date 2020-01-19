@@ -175,3 +175,10 @@ var loadFile = function(event, id) {
 	var image = document.getElementById(id);
 	image.src = URL.createObjectURL(event.target.files[0]);
 };
+
+function toggleComments() {
+    //location.hash = "#" + "comment-wrapper"; // Raw movement
+    $('html, body').animate({
+        scrollTop: $("#comment-wrapper").offset().top
+    }, 500);
+}
