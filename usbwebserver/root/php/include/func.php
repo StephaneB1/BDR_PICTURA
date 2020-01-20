@@ -125,6 +125,7 @@ function getFileFormats() {
 function previousPage()
 {
     echo "<script>window.history.back();</script>";
+    die();
 }
 
 /*
